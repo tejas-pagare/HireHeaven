@@ -375,4 +375,68 @@ Focus on: Identifying missing keywords from the job description, highlighting ma
   }
 });
 
+// ── /generate-quiz ─────────────────────────────────────────────────────────────
+router.post("/generate-quiz", async (req, res) => {
+  try {
+    const { jobDescription, questionCount = 5 } = req.body;
+
+    if (!jobDescription) {
+      return res.status(400).json({ message: "Job Description is required" });
+    }
+
+    const prompt = `
+You are an expert technical recruiter and interviewer. Based on the following Job Description, generate a multiple-choice quiz with ${questionCount} questions to assess a candidate's suitability for this role.
+
+Job Description:
+"""
+${jobDescription}
+"""
+
+Your entire response must be in valid JSON format ONLY. Do not include any markdown formatting, explanations, or text outside the JSON array.
+
+The JSON should be an array of objects matching this exact structure:
+[
+  {
+    "text": "Question text here",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correct_answer_index": 0
+  }
+]
+
+Ensure:
+- Questions vary in difficulty but are relevant to the required skills.
+- options array must have exactly 4 strings.
+- correct_answer_index must refer to the 0-indexed correct option.
+`;
+
+    const rawText = (await askGroq(prompt))
+      .replace(/<|im_start|>system\n.*?\n/gs, '')
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let jsonResponse;
+    try {
+      if (!rawText) throw new Error("AI did not return a valid text response.");
+      jsonResponse = JSON.parse(rawText);
+    } catch (error) {
+      try {
+        const cleanedText = rawText.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+        jsonResponse = JSON.parse(cleanedText);
+      } catch (innerError) {
+        return res.status(500).json({
+          message: "AI returned a response that was not valid JSON",
+          rawResponse: rawText,
+        });
+      }
+    }
+
+    res.json(jsonResponse);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export default router;

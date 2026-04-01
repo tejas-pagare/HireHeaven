@@ -51,7 +51,7 @@ const JobsPage = () => {
         }
       );
 
-      setJobs(data);
+      setJobs(data as Job[]);
     } catch (error) {
       console.log(error);
     } finally {

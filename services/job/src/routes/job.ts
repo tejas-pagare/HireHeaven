@@ -14,7 +14,11 @@ import {
   updateJob,
 } from "../controllers/job.js";
 
+import { getJobSeekerAnalytics } from "../controllers/analytics.controller.js";
+
 const router = express.Router();
+
+router.get("/analytics/job-seeker", isAuth, getJobSeekerAnalytics);
 
 router.post("/company/new", isAuth, uploadFile, createCompany);
 router.delete("/company/:companyId", isAuth, deleteCompany);

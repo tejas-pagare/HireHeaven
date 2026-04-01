@@ -10,6 +10,7 @@ import AppliedJobs from "./components/appliedJobs";
 import MyBlogs from "./components/MyBlogs";
 import Applicants from "./components/Applicants";
 import MyJobs from "./components/MyJobs";
+import Analytics from "./components/analytics";
 import {
   User,
   Building2,
@@ -20,6 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Users,
+  BarChart3,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -74,6 +76,12 @@ const sidebarItems: SidebarItem[] = [
     roles: ["jobseeker"],
   },
   {
+    id: "analytics",
+    label: "Analytics",
+    icon: <BarChart3 size={20} />,
+    roles: ["jobseeker"],
+  },
+  {
     id: "chats",
     label: "Chats",
     icon: <MessageSquare size={20} />,
@@ -117,6 +125,8 @@ const AccountPage = () => {
         return <Skills user={user} isYourAccount={true} />;
       case "applied-jobs":
         return <AppliedJobs applications={applications} />;
+      case "analytics":
+        return <Analytics />;
       case "chats":
         // Redirect to chat page
         router.push("/chat");
