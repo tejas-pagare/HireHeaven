@@ -86,7 +86,7 @@ export const loginUser = TryCatch(async (req, res, next) => {
   FROM users u 
   LEFT JOIN user_skills us ON u.user_id = us.user_id
   LEFT JOIN skills s ON us.skill_id = s.skill_id
-  WHERE u.email = ${email} GROUP BY u.user_id;
+  WHERE u.email = ${email} GROUP BY u.user_id, u.name, u.email, u.password, u.phone_number, u.role, u.bio, u.resume, u.profile_pic, u.subscription;
   `;
 
   if (user.length === 0) {
@@ -171,7 +171,7 @@ export const resetPassword = TryCatch(async (req, res, next) => {
   const { token } = req.params;
   const { password } = req.body;
 
-  s
+  let decoded: any;
 
   try {
     decoded = jwt.verify(token, process.env.JWT_SEC as string);

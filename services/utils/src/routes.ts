@@ -5,6 +5,14 @@ import { PDFParse } from "pdf-parse";
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
 
+import { isAuth, AuthenticatedRequest } from "./auth.js";
+import {
+  processResume,
+  queryResume,
+  queryResumeVsJob,
+  getResumeStatus,
+} from "./resume-rag.js";
+
 dotenv.config();
 
 const router = express.Router();
@@ -436,6 +444,120 @@ Ensure:
     res.status(500).json({
       message: error.message,
     });
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── RESUME INTELLIGENCE (RAG) ENDPOINTS ─────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── POST /resume/upload — Process & index a resume ──────────────────────────
+router.post("/resume/upload", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, pdfBase64, resumeUrl } = req.body;
+
+    const targetUserId = userId || req.user?.user_id;
+
+    if (!targetUserId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!pdfBase64 && !resumeUrl) {
+      return res
+        .status(400)
+        .json({ message: "Either pdfBase64 or resumeUrl is required" });
+    }
+
+    let pdfBuffer: Buffer;
+
+    if (pdfBase64) {
+      const base64Data = pdfBase64.replace(/^data:application\/pdf;base64,/, "");
+      pdfBuffer = Buffer.from(base64Data, "base64");
+    } else {
+      const response = await fetch(resumeUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch resume from URL: ${response.statusText}`);
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      pdfBuffer = Buffer.from(arrayBuffer);
+    }
+
+    const result = await processResume(targetUserId, pdfBuffer);
+
+    res.json({
+      success: true,
+      message: `Resume indexed successfully — ${result.chunksCreated} chunks created`,
+      chunksCreated: result.chunksCreated,
+      structured: result.structured,
+    });
+  } catch (error: any) {
+    console.error("Resume upload/index error:", error);
+    res.status(500).json({ message: error.message || "Failed to process resume" });
+  }
+});
+
+// ── POST /resume/query — Ask a question about a candidate's resume ──────────
+router.post("/resume/query", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, question } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!question || question.trim().length < 3) {
+      return res.status(400).json({ message: "A valid question is required" });
+    }
+
+    const result = await queryResume(userId, question);
+    res.json(result);
+  } catch (error: any) {
+    console.error("Resume query error:", error);
+    res.status(500).json({ message: error.message || "Failed to query resume" });
+  }
+});
+
+// ── POST /resume/query-job — Ask about resume vs job description ────────────
+router.post("/resume/query-job", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, question, jobDescription } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!question || question.trim().length < 3) {
+      return res.status(400).json({ message: "A valid question is required" });
+    }
+
+    if (!jobDescription || jobDescription.trim().length < 10) {
+      return res
+        .status(400)
+        .json({ message: "A valid job description is required" });
+    }
+
+    const result = await queryResumeVsJob(userId, question, jobDescription);
+    res.json(result);
+  } catch (error: any) {
+    console.error("Resume query-job error:", error);
+    res.status(500).json({ message: error.message || "Failed to query resume" });
+  }
+});
+
+// ── GET /resume/status/:userId — Check if resume is indexed ─────────────────
+router.get("/resume/status/:userId", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const userId = parseInt(req.params.userId as string, 10);
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid userId" });
+    }
+
+    const status = await getResumeStatus(userId);
+    res.json(status);
+  } catch (error: any) {
+    console.error("Resume status error:", error);
+    res.status(500).json({ message: error.message || "Failed to get resume status" });
   }
 });
 

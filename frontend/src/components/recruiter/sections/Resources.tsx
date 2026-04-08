@@ -10,7 +10,7 @@ const Resources = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const data = await BlogService.getAllPosts(1, 3);
+                const data: any = await BlogService.getAllPosts(1, 3);
                 setBlogs(data.posts || []);
             } catch (error) {
                 console.error("Failed to fetch blogs:", error);

@@ -137,6 +137,21 @@ export const updateResume = TryCatch(async (req: AuthenticatedRequest, res) => {
     UPDATE users SET resume = ${uploadResult.url}, resume_public_id = ${uploadResult.public_id} WHERE user_id = ${user.user_id} RETURNING user_id, name, resume;
     `;
 
+  // ── Auto-index resume for AI Resume Intelligence (fire-and-forget) ──
+  const token = req.headers.authorization?.split(" ")[1] || "";
+  axios
+    .post(
+      `${process.env.UPLOAD_SERVICE}/api/utils/resume/upload`,
+      { userId: user.user_id, resumeUrl: uploadResult.url },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .then(() =>
+      console.log(`✅ Resume auto-indexed for user ${user.user_id}`)
+    )
+    .catch((err: any) =>
+      console.error(`⚠️ Resume auto-index failed for user ${user.user_id}:`, err?.message)
+    );
+
   res.json({
     message: "Resume updated",
     updatedUser,
@@ -155,8 +170,6 @@ export const addSkillToUser = TryCatch(
     let wasSkillAdded = false;
 
     try {
-      await sql`BEGIN`;
-
       const users =
         await sql`SELECT user_id FROM users WHERE user_id = ${userId}`;
 
@@ -176,9 +189,7 @@ export const addSkillToUser = TryCatch(
         wasSkillAdded = true;
       }
 
-      await sql`COMMIT`;
     } catch (error) {
-      await sql`ROLLBACK`;
       throw error;
     }
 
@@ -271,7 +282,7 @@ export const applyForJob = TryCatch(async (req: AuthenticatedRequest, res) => {
 
   try {
     [newApplication] =
-      await sql`INSERT INTO applications (job_id, applicant_id, applicant_email, resume, subscribed) VALUES (${job_id}, ${applicant_id}, ${user?.email}, ${resume}, ${isSubscribed})`;
+      await sql`INSERT INTO applications (job_id, applicant_id, applicant_email, resume, subscribed) VALUES (${job_id}, ${applicant_id}, ${user?.email}, ${resume}, ${isSubscribed}) RETURNING *`;
   } catch (error: any) {
     if (error.code === "23505") {
       throw new ErrorHandler(409, "you have already applied to this job.");

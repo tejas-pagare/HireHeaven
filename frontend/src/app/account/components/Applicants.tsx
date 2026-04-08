@@ -19,6 +19,7 @@ import {
     FileText,
     MessageSquare,
     Users,
+    Brain,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -507,6 +508,20 @@ export default function Applicants() {
                                                                                                             </Button>
                                                                                                         </Link>
                                                                                                     )}
+
+                                                                                                    {/* AI Resume Intelligence */}
+                                                                                                    <Link
+                                                                                                        href={`/resume-intelligence/${app.applicant_id}`}
+                                                                                                    >
+                                                                                                        <Button
+                                                                                                            variant="ghost"
+                                                                                                            size="icon"
+                                                                                                            className="h-8 w-8 text-purple-500 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                                                                                                            title="AI Resume Intelligence"
+                                                                                                        >
+                                                                                                            <Brain size={14} />
+                                                                                                        </Button>
+                                                                                                    </Link>
 
                                                                                                     {/* View Profile */}
                                                                                                     <Link

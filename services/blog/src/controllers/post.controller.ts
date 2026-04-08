@@ -46,10 +46,10 @@ export const createPost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate caches
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(...keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(...userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(201).json({ message: "Post created successfully", post: result[0] });
     } catch (error) {
@@ -156,7 +156,7 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response): Prom
         }
 
         // functionality to verify ownership
-        const existing = await sql`SELECT author_id FROM blog_posts WHERE id = ${id}`;
+        const existing = await sql`SELECT author_id, slug FROM blog_posts WHERE id = ${id}`;
         if (existing.length === 0) {
             res.status(404).json({ message: "Post not found" });
             return;
@@ -196,10 +196,10 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate lists
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(...keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(...userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(200).json({ message: "Post updated", post: result[0] });
     } catch (error) {
@@ -236,10 +236,10 @@ export const deletePost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate lists
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(...keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(...userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(200).json({ message: "Post deleted successfully" });
     } catch (error) {

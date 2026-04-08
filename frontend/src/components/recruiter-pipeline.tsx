@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Application } from "@/type";
 import { Card } from "@/components/ui/card";
-import { Calendar, MessageSquare, MoreVertical, Star, User } from "lucide-react";
+import { Brain, Calendar, MessageSquare, MoreVertical, Star, User } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { job_service } from "@/context/AppContext";
@@ -171,6 +171,15 @@ export default function RecruiterPipeline({
                                                             <MessageSquare size={12} />
                                                             Chat
                                                         </button>
+
+                                                        <Link
+                                                            href={`/resume-intelligence/${app.applicant_id}`}
+                                                            target="_blank"
+                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-gradient-to-r from-violet-500/20 to-purple-500/20 text-violet-600 dark:text-violet-400 hover:from-violet-500/30 hover:to-purple-500/30 font-medium border border-violet-500/20"
+                                                        >
+                                                            <Brain size={12} />
+                                                            AI
+                                                        </Link>
                                                     </div>
                                                 </Card>
                                             )}
