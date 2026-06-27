@@ -20,7 +20,7 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 const chat_service =
-  process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 interface AppliedJobsProps {
   applications: Application[];

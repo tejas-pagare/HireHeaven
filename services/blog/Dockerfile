@@ -22,6 +22,6 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 5007
+EXPOSE 5006
 
 CMD ["node", "dist/index.js"]

@@ -45,7 +45,7 @@ export default function InterviewModal({
         const token = Cookies.get("token");
         try {
             await axios.post(
-                `${job_service}/api/interview/schedule`,
+                `${job_service}/api/job/interview`,
                 { application_id: applicationId, scheduled_at: scheduledAt, meet_link: meetLink },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -67,7 +67,7 @@ export default function InterviewModal({
         const token = Cookies.get("token");
         try {
             await axios.post(
-                `${job_service}/api/interview/evaluate`,
+                `${job_service}/api/job/interview/evaluate`,
                 {
                     application_id: applicationId,
                     tech_rating: techRating,

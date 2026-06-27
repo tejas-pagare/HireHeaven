@@ -72,7 +72,7 @@ export default function RecruiterPipeline({
         const token = Cookies.get("token");
         try {
             await axios.put(
-                `${job_service}/api/job/application/update/${draggableId}`,
+                `${job_service}/api/job/application/${draggableId}`,
                 { status: destination.droppableId },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

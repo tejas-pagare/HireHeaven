@@ -8,7 +8,7 @@ import { useAppData } from "@/context/AppContext";
 import Loading from "@/components/loading";
 import toast from "react-hot-toast";
 
-const JOB_SERVICE = process.env.NEXT_PUBLIC_JOB_SERVICE || "http://localhost:5003";
+const JOB_SERVICE = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 interface AnalyticsData {
   statusOverview: { name: string; value: number; color: string }[];
@@ -31,7 +31,7 @@ const Analytics = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get<AnalyticsData>(`${JOB_SERVICE}/api/job/analytics/job-seeker`, {
+        const response = await axios.get<AnalyticsData>(`${JOB_SERVICE}/api/job/analytics/jobseeker`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         

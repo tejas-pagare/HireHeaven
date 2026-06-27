@@ -56,7 +56,7 @@ export default function QuizPage() {
         const fetchQuiz = async () => {
             try {
                 const token = Cookies.get("token");
-                const { data } = await axios.get(`${job_service}/api/quiz/job/${jobId}`, {
+                const { data } = await axios.get(`${job_service}/api/job/quiz/${jobId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setQuizData(data as QuizData);
@@ -90,7 +90,7 @@ export default function QuizPage() {
         const token = Cookies.get("token");
         try {
             const { data } = await axios.post(
-                `${job_service}/api/quiz/attempt`,
+                `${job_service}/api/job/quiz/submit`,
                 { application_id: Number(applicationId), answers },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

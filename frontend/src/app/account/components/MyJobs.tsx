@@ -46,7 +46,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
             setLoading(true);
             // Fetch all companies for this recruiter
             const { data: companiesData } = await axios.get(
-                `${job_service}/api/job/company/all`,
+                `${job_service}/api/job/company`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

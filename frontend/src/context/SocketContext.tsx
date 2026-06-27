@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 
 const chat_service =
-    process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 interface SocketContextType {
     socket: Socket | null;
@@ -44,7 +44,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         if (!token) return;
 
         // Fetch initial unread count
-        axios.get(`${chat_service}/api/chat/unread-count`, {
+        axios.get(`${chat_service}/api/chat/unread`, {
             headers: { Authorization: `Bearer ${token}` },
         }).then(({ data }) => {
             setUnreadCount((data as any).count || 0);

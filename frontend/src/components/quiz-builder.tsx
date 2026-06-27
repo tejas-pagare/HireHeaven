@@ -9,7 +9,7 @@ import { job_service } from "@/context/AppContext";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
-const utils_service = process.env.NEXT_PUBLIC_UTILS_SERVICE || "http://localhost:5001";
+const utils_service = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 interface QuizQuestion {
     text: string;
@@ -86,7 +86,7 @@ export default function QuizBuilder({ jobId, jobDescription, isOpen, onClose }: 
         const token = Cookies.get("token");
         try {
             await axios.post(
-                `${job_service}/api/quiz/new`,
+                `${job_service}/api/job/quiz`,
                 { job_id: jobId, questions },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

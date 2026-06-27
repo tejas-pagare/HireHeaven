@@ -25,7 +25,7 @@ import RecruiterPipeline from "@/components/recruiter-pipeline";
 import QuizBuilder from "@/components/quiz-builder";
 
 const chat_service =
-  process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 const JobPage = () => {
   const { id } = useParams();
@@ -72,7 +72,7 @@ const JobPage = () => {
   async function fetchJobApplications() {
     try {
       const { data } = await axios.get(
-        `${job_service}/api/job/application/${id}`,
+        `${job_service}/api/job/${id}/applications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const JobPage = () => {
 
     try {
       const { data } = await axios.put(
-        `${job_service}/api/job/application/update/${id}`,
+        `${job_service}/api/job/application/${id}`,
         { status: value },
         {
           headers: {

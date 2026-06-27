@@ -49,7 +49,7 @@ interface CompanySection {
 }
 
 const chat_service =
-    process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 export default function Applicants() {
     const [companies, setCompanies] = useState<CompanySection[]>([]);
@@ -63,7 +63,7 @@ export default function Applicants() {
     async function fetchData() {
         try {
             const { data: companiesData } = await axios.get(
-                `${job_service}/api/job/company/all`,
+                `${job_service}/api/job/company`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -151,7 +151,7 @@ export default function Applicants() {
 
         try {
             const { data } = await axios.get(
-                `${job_service}/api/job/application/${jobSection.job.job_id}`,
+                `${job_service}/api/job/${jobSection.job.job_id}/applications`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -201,7 +201,7 @@ export default function Applicants() {
         setUpdatingId(applicationId);
         try {
             await axios.put(
-                `${job_service}/api/job/application/update/${applicationId}`,
+                `${job_service}/api/job/application/${applicationId}`,
                 { status },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -211,7 +211,7 @@ export default function Applicants() {
             // Refresh the applications for this job
             const jobSection = companies[companyIdx].jobs[jobIdx];
             const { data } = await axios.get(
-                `${job_service}/api/job/application/${jobSection.job.job_id}`,
+                `${job_service}/api/job/${jobSection.job.job_id}/applications`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

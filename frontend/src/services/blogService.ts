@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_URL = "http://localhost:5006/api/blog";
+const API_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000") + "/api/blog";
 
 const getAuthHeaders = () => {
     const token = Cookies.get("token");
@@ -63,7 +63,7 @@ export const BlogService = {
     },
 
     getMyPosts: async (page = 1, limit = 10) => {
-        const response = await axios.get(`${API_URL}/user/my-posts`, {
+        const response = await axios.get(`${API_URL}/mine`, {
             ...getAuthHeaders(),
             params: { page, limit }
         });

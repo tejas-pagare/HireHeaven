@@ -98,7 +98,7 @@ const JobSeekerLandingPage = () => {
 
     const fetchFeaturedJobs = useCallback(async () => {
         try {
-            const res: any = await axios.get(`${job_service}/api/job/all`);
+            const res: any = await axios.get(`${job_service}/api/job`);
             setJobs(res.data.slice(0, 6));
         } catch (error) {
             console.error("Error fetching featured jobs:", error);

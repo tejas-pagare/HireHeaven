@@ -59,7 +59,7 @@ const Company = () => {
 
   async function fetchCompanies() {
     try {
-      const { data } = await axios.get(`${job_service}/api/job/company/all`, {
+      const { data } = await axios.get(`${job_service}/api/job/company`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ const Company = () => {
     try {
       setBtnLoading(true);
       const { data } = await axios.post(
-        `${job_service}/api/job/company/new`,
+        `${job_service}/api/job/company`,
         formData,
         {
           headers: {
