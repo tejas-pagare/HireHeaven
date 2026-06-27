@@ -43,7 +43,7 @@ const JobsPage = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `${job_service}/api/job/all?title=${title}&location=${location}`,
+        `${job_service}/api/job?title=${title}&location=${location}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const JobsPage = () => {
         }
       );
 
-      setJobs(data);
+      setJobs(data as Job[]);
     } catch (error) {
       console.log(error);
     } finally {

@@ -6,12 +6,15 @@ import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-export const utils_service = process.env.NEXT_PUBLIC_UTILS_SERVICE || "http://localhost:5001";
-export const auth_service = process.env.NEXT_PUBLIC_AUTH_SERVICE || "http://localhost:5005";
-export const user_service = process.env.NEXT_PUBLIC_USER_SERVICE || "http://localhost:5002";
-export const job_service = process.env.NEXT_PUBLIC_JOB_SERVICE || "http://localhost:5003";
-export const payment_service = process.env.NEXT_PUBLIC_PAYMENT_SERVICE || "http://localhost:5004";
+// ── Unified Backend URL ────────────────────────────────────────────────────────
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
+// Re-exported for backward-compat — all point to the same unified backend
+export const utils_service = BACKEND_URL;
+export const auth_service = BACKEND_URL;
+export const user_service = BACKEND_URL;
+export const job_service = BACKEND_URL;
+export const payment_service = BACKEND_URL;
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -25,7 +28,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   async function fetchUser() {
     try {
-      const { data } = await axios.get(`${user_service}/api/user/me`, {
+      const { data } = await axios.get(`${BACKEND_URL}/api/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,7 +48,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.put(
-        `${user_service}/api/user/update/pic`,
+        `${BACKEND_URL}/api/user/update-pic`,
         fromData,
         {
           headers: {
@@ -67,7 +70,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.put(
-        `${user_service}/api/user/update/resume`,
+        `${BACKEND_URL}/api/user/update-resume`,
         fromData,
         {
           headers: {
@@ -89,7 +92,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.put(
-        `${user_service}/api/user/update/profile`,
+        `${BACKEND_URL}/api/user/update`,
         { name, phoneNumber, bio },
         {
           headers: {
@@ -120,7 +123,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.post(
-        `${user_service}/api/user/skill/add`,
+        `${BACKEND_URL}/api/user/skill`,
         { skillName: skill },
         {
           headers: {
@@ -140,15 +143,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   async function removeSkill(skill: string) {
     try {
-      const { data } = await axios.put(
-        `${user_service}/api/user/skill/delete`,
-        { skillName: skill },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.delete(`${BACKEND_URL}/api/user/skill`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { skillName: skill },
+      });
       toast.success(data.message);
       fetchUser();
     } catch (error: any) {
@@ -160,7 +160,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.post(
-        `${user_service}/api/user/apply/job`,
+        `${BACKEND_URL}/api/user/apply`,
         { job_id },
         {
           headers: {
@@ -182,14 +182,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   async function fetchApplications() {
     try {
-      const { data } = await axios.get(
-        `${user_service}/api/user/application/all`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`${BACKEND_URL}/api/user/applications/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setApplications(data);
     } catch (error) {

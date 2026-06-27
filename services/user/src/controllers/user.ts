@@ -85,7 +85,7 @@ export const updateProfilePic = TryCatch(
       throw new ErrorHandler(500, "failed to generate buffer");
     }
 
-    const { data: uploadResult } : any = await axios.post(
+    const { data: uploadResult }: any = await axios.post(
       `${process.env.UPLOAD_SERVICE}/api/utils/upload`,
       {
         buffer: fileBuffer.content,
@@ -93,7 +93,7 @@ export const updateProfilePic = TryCatch(
       }
     );
 
-    const [updatedUser]  = await sql`
+    const [updatedUser] = await sql`
     UPDATE users SET profile_pic = ${uploadResult.url}, profile_pic_public_id = ${uploadResult.public_id} WHERE user_id = ${user.user_id} RETURNING user_id, name, profile_pic;
     `;
 
@@ -125,7 +125,7 @@ export const updateResume = TryCatch(async (req: AuthenticatedRequest, res) => {
     throw new ErrorHandler(500, "failed to generate buffer");
   }
 
-  const { data: uploadResult } : any = await axios.post(
+  const { data: uploadResult }: any = await axios.post(
     `${process.env.UPLOAD_SERVICE}/api/utils/upload`,
     {
       buffer: fileBuffer.content,
@@ -136,6 +136,21 @@ export const updateResume = TryCatch(async (req: AuthenticatedRequest, res) => {
   const [updatedUser] = await sql`
     UPDATE users SET resume = ${uploadResult.url}, resume_public_id = ${uploadResult.public_id} WHERE user_id = ${user.user_id} RETURNING user_id, name, resume;
     `;
+
+  // ── Auto-index resume for AI Resume Intelligence (fire-and-forget) ──
+  const token = req.headers.authorization?.split(" ")[1] || "";
+  axios
+    .post(
+      `${process.env.UPLOAD_SERVICE}/api/utils/resume/upload`,
+      { userId: user.user_id, resumeUrl: uploadResult.url },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .then(() =>
+      console.log(`✅ Resume auto-indexed for user ${user.user_id}`)
+    )
+    .catch((err: any) =>
+      console.error(`⚠️ Resume auto-index failed for user ${user.user_id}:`, err?.message)
+    );
 
   res.json({
     message: "Resume updated",
@@ -155,8 +170,6 @@ export const addSkillToUser = TryCatch(
     let wasSkillAdded = false;
 
     try {
-      await sql`BEGIN`;
-
       const users =
         await sql`SELECT user_id FROM users WHERE user_id = ${userId}`;
 
@@ -176,9 +189,7 @@ export const addSkillToUser = TryCatch(
         wasSkillAdded = true;
       }
 
-      await sql`COMMIT`;
     } catch (error) {
-      await sql`ROLLBACK`;
       throw error;
     }
 
@@ -208,9 +219,8 @@ export const deleteSkillFromUser = TryCatch(
       throw new ErrorHandler(400, "Please provide a skill name");
     }
 
-    const result = await sql`DELETE FROM user_skills WHERE user_id = ${
-      user.user_id
-    } AND skill_id = (SELECT skill_id FROM skills WHERE name = ${skillName.trim()}) RETURNING user_id;`;
+    const result = await sql`DELETE FROM user_skills WHERE user_id = ${user.user_id
+      } AND skill_id = (SELECT skill_id FROM skills WHERE name = ${skillName.trim()}) RETURNING user_id;`;
 
     if (result.length === 0) {
       throw new ErrorHandler(404, `Skill ${skillName.trim()} was not found`);
@@ -272,7 +282,7 @@ export const applyForJob = TryCatch(async (req: AuthenticatedRequest, res) => {
 
   try {
     [newApplication] =
-      await sql`INSERT INTO applications (job_id, applicant_id, applicant_email, resume, subscribed) VALUES (${job_id}, ${applicant_id}, ${user?.email}, ${resume}, ${isSubscribed})`;
+      await sql`INSERT INTO applications (job_id, applicant_id, applicant_email, resume, subscribed) VALUES (${job_id}, ${applicant_id}, ${user?.email}, ${resume}, ${isSubscribed}) RETURNING *`;
   } catch (error: any) {
     if (error.code === "23505") {
       throw new ErrorHandler(409, "you have already applied to this job.");
@@ -289,7 +299,11 @@ export const applyForJob = TryCatch(async (req: AuthenticatedRequest, res) => {
 export const getAllaplications = TryCatch(
   async (req: AuthenticatedRequest, res) => {
     const applications = await sql`
-    SELECT a.*, j.title AS job_title, j.salary AS job_salary, j.location AS job_location FROM applications a JOIN jobs j ON a.job_id = j.job_id WHERE a.applicant_id = ${req.user?.user_id}
+    SELECT a.*, j.title AS job_title, j.salary AS job_salary, j.location AS job_location, i.meet_link, i.scheduled_at 
+    FROM applications a 
+    JOIN jobs j ON a.job_id = j.job_id 
+    LEFT JOIN interviews i ON a.application_id = i.application_id
+    WHERE a.applicant_id = ${req.user?.user_id}
   `;
 
     res.json(applications);

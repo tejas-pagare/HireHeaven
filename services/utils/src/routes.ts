@@ -5,6 +5,14 @@ import { PDFParse } from "pdf-parse";
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
 
+import { isAuth, AuthenticatedRequest } from "./auth.js";
+import {
+  processResume,
+  queryResume,
+  queryResumeVsJob,
+  getResumeStatus,
+} from "./resume-rag.js";
+
 dotenv.config();
 
 const router = express.Router();
@@ -257,15 +265,31 @@ achievements, section organization and flow.
 // ── /ats-job-match ─────────────────────────────────────────────────────────────
 router.post("/ats-job-match", async (req, res) => {
   try {
-    const { pdfBase64, jobDescription } = req.body;
+    const { pdfBase64, resumeUrl, jobDescription } = req.body;
 
-    if (!pdfBase64 || !jobDescription) {
-      return res.status(400).json({ message: "PDF data and Job Description are required" });
+    if (!jobDescription) {
+      return res.status(400).json({ message: "Job Description is required" });
     }
 
-    // Decode base64 → raw bytes
-    const base64Data = pdfBase64.replace(/^data:application\/pdf;base64,/, "");
-    const pdfBuffer = Buffer.from(base64Data, "base64");
+    if (!pdfBase64 && !resumeUrl) {
+      return res.status(400).json({ message: "Either PDF data or resume URL is required" });
+    }
+
+    let pdfBuffer: Buffer;
+
+    if (pdfBase64) {
+      // Decode base64 → raw bytes
+      const base64Data = pdfBase64.replace(/^data:application\/pdf;base64,/, "");
+      pdfBuffer = Buffer.from(base64Data, "base64");
+    } else {
+      // Fetch from URL
+      const response = await fetch(resumeUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch resume from URL: ${response.statusText}`);
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      pdfBuffer = Buffer.from(arrayBuffer);
+    }
 
     // Extract text from the PDF using pdf-parse
     const parser = new PDFParse({ data: pdfBuffer });
@@ -356,6 +380,184 @@ Focus on: Identifying missing keywords from the job description, highlighting ma
     res.status(500).json({
       message: error.message,
     });
+  }
+});
+
+// ── /generate-quiz ─────────────────────────────────────────────────────────────
+router.post("/generate-quiz", async (req, res) => {
+  try {
+    const { jobDescription, questionCount = 5 } = req.body;
+
+    if (!jobDescription) {
+      return res.status(400).json({ message: "Job Description is required" });
+    }
+
+    const prompt = `
+You are an expert technical recruiter and interviewer. Based on the following Job Description, generate a multiple-choice quiz with ${questionCount} questions to assess a candidate's suitability for this role.
+
+Job Description:
+"""
+${jobDescription}
+"""
+
+Your entire response must be in valid JSON format ONLY. Do not include any markdown formatting, explanations, or text outside the JSON array.
+
+The JSON should be an array of objects matching this exact structure:
+[
+  {
+    "text": "Question text here",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correct_answer_index": 0
+  }
+]
+
+Ensure:
+- Questions vary in difficulty but are relevant to the required skills.
+- options array must have exactly 4 strings.
+- correct_answer_index must refer to the 0-indexed correct option.
+`;
+
+    const rawText = (await askGroq(prompt))
+      .replace(/<|im_start|>system\n.*?\n/gs, '')
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let jsonResponse;
+    try {
+      if (!rawText) throw new Error("AI did not return a valid text response.");
+      jsonResponse = JSON.parse(rawText);
+    } catch (error) {
+      try {
+        const cleanedText = rawText.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+        jsonResponse = JSON.parse(cleanedText);
+      } catch (innerError) {
+        return res.status(500).json({
+          message: "AI returned a response that was not valid JSON",
+          rawResponse: rawText,
+        });
+      }
+    }
+
+    res.json(jsonResponse);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── RESUME INTELLIGENCE (RAG) ENDPOINTS ─────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── POST /resume/upload — Process & index a resume ──────────────────────────
+router.post("/resume/upload", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, pdfBase64, resumeUrl } = req.body;
+
+    const targetUserId = userId || req.user?.user_id;
+
+    if (!targetUserId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!pdfBase64 && !resumeUrl) {
+      return res
+        .status(400)
+        .json({ message: "Either pdfBase64 or resumeUrl is required" });
+    }
+
+    let pdfBuffer: Buffer;
+
+    if (pdfBase64) {
+      const base64Data = pdfBase64.replace(/^data:application\/pdf;base64,/, "");
+      pdfBuffer = Buffer.from(base64Data, "base64");
+    } else {
+      const response = await fetch(resumeUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch resume from URL: ${response.statusText}`);
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      pdfBuffer = Buffer.from(arrayBuffer);
+    }
+
+    const result = await processResume(targetUserId, pdfBuffer);
+
+    res.json({
+      success: true,
+      message: `Resume indexed successfully — ${result.chunksCreated} chunks created`,
+      chunksCreated: result.chunksCreated,
+      structured: result.structured,
+    });
+  } catch (error: any) {
+    console.error("Resume upload/index error:", error);
+    res.status(500).json({ message: error.message || "Failed to process resume" });
+  }
+});
+
+// ── POST /resume/query — Ask a question about a candidate's resume ──────────
+router.post("/resume/query", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, question } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!question || question.trim().length < 3) {
+      return res.status(400).json({ message: "A valid question is required" });
+    }
+
+    const result = await queryResume(userId, question);
+    res.json(result);
+  } catch (error: any) {
+    console.error("Resume query error:", error);
+    res.status(500).json({ message: error.message || "Failed to query resume" });
+  }
+});
+
+// ── POST /resume/query-job — Ask about resume vs job description ────────────
+router.post("/resume/query-job", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { userId, question, jobDescription } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (!question || question.trim().length < 3) {
+      return res.status(400).json({ message: "A valid question is required" });
+    }
+
+    if (!jobDescription || jobDescription.trim().length < 10) {
+      return res
+        .status(400)
+        .json({ message: "A valid job description is required" });
+    }
+
+    const result = await queryResumeVsJob(userId, question, jobDescription);
+    res.json(result);
+  } catch (error: any) {
+    console.error("Resume query-job error:", error);
+    res.status(500).json({ message: error.message || "Failed to query resume" });
+  }
+});
+
+// ── GET /resume/status/:userId — Check if resume is indexed ─────────────────
+router.get("/resume/status/:userId", isAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const userId = parseInt(req.params.userId as string, 10);
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid userId" });
+    }
+
+    const status = await getResumeStatus(userId);
+    res.json(status);
+  } catch (error: any) {
+    console.error("Resume status error:", error);
+    res.status(500).json({ message: error.message || "Failed to get resume status" });
   }
 });
 

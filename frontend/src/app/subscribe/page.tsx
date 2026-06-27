@@ -25,7 +25,7 @@ const SubscriptionPage = () => {
     setLoading(true);
     const {
       data: { order },
-    } = await axios.post(
+    } = await axios.post<any>(
       `${payment_service}/api/payment/checkout`,
       {},
       {
@@ -47,7 +47,7 @@ const SubscriptionPage = () => {
           response;
 
         try {
-          const { data } = await axios.post(
+          const { data } = await axios.post<any>(
             `${payment_service}/api/payment/verify`,
             { razorpay_order_id, razorpay_payment_id, razorpay_signature },
             {

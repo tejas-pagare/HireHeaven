@@ -81,7 +81,7 @@ export const deleteCompany = TryCatch(
       );
     }
 
-    await sql``;
+    await sql`DELETE FROM companies WHERE company_id = ${companyId} AND recruiter_id = ${user?.user_id}`;
 
     res.json({
       message: "Company and all associated jobs have been deleted",
@@ -230,27 +230,17 @@ export const getAllActiveJobs = TryCatch(async (req, res) => {
     location?: string;
   };
 
-  let querySting = `SELECT j.job_id, j.title, j.description, j.salary, j.location, j.job_type, j.role, j.work_location, j.created_at, c.name AS company_name, c.logo AS company_logo, c.company_id AS company_id FROM jobs j JOIN companies c ON j.company_id = c.company_id WHERE j.is_active = true`;
+  let jobs;
 
-  const values = [];
- 
-  let paramIndex = 1;
-
-  if (title) {
-    querySting += ` AND j.title ILIKE $${paramIndex}`;
-    values.push(`%${title}%`);
-    paramIndex++;
+  if (title && location) {
+    jobs = await sql`SELECT j.job_id, j.title, j.description, j.salary, j.location, j.job_type, j.role, j.work_location, j.created_at, c.name AS company_name, c.logo AS company_logo, c.company_id AS company_id FROM jobs j JOIN companies c ON j.company_id = c.company_id WHERE j.is_active = true AND j.title ILIKE ${'%' + title + '%'} AND j.location ILIKE ${'%' + location + '%'} ORDER BY j.created_at DESC`;
+  } else if (title) {
+    jobs = await sql`SELECT j.job_id, j.title, j.description, j.salary, j.location, j.job_type, j.role, j.work_location, j.created_at, c.name AS company_name, c.logo AS company_logo, c.company_id AS company_id FROM jobs j JOIN companies c ON j.company_id = c.company_id WHERE j.is_active = true AND j.title ILIKE ${'%' + title + '%'} ORDER BY j.created_at DESC`;
+  } else if (location) {
+    jobs = await sql`SELECT j.job_id, j.title, j.description, j.salary, j.location, j.job_type, j.role, j.work_location, j.created_at, c.name AS company_name, c.logo AS company_logo, c.company_id AS company_id FROM jobs j JOIN companies c ON j.company_id = c.company_id WHERE j.is_active = true AND j.location ILIKE ${'%' + location + '%'} ORDER BY j.created_at DESC`;
+  } else {
+    jobs = await sql`SELECT j.job_id, j.title, j.description, j.salary, j.location, j.job_type, j.role, j.work_location, j.created_at, c.name AS company_name, c.logo AS company_logo, c.company_id AS company_id FROM jobs j JOIN companies c ON j.company_id = c.company_id WHERE j.is_active = true ORDER BY j.created_at DESC`;
   }
-
-  if (location) {
-    querySting += ` AND j.location ILIKE $${paramIndex}`;
-    values.push(`%${location}%`);
-    paramIndex++;
-  }
-
-  querySting += " ORDER BY j.created_at DESC";
-
-  const jobs = (await sql.query(querySting, values)) as any[];
 
   res.json(jobs);
 });
@@ -258,6 +248,10 @@ export const getAllActiveJobs = TryCatch(async (req, res) => {
 export const getSingleJob = TryCatch(async (req, res) => {
   const [job] =
     await sql`SELECT * FROM jobs WHERE job_id = ${req.params.jobId}`;
+
+  if (!job) {
+    throw new ErrorHandler(404, "Job not found");
+  }
 
   res.json(job);
 });

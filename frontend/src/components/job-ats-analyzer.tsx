@@ -19,18 +19,25 @@ import {
     Loader2,
     FileCheck,
     Zap,
+    UserCircle,
 } from "lucide-react";
 import axios from "axios";
 import { ResumeAnalysisResponse } from "@/type";
-import { utils_service } from "@/context/AppContext";
+import { utils_service, useAppData } from "@/context/AppContext";
 import toast from "react-hot-toast";
 
 interface JobAtsAnalyzerProps {
     jobDescription: string;
 }
 
+type ResumeSource = "existing" | "new" | null;
+
 const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
+    const { user } = useAppData();
+    const hasExistingResume = !!user?.resume;
+
     const [open, setOpen] = useState(false);
+    const [resumeSource, setResumeSource] = useState<ResumeSource>(hasExistingResume ? "existing" : "new");
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<ResumeAnalysisResponse | null>(null);
@@ -61,7 +68,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
     };
 
     const analyzeResume = async () => {
-        if (!file) {
+        if (resumeSource === "new" && !file) {
             toast.error("Please upload a resume");
             return;
         }
@@ -72,13 +79,17 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
 
         setLoading(true);
         try {
-            const base64 = await convertToBase64(file);
+            let payload: any = { jobDescription };
+
+            if (resumeSource === "existing" && user?.resume) {
+                payload.resumeUrl = user.resume;
+            } else if (file) {
+                payload.pdfBase64 = await convertToBase64(file);
+            }
+
             const { data } = await axios.post<ResumeAnalysisResponse>(
                 `${utils_service}/api/utils/ats-job-match`,
-                {
-                    pdfBase64: base64,
-                    jobDescription: jobDescription,
-                }
+                payload
             );
             setResponse(data);
             toast.success("Resume analyzed against job successfully!");
@@ -95,6 +106,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
         setFile(null);
         setResponse(null);
         setOpen(false);
+        setResumeSource(hasExistingResume ? "existing" : "new");
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
@@ -131,11 +143,14 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                         <h3 className="text-xl font-bold">ATS Resume Match Check</h3>
                     </div>
                     <p className="text-sm opacity-70">
-                        Upload your resume to see how well it matches this specific job description. Get tailored recommendations to improve your ATS score before applying.
+                        Check how well your resume matches this specific job description. Get tailored recommendations to improve your ATS score before applying.
                     </p>
                 </div>
 
-                <Dialog open={open} onOpenChange={setOpen}>
+                <Dialog open={open} onOpenChange={(isOpen) => {
+                    setOpen(isOpen);
+                    if (!isOpen && !response) resetDialog();
+                }}>
                     <DialogTrigger asChild>
                         <Button size="lg" className="gap-2 shrink-0">
                             <Zap size={18} />
@@ -148,40 +163,94 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                             <DialogHeader>
                                 <DialogTitle className="text-2xl flex items-center gap-2">
                                     <FileText className="text-blue-600" />
-                                    Upload Your Resume
+                                    Choose Resume Source
                                 </DialogTitle>
                                 <DialogDescription>
                                     We'll compare your resume against the requirements for this specific role.
                                 </DialogDescription>
                             </DialogHeader>
 
-                            <div className="space-y-4 py-4">
-                                <div
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer hover:border-blue-500 transition-colors"
-                                >
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                            <Upload size={32} className="text-blue-600" />
-                                        </div>
-                                        <div>
-                                            <p className="font-medium mb-1">
-                                                {file ? file.name : "Click to upload your resume"}
-                                            </p>
-                                            <p className="text-sm opacity-60">
-                                                PDF format only, maximum 5MB
-                                            </p>
-                                        </div>
-                                        {file && (
-                                            <div className="flex items-center gap-2 text-green-600">
-                                                <CheckCircle2 size={18} />
-                                                <span className="text-sm font-medium">
-                                                    File uploaded successfully
-                                                </span>
+                            <div className="space-y-6 py-4">
+                                {hasExistingResume && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div
+                                            onClick={() => setResumeSource("existing")}
+                                            className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${resumeSource === "existing"
+                                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                                                    : "border-gray-200 hover:border-blue-300"
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-3 text-center">
+                                                <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                                    <UserCircle size={24} className="text-blue-600" />
+                                                </div>
+                                                <div>
+                                                    <p className="font-semibold">Use Profile Resume</p>
+                                                    <p className="text-sm opacity-70 mt-1">Analyze the resume currently saved to your profile</p>
+                                                </div>
+                                                {resumeSource === "existing" && (
+                                                    <div className="flex items-center gap-1.5 text-blue-600 mt-2">
+                                                        <CheckCircle2 size={16} />
+                                                        <span className="text-sm font-medium">Selected</span>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
+                                        </div>
+
+                                        <div
+                                            onClick={() => setResumeSource("new")}
+                                            className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${resumeSource === "new"
+                                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                                                    : "border-gray-200 hover:border-blue-300"
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-3 text-center">
+                                                <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                                    <Upload size={24} className="text-blue-600" />
+                                                </div>
+                                                <div>
+                                                    <p className="font-semibold">Upload New Resume</p>
+                                                    <p className="text-sm opacity-70 mt-1">Select a different PDF file from your device</p>
+                                                </div>
+                                                {resumeSource === "new" && (
+                                                    <div className="flex items-center gap-1.5 text-blue-600 mt-2">
+                                                        <CheckCircle2 size={16} />
+                                                        <span className="text-sm font-medium">Selected</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+
+                                {resumeSource === "new" && (
+                                    <div
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer hover:border-blue-500 transition-colors"
+                                    >
+                                        <div className="flex flex-col items-center gap-4">
+                                            <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                                <Upload size={32} className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium mb-1">
+                                                    {file ? file.name : "Click to upload your resume"}
+                                                </p>
+                                                <p className="text-sm opacity-60">
+                                                    PDF format only, maximum 5MB
+                                                </p>
+                                            </div>
+                                            {file && (
+                                                <div className="flex items-center gap-2 text-green-600">
+                                                    <CheckCircle2 size={18} />
+                                                    <span className="text-sm font-medium">
+                                                        File uploaded successfully
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
 
                                 <input
                                     ref={fileInputRef}
@@ -193,7 +262,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
 
                                 <Button
                                     onClick={analyzeResume}
-                                    disabled={!file || loading}
+                                    disabled={(resumeSource === "new" && !file) || loading}
                                     className="w-full gap-2"
                                 >
                                     {loading ? (
@@ -218,11 +287,14 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                             Job Match Results
                         </h2>
                         <Button
-                            onClick={resetDialog}
+                            onClick={() => {
+                                setResponse(null);
+                                setOpen(true);
+                            }}
                             variant="outline"
                             size="sm"
                         >
-                            Clear Results
+                            Test Another
                         </Button>
                     </div>
 
@@ -355,3 +427,4 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
 };
 
 export default JobAtsAnalyzer;
+

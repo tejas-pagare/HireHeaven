@@ -20,7 +20,7 @@ const ForgotPage = () => {
     e.preventDefault();
     setbtnLoading(true);
     try {
-      const { data } = await axios.post(`${auth_service}/api/auth/forgot`, {
+      const { data } = await axios.post(`${auth_service}/api/auth/forgot-password`, {
         email,
       });
 

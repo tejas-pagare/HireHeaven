@@ -22,7 +22,7 @@ const ResetPage = () => {
     setbtnLoading(true);
     try {
       const { data } = await axios.post(
-        `${auth_service}/api/auth/reset/${token}`,
+        `${auth_service}/api/auth/reset-password/${token}`,
         {
           password,
         }

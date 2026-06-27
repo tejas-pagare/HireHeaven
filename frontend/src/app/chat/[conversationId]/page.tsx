@@ -12,7 +12,7 @@ import { ArrowLeft, Send, Briefcase, Building2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const chat_service =
-    process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 const ChatConversationPage = () => {
     const params = useParams();
@@ -65,7 +65,7 @@ const ChatConversationPage = () => {
 
                 // Mark messages as read
                 await axios.put(
-                    `${chat_service}/api/chat/messages/read/${conversationId}`,
+                    `${chat_service}/api/chat/conversations/${conversationId}/read`,
                     {},
                     { headers: { Authorization: `Bearer ${token}` } }
                 );

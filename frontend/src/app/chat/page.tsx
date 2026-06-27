@@ -11,7 +11,7 @@ import { MessageSquare, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const chat_service =
-    process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 const ChatPage = () => {
     const { user, isAuth, loading } = useAppData();

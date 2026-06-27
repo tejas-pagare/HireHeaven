@@ -117,7 +117,7 @@ const CompanyPage = () => {
         company_id: id,
       };
 
-      await axios.post(`${job_service}/api/job/new`, jobData, {
+      await axios.post(`${job_service}/api/job`, jobData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

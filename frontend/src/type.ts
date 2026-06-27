@@ -127,7 +127,7 @@ export interface Company {
   jobs?: Job[];
 }
 
-type ApplicationStatus = "Submitted" | "Rejected" | "Hired";
+type ApplicationStatus = "Submitted" | "Screening" | "Interview" | "Assignment" | "Final Review" | "Offer" | "Hired" | "Rejected";
 
 export interface Application {
   application_id: number;
@@ -141,6 +141,12 @@ export interface Application {
   job_title: string;
   job_salary: number;
   job_location: string;
+  overall_score?: number;
+  skill_match_score?: number;
+  assignment_score?: number;
+  interview_score?: number;
+  meet_link?: string;
+  scheduled_at?: string;
 }
 
 // ── Chat Types ──
@@ -175,4 +181,32 @@ export interface Message {
   sender_name: string;
   sender_pic: string | null;
   _isOptimistic?: boolean; // true for messages added optimistically before server confirmation
+}
+
+// ── Resume Intelligence (RAG) Types ──
+
+export interface ResumeQueryResponse {
+  answer: string;
+  sources: ResumeSourceChunk[];
+  confidence: number;
+}
+
+export interface ResumeSourceChunk {
+  chunkText: string;
+  sectionType: string;
+  relevanceScore: number;
+}
+
+export interface ResumeStructured {
+  skills: string[];
+  experience_summary: string;
+  projects: string[];
+  education: string;
+}
+
+export interface ResumeIndexStatus {
+  indexed: boolean;
+  chunksCount: number;
+  processedAt: string | null;
+  structured: ResumeStructured | null;
 }

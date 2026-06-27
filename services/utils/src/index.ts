@@ -4,6 +4,8 @@ import routes from "./routes.js";
 import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import { startSendMailConsumer } from "./consumer.js";
+import { initRAGTables } from "./db.js";
+import { warmUpEmbeddings } from "./embedding.js";
 
 dotenv.config();
 
@@ -27,8 +29,12 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use("/api/utils", routes);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, async () => {
   console.log(
     `Utils Service is running on http://localhost:${process.env.PORT}`
   );
+
+  // Initialize RAG infrastructure
+  await initRAGTables();
+  warmUpEmbeddings(); // fire-and-forget — loads model in background
 });

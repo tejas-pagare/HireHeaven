@@ -46,10 +46,10 @@ export const createPost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate caches
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(201).json({ message: "Post created successfully", post: result[0] });
     } catch (error) {
@@ -67,7 +67,7 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
         const cachedData = await redisClient.get(cacheKey);
 
         if (cachedData) {
-            res.status(200).json(JSON.parse(cachedData));
+            res.status(200).json(typeof cachedData === 'string' ? JSON.parse(cachedData) : cachedData);
             return;
         }
 
@@ -105,7 +105,7 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
             limit: Number(limit)
         };
 
-        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response));
+        await redisClient.set(cacheKey, JSON.stringify(response), { ex: 3600 });
 
         res.status(200).json(response);
     } catch (error) {
@@ -120,10 +120,10 @@ export const getPostBySlug = async (req: Request, res: Response): Promise<void> 
         // Assuming /:idOrSlug
 
         const cacheKey = `blog:post:${slug}`;
-        const cachedData = await redisClient.get(cacheKey);
+        const cachedData = await redisClient.get<any>(cacheKey);
 
         if (cachedData) {
-            res.status(200).json(JSON.parse(cachedData));
+            res.status(200).json(typeof cachedData === 'string' ? JSON.parse(cachedData) : cachedData);
             return;
         }
 
@@ -135,7 +135,7 @@ export const getPostBySlug = async (req: Request, res: Response): Promise<void> 
             return;
         }
 
-        await redisClient.setEx(cacheKey, 86400, JSON.stringify(result[0]));
+        await redisClient.set(cacheKey, JSON.stringify(result[0]), { ex: 86400 });
 
         // Fetch author details if needed (optional join)
         // For now returning raw post
@@ -156,7 +156,7 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response): Prom
         }
 
         // functionality to verify ownership
-        const existing = await sql`SELECT author_id FROM blog_posts WHERE id = ${id}`;
+        const existing = await sql`SELECT author_id, slug FROM blog_posts WHERE id = ${id}`;
         if (existing.length === 0) {
             res.status(404).json({ message: "Post not found" });
             return;
@@ -196,10 +196,10 @@ export const updatePost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate lists
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(200).json({ message: "Post updated", post: result[0] });
     } catch (error) {
@@ -236,10 +236,10 @@ export const deletePost = async (req: AuthenticatedRequest, res: Response): Prom
 
         // Invalidate lists
         const keys = await redisClient.keys('blog:posts:all:*');
-        if (keys.length > 0) await redisClient.del(keys);
+        if (keys.length > 0) await Promise.all(keys.map(key => redisClient.del(key)));
 
         const userKeys = await redisClient.keys(`blog:user:${user.user_id}:posts:*`);
-        if (userKeys.length > 0) await redisClient.del(userKeys);
+        if (userKeys.length > 0) await Promise.all(userKeys.map(key => redisClient.del(key)));
 
         res.status(200).json({ message: "Post deleted successfully" });
     } catch (error) {
@@ -263,7 +263,7 @@ export const getMyPosts = async (req: AuthenticatedRequest, res: Response): Prom
         const cachedData = await redisClient.get(cacheKey);
 
         if (cachedData) {
-            res.status(200).json(JSON.parse(cachedData));
+            res.status(200).json(typeof cachedData === 'string' ? JSON.parse(cachedData) : cachedData);
             return;
         }
 
@@ -286,7 +286,7 @@ export const getMyPosts = async (req: AuthenticatedRequest, res: Response): Prom
             limit: Number(limit)
         };
 
-        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response));
+        await redisClient.set(cacheKey, JSON.stringify(response), { ex: 3600 });
 
         res.status(200).json(response);
     } catch (error) {

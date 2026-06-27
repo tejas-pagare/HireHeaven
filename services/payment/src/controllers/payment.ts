@@ -58,6 +58,14 @@ export const paymentVerification = TryCatch(
     const isAuthentic = expectedSignature === razorpay_signature;
 
     if (isAuthentic) {
+      const order = await instance.orders.fetch(razorpay_order_id);
+
+      if (order.notes?.user_id !== user?.user_id.toString()) {
+        return res.status(403).json({
+          message: "Forbidden: This payment order does not belong to you",
+        });
+      }
+
       const now = new Date();
 
       const thirtyDays = 30 * 24 * 60 * 60 * 1000;

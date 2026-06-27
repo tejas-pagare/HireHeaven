@@ -21,9 +21,11 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import JobAtsAnalyzer from "@/components/job-ats-analyzer";
+import RecruiterPipeline from "@/components/recruiter-pipeline";
+import QuizBuilder from "@/components/quiz-builder";
 
 const chat_service =
-  process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 const JobPage = () => {
   const { id } = useParams();
@@ -70,7 +72,7 @@ const JobPage = () => {
   async function fetchJobApplications() {
     try {
       const { data } = await axios.get(
-        `${job_service}/api/job/application/${id}`,
+        `${job_service}/api/job/${id}/applications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -99,6 +101,7 @@ const JobPage = () => {
 
   const [value, setValue] = useState("");
   const [chatLoading, setChatLoading] = useState<number | null>(null);
+  const [isQuizManagerOpen, setIsQuizManagerOpen] = useState(false);
 
   const startChatWithApplicant = async (applicationId: number) => {
     setChatLoading(applicationId);
@@ -121,7 +124,7 @@ const JobPage = () => {
 
     try {
       const { data } = await axios.put(
-        `${job_service}/api/job/application/update/${id}`,
+        `${job_service}/api/job/application/${id}`,
         { status: value },
         {
           headers: {
@@ -270,113 +273,27 @@ const JobPage = () => {
       )}
 
       {user && job && user.user_id === job.posted_by_recuriter_id && (
-        <div className="w-[90%] md:w-2/3 container mx-auto mt-8 mb-8">
+        <div className="w-[98%] max-w-[1400px] mx-auto mt-8 mb-8">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <h2 className="text-2xl font-bold">All Applications</h2>
-            <div className="flex items-center gap-2">
-              <label htmlFor="filter-status" className="text-sm font-medium">
-                Filter:
-              </label>
-              <select
-                id="filter-status"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="p-2 border-2 border-gray-300 rounded-md bg-background"
-              >
-                <option value="All">All Status</option>
-                <option value="Submitted">Submitted</option>
-                <option value="Hired">Hired</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
+            <h2 className="text-2xl font-bold">Pipeline Dashboard</h2>
+            <Button onClick={() => setIsQuizManagerOpen(true)} className="bg-blue-600 hover:bg-blue-700">
+              Manage Quiz
+            </Button>
           </div>
 
-          {jobApplications && jobApplications.length > 0 ? (
-            <>
-              <div className="space-y-4">
-                {filteredApplications.map((e) => (
-                  <div
-                    className="p-4 rounded-lg border-2 bg-background"
-                    key={e.application_id}
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${e.status === "Hired"
-                          ? "bg-green-100 dark:bg-green-900/30 text-green-600"
-                          : e.status === "Rejected"
-                            ? "bg-red-100 dark:bg-red-900/30 text-red-600"
-                            : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600"
-                          }`}
-                      >
-                        {e.status}
-                      </span>
-                    </div>
+          <RecruiterPipeline
+            applications={jobApplications}
+            onApplicationUpdate={fetchJobApplications}
+            onOpenChat={startChatWithApplicant}
+            chatOpenLoadingId={chatLoading}
+          />
 
-                    <div className="flex gap-3 mb-3 items-center">
-                      <Link
-                        target="_blank"
-                        href={e.resume}
-                        className="text-blue-500 hover:underline text-sm"
-                      >
-                        View Resume
-                      </Link>
-
-                      <Link
-                        target="_blank"
-                        href={`/account/${e.applicant_id}`}
-                        className="text-blue-500 hover:underline text-sm"
-                      >
-                        View Profile
-                      </Link>
-
-                      <button
-                        onClick={() => startChatWithApplicant(e.application_id)}
-                        disabled={chatLoading === e.application_id}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 disabled:opacity-50 transition-all ml-auto"
-                      >
-                        <MessageSquare size={14} />
-                        {chatLoading === e.application_id
-                          ? "Opening..."
-                          : "Chat"}
-                      </button>
-                    </div>
-
-                    {/* update Status */}
-                    <div className="flex gap-2 pt-3 border-t">
-                      <select
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        className="flex-1 p-2 border-2 border-gray-300 rounded-md bg-background"
-                      >
-                        <option value="">Update status</option>
-                        <option value="Submitted">Submitted</option>
-                        <option value="Hired">Hired</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <Button
-                        disabled={btnLoading}
-                        onClick={() =>
-                          updateApplicationHandler(e.application_id)
-                        }
-                      >
-                        Update
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {filteredApplications.length === 0 && (
-                <p className="text-center py-8 opacity-70">
-                  No application with status {filterStatus}
-                </p>
-              )}
-            </>
-          ) : (
-            <>
-              <p className="text-center py-8 opacity-70">No application Yet.</p>
-            </>
-          )}
+          <QuizBuilder
+            jobId={job.job_id}
+            jobDescription={job.description}
+            isOpen={isQuizManagerOpen}
+            onClose={() => setIsQuizManagerOpen(false)}
+          />
         </div>
       )}
     </div>

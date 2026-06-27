@@ -3,10 +3,12 @@ import { Card } from "@/components/ui/card";
 import { Application } from "@/type";
 import {
   Briefcase,
+  Calendar,
   CheckCircle2,
   Clock,
   DollarSign,
   Eye,
+  FileText,
   MessageSquare,
   XCircle,
 } from "lucide-react";
@@ -18,7 +20,7 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 const chat_service =
-  process.env.NEXT_PUBLIC_CHAT_SERVICE || "http://localhost:5007";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 interface AppliedJobsProps {
   applications: Application[];
@@ -130,6 +132,26 @@ const AppliedJobs: React.FC<AppliedJobsProps> = ({ applications }) => {
                       </div>
 
                       <div className="shrink-0 flex items-center gap-3">
+                        {a.status === "Assignment" && (
+                          <Link
+                            href={`/quiz/${a.job_id}?application_id=${a.application_id}`}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-all"
+                          >
+                            <FileText size={14} />
+                            Take Quiz
+                          </Link>
+                        )}
+                        {a.status === "Interview" && a.meet_link && (
+                          <Link
+                            href={a.meet_link}
+                            target="_blank"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition-all"
+                            title={a.scheduled_at ? `Scheduled for: ${new Date(a.scheduled_at).toLocaleString()}` : "Interview Link"}
+                          >
+                            <Calendar size={14} />
+                            Join Meet
+                          </Link>
+                        )}
                         {a.status !== "Rejected" && (
                           <button
                             onClick={() => startChat(a.application_id)}
