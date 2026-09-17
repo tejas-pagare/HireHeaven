@@ -128,8 +128,6 @@ const AccountPage = () => {
       case "analytics":
         return <Analytics />;
       case "chats":
-        // Redirect to chat page
-        router.push("/chat");
         return null;
       default:
         return <Info user={user} isYourAccount={true} />;
@@ -169,7 +167,13 @@ const AccountPage = () => {
               {filteredItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => {
+                    if (item.id === "chats") {
+                      router.push("/chat");
+                    } else {
+                      setActiveTab(item.id);
+                    }
+                  }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${sidebarCollapsed ? "justify-center" : ""
                     } ${activeTab === item.id
                       ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-sm"
@@ -206,12 +210,6 @@ const AccountPage = () => {
 
           {/* Main Content */}
           <main className="flex-1 min-w-0 bg-muted/30">
-            {/* Header bar */}
-            <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b px-6 py-4">
-              <h1 className="text-xl font-semibold capitalize">
-                {filteredItems.find((i) => i.id === activeTab)?.label || "Dashboard"}
-              </h1>
-            </div>
 
             {/* Content area */}
             <div className="p-6">
