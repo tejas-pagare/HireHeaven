@@ -214,69 +214,90 @@ const CompanyPage = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="min-h-screen bg-secondary/30">
+    <div className="hh-page">
       {company && (
         <div className="max-w-6xl mx-auto px-4 py-8">
-          <Card className="overflow-hidden shadow-lg border-2 mb-8">
-            <div className="h-32 bg-blue-600"></div>
-            <div className="px-8 pb-8">
-              <div className="flex flex-col md:flex-row gap-6 items-start md:items-end -mt-16">
-                <div className="w-32 h-32 rounded-2xl border-4 border-background overflow-hidden shadow-xl bg-background shrink-0">
+          <Card variant="elevated" className="mb-8 gap-0 overflow-hidden p-0">
+            <div className="h-28 bg-gradient-to-r from-primary via-primary to-[var(--chart-4)]/70" />
+            <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+              <div className="-mt-14 mb-5 flex items-end justify-between gap-4">
+                <div className="size-28 shrink-0 overflow-hidden rounded-2xl border-4 border-card bg-card shadow-soft-lg">
                   <img
                     src={company.logo}
-                    alt=""
-                    className="w-full h-full object-cover"
+                    alt={company.name}
+                    className="size-full object-cover"
                   />
                 </div>
 
-                <div className="flex-1 md:mb-4">
-                  <h1 className="text-3xl font-bold mb-2">{company.name}</h1>
-                  <p className="text-base leading-relaxed opacity-80 max-w-3xl">
-                    {company.description}
-                  </p>
-                </div>
-                <Link
-                  href={company.website}
-                  target="_blank"
-                  className="md:mb-4"
-                >
-                  <Button className="gap-2">
-                    <Globe size={18} />
-                    Visit Website
-                  </Button>
-                </Link>
+                {company.website && (
+                  <Link
+                    href={company.website}
+                    target="_blank"
+                    className="hidden shrink-0 sm:block"
+                  >
+                    <Button variant="outline" className="gap-2">
+                      <Globe size={17} />
+                      Visit website
+                    </Button>
+                  </Link>
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h1 className="mb-2 text-3xl font-bold tracking-tight">
+                  {company.name}
+                </h1>
+                <p className="max-w-3xl leading-relaxed text-muted-foreground">
+                  {company.description}
+                </p>
+
+                {company.website && (
+                  <Link
+                    href={company.website}
+                    target="_blank"
+                    className="mt-4 inline-block sm:hidden"
+                  >
+                    <Button variant="outline" className="gap-2">
+                      <Globe size={17} />
+                      Visit website
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </Card>
 
           <Dialog>
             {/* Job section */}
-            <Card className="shadow-lg border-2 overflow-hidden">
-              <div className="bg-blue-600 border-b p-6">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                      <Briefcase size={20} className="text-blue-600" />
-                    </div>
+            <Card variant="elevated" className="gap-0 overflow-hidden p-0">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-brand-subtle text-brand-subtle-foreground">
+                    <Briefcase size={20} />
                   </div>
-                  <h2 className="text-2xl font-bold text-white">
-                    Open Positions
-                  </h2>
-                  <p className="text-sm opacity-70 text-white">
-                    {company.jobs?.length || 0} active job
-                    {company.jobs?.length !== 1 ? "s" : ""}
-                  </p>
+                  <div>
+                    <h2 className="text-xl font-bold tracking-tight">
+                      Open positions
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {company.jobs?.length || 0} active job
+                      {company.jobs?.length !== 1 ? "s" : ""}
+                    </p>
+                  </div>
                 </div>
+
+                {isRecruiterOwner && (
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <Plus size={17} />
+                      Post new job
+                    </Button>
+                  </DialogTrigger>
+                )}
               </div>
 
               {isRecruiterOwner && (
                 <>
-                  <DialogTrigger asChild>
-                    <Button className="gap-2">
-                      <Plus size={18} />
-                      Post New Job
-                    </Button>
-                  </DialogTrigger>
 
                   <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
@@ -463,7 +484,7 @@ const CompanyPage = () => {
                     {company.jobs.map((j) => (
                       <div
                         key={j.job_id}
-                        className="p-5 rounded-lg border-2 hover:border-blue-500 transition-all bg-background"
+                        className="rounded-xl border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md"
                       >
                         <div className="flex items-start justify-between gap-4 flex-wrap">
                           <div className="flex-1 min-w-0">
@@ -474,8 +495,8 @@ const CompanyPage = () => {
 
                               <span
                                 className={`text-xs px-3 py-1 rounded-full flex items-center gap-1 ${j.is_active
-                                    ? "bg-green-100 dark:bg-green-900/30 text-green-600"
-                                    : "bg-gray-100 dark:bg-gray-800 text-gray-600"
+                                    ? "bg-success-subtle text-success-subtle-foreground"
+                                    : "bg-muted text-muted-foreground"
                                   }`}
                               >
                                 {j.is_active ? (
@@ -488,11 +509,11 @@ const CompanyPage = () => {
                             </div>
 
                             <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
-                              <div className="flex items-center gap-2 opacity-70">
+                              <div className="flex items-center gap-2 text-muted-foreground">
                                 <Building2 size={16} />
                                 <span>{j.role}</span>
                               </div>
-                              <div className="flex items-center gap-2 opacity-70">
+                              <div className="flex items-center gap-2 text-muted-foreground">
                                 <DollarSign size={16} />
                                 <span>
                                   {j.salary
@@ -501,19 +522,22 @@ const CompanyPage = () => {
                                 </span>
                               </div>
 
-                              <div className="flex items-center gap-2 opacity-70">
+                              <div className="flex items-center gap-2 text-muted-foreground">
                                 <MapPin size={16} />
                                 <span>{j.location}</span>
                               </div>
-                              <div className="flex items-center gap-2 opacity-70">
+                              <div className="flex items-center gap-2 text-muted-foreground">
                                 <Laptop size={16} />
                                 <span>
                                   {j.work_location} ({j.job_type})
                                 </span>
                               </div>
-                              <div className="flex items-center gap-2 opacity-70">
+                              <div className="flex items-center gap-2 text-muted-foreground">
                                 <Users size={16} />
-                                <span>{j.openings} openings</span>
+                                <span>
+                                  {j.openings}{" "}
+                                  {Number(j.openings) === 1 ? "opening" : "openings"}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -550,7 +574,7 @@ const CompanyPage = () => {
                 ) : (
                   <>
                     <div className="text-center py-12">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
                         <Briefcase size={32} className="opacity-40" />
                       </div>
                       <p className="text-base opacity-70 mb-2">
@@ -726,9 +750,9 @@ const CompanyPage = () => {
                       className="text-sm font-medium flex items-center gap-2"
                     >
                       {is_active ? (
-                        <CheckCircle size={16} className="text-green-600" />
+                        <CheckCircle size={16} className="text-success-subtle-foreground" />
                       ) : (
-                        <XCircle size={16} className="text-gray-50" />
+                        <XCircle size={16} className="text-foreground" />
                       )}
                     </Label>
 
