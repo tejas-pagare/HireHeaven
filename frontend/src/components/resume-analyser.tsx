@@ -66,7 +66,7 @@ const ResumeAnalyzer = () => {
     setLoading(true);
     try {
       const base64 = await convertToBase64(file);
-      const { data } = await axios.post(
+      const { data } = await axios.post<ResumeAnalysisResponse>(
         `${utils_service}/api/utils/resume-analyser`,
         {
           pdfBase64: base64,
@@ -92,23 +92,23 @@ const ResumeAnalyzer = () => {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600";
-    if (score >= 60) return "text-yellow-600";
-    return "text-red-600";
+    if (score >= 80) return "text-success-subtle-foreground";
+    if (score >= 60) return "text-warning-subtle-foreground";
+    return "text-destructive-subtle-foreground";
   };
 
   const getScoreBgColor = (score: number) => {
-    if (score >= 80) return "bg-green-100 dark:bg-green-900/30";
-    if (score >= 60) return "bg-yellow-100 dark:bg-yellow-900/30";
-    return "bg-red-100 dark:bg-red-900/30";
+    if (score >= 80) return "bg-success-subtle";
+    if (score >= 60) return "bg-warning-subtle";
+    return "bg-destructive-subtle";
   };
 
   const getPriorityColor = (priority: string) => {
     if (priority === "high")
-      return "bg-red-100 dark:bg-red-900/30 text-red-600 border-red-200 dark:border-red-800";
+      return "bg-destructive-subtle text-destructive-subtle-foreground border-destructive/25";
     if (priority === "medium")
-      return "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 border-yellow-200 dark:border-yellow-800";
-    return "bg-blue-100 dark:bg-blue-900/30 text-blue-600 border-blue-200 dark:border-blue-800";
+      return "bg-warning-subtle text-warning-subtle-foreground border-warning/25";
+    return "bg-brand-subtle text-brand-subtle-foreground border-primary/25";
   };
 
   return (
@@ -127,7 +127,7 @@ const ResumeAnalyzer = () => {
               <>
                 <DialogHeader>
                   <DialogTitle className="text-2xl flex items-center gap-2">
-                    <FileText className="text-red-500" />
+                    <FileText className="text-destructive" />
                     Upload Your Resume
                   </DialogTitle>
                   <DialogDescription>
@@ -140,14 +140,14 @@ const ResumeAnalyzer = () => {
                   <div
                     onClick={() => fileInputRef.current?.click()}
                     className="border-2 border-dashed rounded-lg p-12 text-center cursor
-pointer hover:border-blue-500 transition-colors"
+pointer hover:border-primary/25 transition-colors"
                   >
                     <div className="flex flex-col items-center gap-4">
                       <div
-                        className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue
+                        className="h-16 w-16 rounded-full bg-brand-subtle dark:bg-blue
 900/30 flex items-center justify-center"
                       >
-                        <Upload size={32} className="text-blue-600" />
+                        <Upload size={32} className="text-primary" />
                       </div>
                       <div>
                         <p className="font-medium mb-1">
@@ -158,7 +158,7 @@ pointer hover:border-blue-500 transition-colors"
                         </p>
                       </div>
                       {file && (
-                        <div className="flex items-center gap-2 text-green-600">
+                        <div className="flex items-center gap-2 text-success-subtle-foreground">
                           <CheckCircle2 size={18} />
                           <span className="text-sm font-medium">
                             File uploaded successfully
@@ -199,7 +199,7 @@ pointer hover:border-blue-500 transition-colors"
               <>
                 <DialogHeader>
                   <DialogTitle className="text-2xl flex items-center gap-2">
-                    <FileCheck className="text-red-500" />
+                    <FileCheck className="text-destructive" />
                     Your Resume Analysis
                   </DialogTitle>
                 </DialogHeader>
@@ -228,8 +228,8 @@ pointer hover:border-blue-500 transition-colors"
 
                   {/* Summary */}
                   <div
-                    className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border 
-border-blue-200 dark:border-blue-800"
+                    className="p-4 rounded-lg bg-brand-subtle border 
+border-primary/25"
                   >
                     <p className="text-sm leading-relaxed">
                       {response.summary}
@@ -239,7 +239,7 @@ border-blue-200 dark:border-blue-800"
                   {/* Score Breakdown */}
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                      <TrendingUp size={20} className="text-red-500" />
+                      <TrendingUp size={20} className="text-destructive" />
                       Detailed Score Breakdown
                     </h3>
                     <div className="grid md:grid-cols-2 gap-3">
@@ -267,11 +267,11 @@ border-blue-200 dark:border-blue-800"
 
                   {/* Strengths */}
                   <div
-                    className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 border 
-border-green-200 dark:border-green-800"
+                    className="p-4 rounded-lg bg-success-subtle border 
+border-success/25"
                   >
                     <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <CheckCircle2 size={18} className="text-green-600" />
+                      <CheckCircle2 size={18} className="text-success-subtle-foreground" />
                       What Your Resume Does Well
                     </h3>
                     <ul className="space-y-2">
@@ -280,7 +280,7 @@ border-green-200 dark:border-green-800"
                           key={index}
                           className="text-sm flex items-start gap-2"
                         >
-                          <span className="text-green-600 mt-0.5">✓</span>
+                          <span className="text-success-subtle-foreground mt-0.5">✓</span>
                           <span>{strength}</span>
                         </li>
                       ))}
@@ -290,7 +290,7 @@ border-green-200 dark:border-green-800"
                   {/* Suggestions */}
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                      <AlertTriangle size={20} className="text-red-500" />
+                      <AlertTriangle size={20} className="text-destructive" />
                       Recommendations for Improvement
                     </h3>
                     <div className="space-y-3">
