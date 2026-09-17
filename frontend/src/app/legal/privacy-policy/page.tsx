@@ -6,18 +6,18 @@ export const metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "#0F172A", marginTop: 32, marginBottom: 12 };
-    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "#4B5563", marginBottom: 16 };
+    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "var(--foreground)", marginTop: 32, marginBottom: 12 };
+    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "var(--muted-foreground)", marginBottom: 16 };
 
     return (
         <>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#3B82F6", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
                 Legal
             </p>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: "#0F172A", marginBottom: 8 }}>Privacy Policy</h1>
-            <p style={{ fontSize: 14, color: "#9CA3AF", marginBottom: 32 }}>Last updated: February 22, 2025</p>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: "var(--foreground)", marginBottom: 8 }}>Privacy Policy</h1>
+            <p style={{ fontSize: 14, color: "var(--muted-foreground)", marginBottom: 32 }}>Last updated: February 22, 2025</p>
 
-            <hr style={{ border: "none", borderTop: "1px solid #E5E7EB", marginBottom: 32 }} />
+            <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 32 }} />
 
             <p style={paraStyle}>
                 At HireHeaven, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose,
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
             <h2 style={headingStyle}>7. Contact Us</h2>
             <p style={paraStyle}>
                 If you have questions about this Privacy Policy, please contact us at{" "}
-                <a href="mailto:contact@hireheaven.com" style={{ color: "#3B82F6" }}>contact@hireheaven.com</a>.
+                <a href="mailto:contact@hireheaven.com" style={{ color: "var(--primary)" }}>contact@hireheaven.com</a>.
             </p>
         </>
     );

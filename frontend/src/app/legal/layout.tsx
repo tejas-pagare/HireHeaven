@@ -1,41 +1,49 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-export default function LegalLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <div style={{ minHeight: "100vh", background: "#F8FAFC" }}>
-            {/* Header */}
-            <header
-                style={{
-                    background: "#FFFFFF",
-                    borderBottom: "1px solid #E5E7EB",
-                    padding: "16px 0",
-                }}
+const links = [
+  { href: "/legal/privacy-policy", label: "Privacy" },
+  { href: "/legal/terms-of-service", label: "Terms" },
+  { href: "/legal/cookie-policy", label: "Cookies" },
+  { href: "/legal/gdpr", label: "GDPR" },
+];
+
+export default function LegalLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+
+  return (
+    <div className="hh-page">
+      <header className="sticky top-16 z-30 border-b bg-background/85 backdrop-blur-xl">
+        <nav className="mx-auto flex max-w-4xl items-center justify-center gap-1 px-4 py-3">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={cn(
+                "rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
+                pathname === l.href
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
             >
-                <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <nav style={{ display: "flex", gap: 24, fontSize: 14 }}>
-                        <Link href="/legal/privacy-policy" style={{ color: "#6B7280", textDecoration: "none" }}>Privacy</Link>
-                        <Link href="/legal/terms-of-service" style={{ color: "#6B7280", textDecoration: "none" }}>Terms</Link>
-                        <Link href="/legal/cookie-policy" style={{ color: "#6B7280", textDecoration: "none" }}>Cookies</Link>
-                        <Link href="/legal/gdpr" style={{ color: "#6B7280", textDecoration: "none" }}>GDPR</Link>
-                    </nav>
-                </div>
-            </header>
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+      </header>
 
-            {/* Content */}
-            <main style={{ maxWidth: 900, margin: "0 auto", padding: "48px 24px" }}>
-                <div
-                    style={{
-                        background: "#FFFFFF",
-                        borderRadius: 12,
-                        border: "1px solid #E5E7EB",
-                        padding: "48px",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                    }}
-                >
-                    {children}
-                </div>
-            </main>
-        </div>
-    );
+      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 md:py-14">
+        <article className="rounded-2xl border bg-card p-6 shadow-soft sm:p-10 md:p-12">
+          {children}
+        </article>
+      </main>
+    </div>
+  );
 }

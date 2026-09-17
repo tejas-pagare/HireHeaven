@@ -80,13 +80,13 @@ export default function ManageBlogsPage() {
                                     <td className="p-4 text-right flex justify-end gap-2">
                                         <button
                                             onClick={() => alert("Edit not implemented in this demo (similar to create)")} // Placeholder
-                                            className="p-2 text-blue-500 hover:bg-blue-50 rounded"
+                                            className="p-2 text-brand-subtle-foreground hover:bg-brand-subtle rounded"
                                         >
                                             <Edit size={18} />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(post.id)}
-                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                            className="p-2 text-destructive hover:bg-destructive-subtle rounded"
                                         >
                                             <Trash2 size={18} />
                                         </button>

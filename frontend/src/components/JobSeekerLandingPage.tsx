@@ -638,7 +638,7 @@ const JobSeekerLandingPage = () => {
                                     marginBottom: 12,
                                 }}
                             >
-                                Hire<span style={{ color: "#ef4444" }}>Heaven</span>
+                                <span className="hh-wordmark">HireHeaven</span>
                             </p>
                             <p style={{ fontSize: 14, lineHeight: 1.7, opacity: 0.75 }}>
                                 HireHeaven is India&apos;s fastest-growing job portal connecting
