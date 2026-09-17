@@ -4,9 +4,9 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import { io, Socket } from "socket.io-client";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
 
-const chat_service =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const chat_service = BACKEND_URL;
 
 interface SocketContextType {
     socket: Socket | null;
