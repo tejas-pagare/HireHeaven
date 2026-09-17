@@ -6,11 +6,12 @@ import { job_service, useAppData } from "@/context/AppContext";
 import { Application, Job } from "@/type";
 import axios from "axios";
 import {
+  ArrowLeft,
   ArrowRight,
   Briefcase,
   Building2,
   CheckCircle2,
-  DollarSign,
+  IndianRupee,
   MapPin,
   MessageSquare,
   Users,
@@ -23,6 +24,7 @@ import Link from "next/link";
 import JobAtsAnalyzer from "@/components/job-ats-analyzer";
 import RecruiterPipeline from "@/components/recruiter-pipeline";
 import QuizBuilder from "@/components/quiz-builder";
+import JobCard from "@/components/job-card";
 
 const chat_service =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
@@ -49,6 +51,7 @@ const JobPage = () => {
   };
 
   const [loading, setLoading] = useState(true);
+  const [otherJobs, setOtherJobs] = useState<Job[]>([]);
 
   async function fetchSingleJob() {
     try {
@@ -61,8 +64,22 @@ const JobPage = () => {
     }
   }
 
+  async function fetchOtherJobs() {
+    try {
+      const token = Cookies.get("token");
+      const { data } = await axios.get(`${job_service}/api/job?title=&location=`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const filtered = (data as Job[]).filter(j => j.job_id.toString() !== id).slice(0, 3);
+      setOtherJobs(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     fetchSingleJob();
+    fetchOtherJobs();
   }, [id]);
 
   const [jobApplications, setJobApplications] = useState<Application[]>([]);
@@ -140,7 +157,7 @@ const JobPage = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-secondary/30">
+    <div className="min-h-screen bg-background">
       {loading ? (
         <Loading />
       ) : (
@@ -149,124 +166,137 @@ const JobPage = () => {
             <div className="max-w-5xl mx-auto px-4 py-8">
               <Button
                 variant={"ghost"}
-                className="mb-6 gap-2"
+                className="mb-6 gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 onClick={() => router.back()}
               >
-                <ArrowRight size={18} /> Back to jobs
+                <ArrowLeft size={18} /> Back to jobs
               </Button>
 
-              <Card className="overflow-hidden shadow-lg border-2 mb-6">
-                <div className="bg-blue-600 p-8 border-b">
-                  <div className="flex items-start justify-between gap-4 flex-wrap">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span
-                          className={`px-3 py-1.5 rounded-full text-sm font-medium ${job.is_active
-                            ? "bg-green-100 dark:bg-green-900/30 text-green-600"
-                            : "bg-red-100 dark:bg-red-900/30 text-red-600"
-                            }`}
-                        >
-                          {job.is_active ? "Open" : "Closed"}
-                        </span>
-                      </div>
+              <div className="mb-8">
+                {/* Banner & Header */}
+                <div className="mb-12 relative">
+                  <div className="h-48 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 shadow-sm relative overflow-hidden">
+                    <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
+                    
+                    <div className="absolute top-6 left-6 sm:left-8 right-6 sm:right-8 flex justify-between items-start">
+                      <span className={`px-4 py-1.5 rounded-full text-sm font-semibold backdrop-blur-md ${
+                        job.is_active ? "bg-emerald-500/20 text-emerald-50 border border-emerald-500/30" : "bg-red-500/20 text-red-50 border border-red-500/30"
+                      }`}>
+                        {job.is_active ? "Open" : "Closed"}
+                      </span>
+                      
+                      {user && user.role === "jobseeker" && (
+                          <div className="shrink-0">
+                            {applied ? (
+                              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500/20 text-emerald-50 font-semibold backdrop-blur-md border border-emerald-500/30 shadow-sm">
+                                <CheckCircle2 size={18} />
+                                Already Applied
+                              </div>
+                            ) : (
+                              job.is_active && (
+                                <Button
+                                  onClick={() => applyJobHandler(job.job_id)}
+                                  disabled={btnLoading}
+                                  className="gap-2 h-11 px-8 rounded-full bg-white text-blue-700 hover:bg-blue-50 font-semibold shadow-md transition-all"
+                                >
+                                  <Briefcase size={18} />
+                                  {btnLoading ? "Applying..." : "Easy Apply"}
+                                </Button>
+                              )
+                            )}
+                          </div>
+                      )}
+                    </div>
 
-                      <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+                    <div className="absolute bottom-6 left-6 sm:left-8 right-6 sm:right-8">
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 leading-tight">
                         {job.title}
                       </h1>
-                      <div className="flex items-center gap-2 text-base opacity-70 mb-2 text-white">
+                      <div className="flex items-center gap-2 text-blue-100 font-medium">
                         <Building2 size={18} />
                         <span>Company Name</span>
                       </div>
                     </div>
-
-                    {user && user.role === "jobseeker" && (
-                      <div className="shrink-0">
-                        {applied ? (
-                          <>
-                            <div className="flex items-center gap-2 px-6 py-3 rounded-lg bg-green-100 dark:bg-gray-900/30 text-green-600 font-medium">
-                              <CheckCircle2 size={20} />
-                              Already Applied
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {job.is_active && (
-                              <Button
-                                onClick={() => applyJobHandler(job.job_id)}
-                                disabled={btnLoading}
-                                className="gap-2 h-12 px-8"
-                              >
-                                <Briefcase size={18} />{" "}
-                                {btnLoading ? "Applying..." : "Easy Apply"}
-                              </Button>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </div>
 
-                {/* details */}
-                <div className="p-8">
-                  <div className="grid md:grid-cols-3 gap-6 mb-8">
-                    <div className="flex items-center gap-3 p-4 rounded-lg border bg-background">
-                      <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                        <MapPin size={20} className="text-blue-600" />
+                {/* Main Details */}
+                <div className="space-y-12">
+                  {/* Grid details */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                      <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50 hover:bg-muted/60 transition-all">
+                        <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0">
+                            <MapPin size={20} className="text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Location</p>
+                            <p className="font-semibold text-foreground">{job.location}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs opacity-70 font-medium mb-1">
-                          Location
-                        </p>
-                        <p className="font-semibold">{job.location}</p>
+                      
+                      <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50 hover:bg-muted/60 transition-all">
+                        <div className="h-12 w-12 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
+                            <IndianRupee size={20} className="text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Salary</p>
+                            <p className="font-semibold text-foreground">{job.salary} P.A</p>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-3 p-4 rounded-lg border bg-background">
-                      <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                        <DollarSign size={20} className="text-blue-600" />
+                      <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50 hover:bg-muted/60 transition-all">
+                        <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center shrink-0">
+                            <Users size={20} className="text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Openings</p>
+                            <p className="font-semibold text-foreground">{job.openings} positions</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs opacity-70 font-medium mb-1">
-                          Salary
-                        </p>
-                        <p className="font-semibold">₹{job.salary} P.A</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg border bg-background">
-                      <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                        <Users size={20} className="text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs opacity-70 font-medium mb-1">
-                          Openings
-                        </p>
-                        <p className="font-semibold">{job.openings} postions</p>
-                      </div>
-                    </div>
                   </div>
 
-                  {/* job descripiton */}
-                  <div className="space-y-4">
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
-                      <Briefcase size={24} className="text-blue-600" />
-                      Job Description
-                    </h2>
-
-                    <div className="p-6 rounded-lg bg-secondary border">
-                      <p className="text-base leading-relaxed whitespace-pre-line">
-                        {job.description}
-                      </p>
-                    </div>
+                  {/* Job Description */}
+                  <div>
+                      <h2 className="text-xl font-bold flex items-center gap-2 text-foreground mb-6">
+                        <Briefcase size={22} className="text-primary" />
+                        Job Description
+                      </h2>
+                      <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
+                        <p className="whitespace-pre-line">{job.description}</p>
+                      </div>
                   </div>
 
                   {/* ATS Analyzer (Jobseeker only) */}
                   {user && user.role === "jobseeker" && (
-                    <JobAtsAnalyzer jobDescription={job.description} />
+                      <div className="pt-6 border-t border-border/40">
+                        <JobAtsAnalyzer jobDescription={job.description} />
+                      </div>
+                  )}
+                  
+                  {/* Explore other jobs section */}
+                  {user && user.role === "jobseeker" && (
+                      <div className="pt-12 mt-12 border-t border-border/40 pb-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                          <div>
+                            <h2 className="text-2xl font-bold text-foreground mb-1">Looking for something else?</h2>
+                            <p className="text-muted-foreground">Explore other opportunities and find the perfect role.</p>
+                          </div>
+                          <Button variant="outline" className="rounded-full px-6 font-semibold" onClick={() => router.push('/jobs')}>
+                            View All <ArrowRight size={16} className="ml-2" />
+                          </Button>
+                        </div>
+
+                        {otherJobs.length > 0 && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {otherJobs.map((otherJob) => (
+                              <JobCard job={otherJob} key={otherJob.job_id} />
+                            ))}
+                          </div>
+                        )}
+                      </div>
                   )}
                 </div>
-              </Card>
+              </div>
             </div>
           )}
         </>

@@ -147,6 +147,7 @@ export interface Application {
   interview_score?: number;
   meet_link?: string;
   scheduled_at?: string;
+  ai_interview_completed?: boolean;
 }
 
 // ── Chat Types ──
