@@ -315,3 +315,25 @@ export const resumeStatusEndpoint = async (req: AuthenticatedRequest, res: Respo
     res.status(500).json({ message: error.message || "Failed to get resume status" });
   }
 };
+
+// ── AI Interview Result ───────────────────────────────────────────────────────
+import { sql } from "../../db.js";
+export const getAiInterviewResult = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const applicationId = parseInt(req.params.applicationId as string, 10);
+    if (isNaN(applicationId)) { res.status(400).json({ message: "Invalid applicationId" }); return; }
+
+    const [interview] = await sql`
+      SELECT * FROM ai_interviews WHERE application_id = ${applicationId}
+    `;
+
+    if (!interview) {
+      res.status(404).json({ message: "AI Interview result not found for this application." });
+      return;
+    }
+
+    res.json(interview);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message || "Failed to get AI interview result" });
+  }
+};

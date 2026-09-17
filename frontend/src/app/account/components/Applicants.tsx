@@ -20,6 +20,7 @@ import {
     MessageSquare,
     Users,
     Brain,
+    Mic,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,6 +34,7 @@ interface ApplicationItem {
     resume: string;
     applied_at: string;
     subscribed: boolean;
+    ai_interview_completed?: boolean;
 }
 
 interface JobWithApps {
@@ -522,6 +524,22 @@ export default function Applicants() {
                                                                                                             <Brain size={14} />
                                                                                                         </Button>
                                                                                                     </Link>
+
+                                                                                                    {/* AI Interview Result */}
+                                                                                                    {app.ai_interview_completed && (
+                                                                                                        <Link
+                                                                                                            href={`/ai-interview/result/${app.application_id}`}
+                                                                                                        >
+                                                                                                            <Button
+                                                                                                                variant="ghost"
+                                                                                                                size="icon"
+                                                                                                                className="h-8 w-8 text-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                                                                                                                title="AI Interview Result"
+                                                                                                            >
+                                                                                                                <Mic size={14} />
+                                                                                                            </Button>
+                                                                                                        </Link>
+                                                                                                    )}
 
                                                                                                     {/* View Profile */}
                                                                                                     <Link

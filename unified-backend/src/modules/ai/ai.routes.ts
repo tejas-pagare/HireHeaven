@@ -10,6 +10,7 @@ import {
   queryResumeEndpoint,
   queryResumeVsJobEndpoint,
   resumeStatusEndpoint,
+  getAiInterviewResult,
 } from "./ai.controller.js";
 
 const router = Router();
@@ -28,5 +29,6 @@ router.post("/resume/upload", isAuth, uploadResume);
 router.post("/resume/query", isAuth, queryResumeEndpoint);
 router.post("/resume/query-job", isAuth, queryResumeVsJobEndpoint);
 router.get("/resume/status/:userId", isAuth, resumeStatusEndpoint);
+router.get("/interview/result/:applicationId", isAuth, getAiInterviewResult);
 
 export default router;

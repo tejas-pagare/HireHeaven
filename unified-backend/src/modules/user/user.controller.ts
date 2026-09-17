@@ -202,7 +202,8 @@ export const applyForJob = TryCatch(async (req: AuthenticatedRequest, res) => {
 export const getAllApplications = TryCatch(async (req: AuthenticatedRequest, res) => {
   const applications = await sql`
     SELECT a.*, j.title AS job_title, j.salary AS job_salary, j.location AS job_location,
-           i.meet_link, i.scheduled_at
+           i.meet_link, i.scheduled_at,
+           EXISTS(SELECT 1 FROM ai_interviews ai WHERE ai.application_id = a.application_id) AS ai_interview_completed
     FROM applications a
     JOIN jobs j ON a.job_id = j.job_id
     LEFT JOIN interviews i ON a.application_id = i.application_id

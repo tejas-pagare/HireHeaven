@@ -78,28 +78,12 @@ const CarrerGuide = () => {
     setOpen(false);
   };
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border bg-blue-50 dark:bg-blue-950 mb-4">
-          <Sparkles size={16} className="text-blue-600" />
-          <span className="text-sm font-medium">
-            AI-Powered Carrer Guidence
-          </span>
-        </div>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Discover Your Carrer Path
-        </h2>
-        <p className="text-lg opacity-70 max-w-2xl mx-auto mb-8">
-          Get personalized job recomendations and learnings roadmaps based on
-          your skills.
-        </p>
-
+    <div style={{ display: "flex", justifyContent: "center", padding: "16px 0" }}>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size={"lg"} className="gap-2 h-12 px-8">
               <Sparkles size={18} />
-              Get Carrer Guidence
-              <ArrowRight size={18} />
+              Get Career Guidance <ArrowRight size={16} />
             </Button>
           </DialogTrigger>
 
@@ -312,7 +296,6 @@ const CarrerGuide = () => {
             )}
           </DialogContent>
         </Dialog>
-      </div>
     </div>
   );
 };

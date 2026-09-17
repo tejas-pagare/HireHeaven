@@ -196,8 +196,10 @@ export const getAllApplicationsForJob = TryCatch(async (req: AuthenticatedReques
   if (job.posted_by_recuriter_id !== user.user_id) throw new ErrorHandler(403, "Forbidden");
 
   const applications = await sql`
-    SELECT * FROM applications WHERE job_id = ${jobId}
-    ORDER BY subscribed DESC, applied_at ASC
+    SELECT a.*, EXISTS(SELECT 1 FROM ai_interviews ai WHERE ai.application_id = a.application_id) AS ai_interview_completed
+    FROM applications a 
+    WHERE a.job_id = ${jobId}
+    ORDER BY a.subscribed DESC, a.applied_at ASC
   `;
 
   res.json(applications);

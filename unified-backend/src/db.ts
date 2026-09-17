@@ -138,6 +138,24 @@ async function initJobTables() {
         IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'Final Review' AND enumtypid = (SELECT oid FROM pg_type WHERE typname = 'application_status')) THEN
             ALTER TYPE application_status ADD VALUE 'Final Review';
         END IF;
+    END $$;
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS ai_interviews (
+      interview_id SERIAL PRIMARY KEY,
+      application_id INTEGER NOT NULL REFERENCES applications(application_id) ON DELETE CASCADE,
+      transcript JSONB NOT NULL DEFAULT '[]'::jsonb,
+      evaluation JSONB,
+      score NUMERIC(5,2),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (application_id)
+    )
+  `;
+
+  await sql`
+    DO $$
+    BEGIN
         IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'Offer' AND enumtypid = (SELECT oid FROM pg_type WHERE typname = 'application_status')) THEN
             ALTER TYPE application_status ADD VALUE 'Offer';
         END IF;
