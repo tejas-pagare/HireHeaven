@@ -3,11 +3,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ══════════════════════════════════════════════════════════════
+   HireHeaven Design System
+   One token layer. Every surface — shadcn primitives, landing
+   pages, chips, charts — derives from the variables below.
+   ══════════════════════════════════════════════════════════════ */
+
+/* NOTE: colour blending uses `in oklab`, never `in oklch`.
+   oklch interpolates the hue ANGLE, so mixing the blue brand with an
+   achromatic token written as `oklch(1 0 0)` walks the hue backwards through
+   red — a 4% mix landed on hue 356 (pink). oklab is rectangular, so mixing
+   toward white/grey desaturates without shifting hue. */
+
 @theme inline {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -23,14 +39,35 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Semantic status colors — replaces ad-hoc emerald/red/amber literals */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Tinted surfaces for chips / badges / soft states */
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-subtle-foreground: var(--brand-subtle-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -39,41 +76,79 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Soft, layered elevation — replaces the flat shadcn shadow-xs */
+  --shadow-soft: 0 1px 2px 0 var(--shadow-tint-weak), 0 1px 3px 0 var(--shadow-tint-weak);
+  --shadow-soft-md: 0 2px 4px -1px var(--shadow-tint-weak), 0 6px 16px -4px var(--shadow-tint);
+  --shadow-soft-lg: 0 4px 8px -2px var(--shadow-tint-weak), 0 16px 32px -8px var(--shadow-tint);
+  --shadow-brand: 0 4px 14px -2px var(--shadow-brand-tint);
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
+
+  /* Neutrals — slate, hue-aligned with the blue brand */
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
+
+  /* Brand — blue 600 */
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(1 0 0);
+  --primary-hover: oklch(0.488 0.243 264.376);
+
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+
+  /* Accent is brand-tinted so ghost hovers and menu focus read as one product */
+  --accent: oklch(0.97 0.014 254.604);
+  --accent-foreground: oklch(0.488 0.243 264.376);
+
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.596 0.145 163.225);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.279 0.077 45.635);
+  --info: oklch(0.546 0.245 262.881);
+  --info-foreground: oklch(1 0 0);
+
+  --brand-subtle: oklch(0.932 0.032 255.585);
+  --brand-subtle-foreground: oklch(0.424 0.199 265.638);
+  --success-subtle: oklch(0.95 0.052 163.051);
+  --success-subtle-foreground: oklch(0.448 0.119 151.328);
+  --warning-subtle: oklch(0.962 0.059 95.617);
+  --warning-subtle-foreground: oklch(0.473 0.137 46.201);
+  --destructive-subtle: oklch(0.936 0.032 17.717);
+  --destructive-subtle-foreground: oklch(0.505 0.213 27.518);
+
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: oklch(0.546 0.245 262.881);
+
+  --shadow-tint: oklch(0.129 0.042 264.695 / 8%);
+  --shadow-tint-weak: oklch(0.129 0.042 264.695 / 4%);
+  --shadow-brand-tint: oklch(0.546 0.245 262.881 / 35%);
+
+  --chart-1: oklch(0.546 0.245 262.881);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+
   --sidebar: oklch(0.984 0.003 247.858);
   --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.97 0.014 254.604);
+  --sidebar-accent-foreground: oklch(0.488 0.243 264.376);
   --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar-ring: oklch(0.546 0.245 262.881);
 }
 
 .dark {
@@ -83,31 +158,60 @@
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
+
+  /* Brand lifts to blue 500 on dark so it stays legible against slate 950 */
+  --primary: oklch(0.623 0.214 259.815);
+  --primary-foreground: oklch(1 0 0);
+  --primary-hover: oklch(0.707 0.165 254.624);
+
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
   --muted: oklch(0.279 0.041 260.031);
   --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
+
+  --accent: oklch(0.32 0.068 263.5);
+  --accent-foreground: oklch(0.882 0.059 254.128);
+
+  --destructive: oklch(0.637 0.208 25.331);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.696 0.17 162.48);
+  --success-foreground: oklch(0.15 0.05 163);
+  --warning: oklch(0.828 0.189 84.429);
+  --warning-foreground: oklch(0.2 0.06 45);
+  --info: oklch(0.623 0.214 259.815);
+  --info-foreground: oklch(1 0 0);
+
+  --brand-subtle: oklch(0.546 0.245 262.881 / 20%);
+  --brand-subtle-foreground: oklch(0.809 0.105 251.813);
+  --success-subtle: oklch(0.696 0.17 162.48 / 16%);
+  --success-subtle-foreground: oklch(0.845 0.143 164.978);
+  --warning-subtle: oklch(0.828 0.189 84.429 / 16%);
+  --warning-subtle-foreground: oklch(0.879 0.169 91.605);
+  --destructive-subtle: oklch(0.637 0.208 25.331 / 18%);
+  --destructive-subtle-foreground: oklch(0.808 0.114 19.571);
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
+  --ring: oklch(0.623 0.214 259.815);
+
+  --shadow-tint: oklch(0 0 0 / 40%);
+  --shadow-tint-weak: oklch(0 0 0 / 24%);
+  --shadow-brand-tint: oklch(0.623 0.214 259.815 / 35%);
+
+  --chart-1: oklch(0.623 0.214 259.815);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+
   --sidebar: oklch(0.208 0.042 265.755);
   --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.32 0.068 263.5);
+  --sidebar-accent-foreground: oklch(0.882 0.059 254.128);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar-ring: oklch(0.623 0.214 259.815);
 }
 
 @layer base {
@@ -116,8 +220,40 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
+
+  /* Tighter, more deliberate heading rhythm */
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+}
+
+/* ═══ SHARED UTILITIES ═══ */
+
+/* Brand wordmark gradient — used by the navbar logo and footers */
+.hh-wordmark {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in oklab, var(--primary) 55%, oklch(0.627 0.265 303.9)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Page-level surface: subtle brand wash instead of flat grey */
+.hh-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(60rem 30rem at 50% -10%, color-mix(in oklab, var(--primary) 7%, transparent), transparent),
+    var(--background);
+}
+
+.icon-style {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none;
 }
 
 /* ===== Tiptap / RichTextEditor List Styles ===== */
@@ -164,30 +300,31 @@
   margin: 0.25em 0;
 }
 
-.icon-style {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 opacity-50;
-}
-
-/* ===== Recruiter Landing Page Scoped Styles ===== */
+/* ===== Recruiter Landing Page Scoped Styles =====
+   Now derives from the shared token layer instead of hardcoded hex. */
 .recruiter-landing {
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  --rl-primary: #0B2545;
-  --rl-primary-hover: #0E3058;
-  --rl-accent: #3B82F6;
-  --rl-accent-hover: #2563EB;
-  --rl-bg: #F8FAFC;
-  --rl-surface: #FFFFFF;
-  --rl-muted: #EFF6FF;
-  --rl-text: #0F172A;
-  --rl-text-muted: #6B7280;
-  --rl-border: #E5E7EB;
-  --rl-radius: 12px;
-  --rl-radius-lg: 20px;
+  --rl-primary: oklch(0.282 0.091 267.935);
+  --rl-primary-hover: oklch(0.379 0.146 265.522);
+  --rl-accent: var(--primary);
+  --rl-accent-hover: var(--primary-hover);
+  --rl-bg: var(--background);
+  --rl-surface: var(--card);
+  --rl-muted: var(--accent);
+  --rl-text: var(--foreground);
+  --rl-text-muted: var(--muted-foreground);
+  --rl-border: var(--border);
+  --rl-radius: var(--radius);
+  --rl-radius-lg: calc(var(--radius) + 8px);
   --rl-radius-pill: 9999px;
-  --rl-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-  --rl-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.08);
+  --rl-shadow: var(--shadow-soft-md);
+  --rl-shadow-hover: var(--shadow-soft-lg);
   color: var(--rl-text);
   background: var(--rl-bg);
+}
+
+.dark .recruiter-landing {
+  --rl-primary: oklch(0.208 0.042 265.755);
+  --rl-primary-hover: oklch(0.279 0.041 260.031);
 }
 
 .recruiter-landing * {
@@ -230,7 +367,7 @@
 
 .rl-card:hover {
   box-shadow: var(--rl-shadow-hover);
-  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 
 .rl-btn-lime {
@@ -240,7 +377,7 @@
   gap: 8px;
   padding: 10px 20px;
   background: var(--rl-accent);
-  color: #FFFFFF;
+  color: var(--primary-foreground);
   font-weight: 600;
   font-size: 14px;
   border-radius: var(--rl-radius-pill);
@@ -252,6 +389,7 @@
 
 .rl-btn-lime:hover {
   background: var(--rl-accent-hover);
+  box-shadow: var(--shadow-brand);
 }
 
 .rl-btn-outline {
@@ -261,18 +399,18 @@
   gap: 8px;
   padding: 10px 20px;
   background: transparent;
-  color: var(--rl-surface);
+  color: oklch(1 0 0);
   font-weight: 600;
   font-size: 14px;
   border-radius: var(--rl-radius-pill);
-  border: 1.5px solid var(--rl-surface);
+  border: 1.5px solid oklch(1 0 0);
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
 .rl-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: oklch(1 0 0 / 12%);
 }
 
 .rl-btn-outline-dark {
@@ -282,31 +420,34 @@
   gap: 8px;
   padding: 10px 20px;
   background: transparent;
-  color: var(--rl-primary);
+  color: var(--rl-text);
   font-weight: 600;
   font-size: 14px;
   border-radius: var(--rl-radius-pill);
-  border: 1.5px solid var(--rl-primary);
+  border: 1.5px solid var(--rl-border);
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
 .rl-btn-outline-dark:hover {
-  background: var(--rl-primary);
-  color: var(--rl-surface);
+  background: var(--rl-accent);
+  border-color: var(--rl-accent);
+  color: var(--primary-foreground);
 }
 
 .rl-heading-1 {
   font-size: 48px;
   line-height: 56px;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .rl-heading-2 {
   font-size: 32px;
   line-height: 40px;
   font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 .rl-heading-3 {
@@ -344,55 +485,50 @@
   }
 }
 
-/* ===== Job Seeker Landing Page Scoped Styles ===== */
+/* ===== Job Seeker Landing Page Scoped Styles =====
+   Also derives from the shared token layer. */
 .jobseeker-landing {
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  --jl-primary: #3B82F6;
-  --jl-primary-dark: #2563EB;
-  --jl-primary-fg: #FFFFFF;
-  --jl-bg: #FFFFFF;
-  --jl-surface: #FFFFFF;
-  --jl-text: #1F2937;
-  --jl-text-muted: #6B7280;
-  --jl-border: #E5E7EB;
-  --jl-success: #22C55E;
-  --jl-radius: 16px;
-  --jl-radius-lg: 20px;
-  --jl-radius-input: 12px;
-  --jl-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  --jl-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --jl-chip-blue-bg: #DBEAFE;
-  --jl-chip-blue-text: #1E40AF;
-  --jl-chip-green-bg: #F0FDF4;
-  --jl-chip-green-text: #16A34A;
-  --jl-chip-gray-bg: #F3F4F6;
-  --jl-badge-bg: #EFF6FF;
-  --jl-card-gradient-from: #2563EB;
-  --jl-card-gradient-via: #3B82F6;
-  --jl-card-gradient-to: #60A5FA;
+  --jl-primary: var(--primary);
+  --jl-primary-dark: var(--primary-hover);
+  --jl-primary-fg: var(--primary-foreground);
+  --jl-bg: var(--background);
+  --jl-surface: var(--card);
+  --jl-text: var(--foreground);
+  --jl-text-muted: var(--muted-foreground);
+  --jl-border: var(--border);
+  --jl-success: var(--success);
+  --jl-radius: calc(var(--radius) + 4px);
+  --jl-radius-lg: calc(var(--radius) + 8px);
+  --jl-radius-input: var(--radius);
+  --jl-shadow: var(--shadow-soft-md);
+  --jl-shadow-hover: var(--shadow-soft-lg);
+  --jl-chip-blue-bg: var(--brand-subtle);
+  --jl-chip-blue-text: var(--brand-subtle-foreground);
+  --jl-chip-green-bg: var(--success-subtle);
+  --jl-chip-green-text: var(--success-subtle-foreground);
+  --jl-chip-gray-bg: var(--muted);
+  --jl-badge-bg: var(--accent);
+  --jl-glass-surface: oklch(1 0 0 / 70%);
+  --jl-glass-border: oklch(1 0 0 / 80%);
+  --jl-glass-inset: oklch(1 0 0 / 40%);
+  --jl-glass-inset-hover: oklch(1 0 0 / 60%);
+  --jl-card-gradient-from: oklch(0.488 0.243 264.376);
+  --jl-card-gradient-via: var(--primary);
+  --jl-card-gradient-to: oklch(0.707 0.165 254.624);
   color: var(--jl-text);
   background: var(--jl-bg);
+  scroll-behavior: smooth;
 }
 
 /* Dark theme overrides */
 .dark .jobseeker-landing {
-  --jl-bg: #0F172A;
-  --jl-surface: #1E293B;
-  --jl-text: #F1F5F9;
-  --jl-text-muted: #94A3B8;
-  --jl-border: #334155;
-  --jl-success: #4ADE80;
-  --jl-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  --jl-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --jl-chip-blue-bg: rgba(59, 130, 246, 0.15);
-  --jl-chip-blue-text: #93C5FD;
-  --jl-chip-green-bg: rgba(34, 197, 94, 0.12);
-  --jl-chip-green-text: #86EFAC;
-  --jl-chip-gray-bg: #334155;
-  --jl-badge-bg: rgba(59, 130, 246, 0.12);
-  --jl-card-gradient-from: #1E3A5F;
-  --jl-card-gradient-via: #1E40AF;
-  --jl-card-gradient-to: #3B82F6;
+  --jl-glass-surface: oklch(0.208 0.042 265.755 / 60%);
+  --jl-glass-border: oklch(1 0 0 / 6%);
+  --jl-glass-inset: oklch(1 0 0 / 5%);
+  --jl-glass-inset-hover: oklch(1 0 0 / 10%);
+  --jl-card-gradient-from: oklch(0.282 0.091 267.935);
+  --jl-card-gradient-via: oklch(0.424 0.199 265.638);
+  --jl-card-gradient-to: var(--primary);
 }
 
 .jobseeker-landing * {
@@ -449,9 +585,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.75) 0%,
-    rgba(15, 23, 42, 0.85) 50%,
-    rgba(15, 23, 42, 0.95) 100%
+    oklch(0.129 0.042 264.695 / 75%) 0%,
+    oklch(0.129 0.042 264.695 / 85%) 50%,
+    oklch(0.129 0.042 264.695 / 95%) 100%
   );
   z-index: 1;
 }
@@ -460,13 +596,14 @@
   font-size: 48px;
   font-weight: 800;
   line-height: 1.15;
-  color: #FFFFFF;
+  letter-spacing: -0.025em;
+  color: oklch(1 0 0);
   margin-bottom: 16px;
   animation: jl-fadeInUp 0.6s ease-out;
 }
 
 .jl-hero-highlight {
-  background: linear-gradient(135deg, #60A5FA, #3B82F6);
+  background: linear-gradient(135deg, oklch(0.707 0.165 254.624), var(--primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -475,7 +612,7 @@
 .jl-hero-sub {
   font-size: 17px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.7);
+  color: oklch(1 0 0 / 70%);
   max-width: 560px;
   margin: 0 auto 36px;
   animation: jl-fadeInUp 0.6s ease-out 0.1s both;
@@ -489,10 +626,10 @@
   align-items: center;
   padding: 16px;
   border-radius: var(--jl-radius);
-  background: rgba(255, 255, 255, 0.08);
+  background: oklch(1 0 0 / 8%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid oklch(1 0 0 / 10%);
   animation: jl-fadeInUp 0.6s ease-out 0.2s both;
 }
 
@@ -501,20 +638,21 @@
   padding: 12px 16px 12px 42px;
   font-size: 15px;
   border-radius: var(--jl-radius-input);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: #FFFFFF;
+  border: 1px solid oklch(1 0 0 / 12%);
+  background: oklch(1 0 0 / 6%);
+  color: oklch(1 0 0);
   outline: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .jl-hero-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: oklch(1 0 0 / 40%);
 }
 
 .jl-hero-input:focus {
   border-color: var(--jl-primary);
-  background: rgba(255, 255, 255, 0.1);
+  background: oklch(1 0 0 / 10%);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 30%, transparent);
 }
 
 /* Hero dots */
@@ -531,7 +669,7 @@
   height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.25);
+  background: oklch(1 0 0 / 25%);
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
@@ -556,12 +694,13 @@
 .jl-hero-stat-val {
   font-size: 30px;
   font-weight: 800;
-  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  color: oklch(1 0 0);
 }
 
 .jl-hero-stat-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: oklch(1 0 0 / 50%);
   margin-top: 2px;
 }
 
@@ -611,6 +750,7 @@
   font-size: 40px;
   font-weight: 700;
   line-height: 1.15;
+  letter-spacing: -0.025em;
   color: var(--jl-text);
 }
 
@@ -618,6 +758,7 @@
   font-size: 28px;
   font-weight: 600;
   line-height: 1.3;
+  letter-spacing: -0.02em;
   color: var(--jl-text);
 }
 
@@ -625,6 +766,7 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 1.4;
+  letter-spacing: -0.01em;
   color: var(--jl-text);
 }
 
@@ -662,11 +804,11 @@
   }
 }
 
-/* ═══ SOFT CARDS (replaces boxy .jl-card) ═══ */
+/* ═══ SOFT CARDS ═══ */
 .jl-soft-card {
   background: var(--jl-surface);
   border-radius: var(--jl-radius);
-  border: none;
+  border: 1px solid var(--jl-border);
   box-shadow: var(--jl-shadow);
   padding: 24px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -675,6 +817,7 @@
 
 .jl-soft-card:hover {
   box-shadow: var(--jl-shadow-hover);
+  border-color: color-mix(in oklab, var(--primary) 40%, transparent);
   transform: translateY(-4px);
 }
 
@@ -683,6 +826,7 @@
   height: 50px;
   border-radius: 14px;
   background: var(--jl-badge-bg);
+  color: var(--jl-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -739,36 +883,26 @@
 .jl-action-card-header {
   background: linear-gradient(135deg, var(--jl-card-gradient-from) 0%, var(--jl-card-gradient-via) 60%, var(--jl-card-gradient-to) 100%);
   padding: 32px 28px 20px;
-  color: #FFFFFF;
+  color: oklch(1 0 0);
 }
 
 /* ═══ CATEGORY CARDS ═══ */
 .jl-category-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--jl-glass-surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--jl-glass-border);
   border-radius: var(--jl-radius);
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  box-shadow: var(--jl-shadow), inset 0 0 0 1px var(--jl-glass-inset);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   position: relative;
 }
 
-.dark .jl-category-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
 .jl-category-card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  box-shadow: var(--jl-shadow-hover), inset 0 0 0 1px var(--jl-glass-inset-hover);
   transform: translateY(-8px) scale(1.02);
-}
-
-.dark .jl-category-card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .jl-category-card-stripe {
@@ -794,7 +928,7 @@
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-soft-md);
 }
 
 .jl-category-card:hover .jl-category-card-icon {
@@ -808,7 +942,7 @@
   background: var(--jl-badge-bg);
   padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid color-mix(in oklab, var(--primary) 20%, transparent);
 }
 
 .jl-category-card-arrow {
@@ -827,40 +961,34 @@
   color: var(--jl-primary);
 }
 
-
 /* ═══ JOB CARDS ═══ */
 .jl-job-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--jl-glass-surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--jl-glass-border);
   border-radius: var(--jl-radius);
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  box-shadow: var(--jl-shadow), inset 0 0 0 1px var(--jl-glass-inset);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
 }
 
-.dark .jl-job-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
 .jl-job-card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  box-shadow: var(--jl-shadow-hover), inset 0 0 0 1px var(--jl-glass-inset-hover);
   transform: translateY(-8px) scale(1.02);
-}
-
-.dark .jl-job-card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .jl-job-card-accent {
   height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, var(--jl-primary), #60A5FA, var(--jl-primary));
+  background: linear-gradient(
+    90deg,
+    var(--jl-primary),
+    color-mix(in oklab, var(--primary) 50%, oklch(1 0 0)),
+    var(--jl-primary)
+  );
   background-size: 200% 100%;
   animation: jl-shimmer 3s ease infinite;
 }
@@ -926,6 +1054,7 @@
   padding: 6px 14px;
   border-radius: 999px;
   background: var(--jl-badge-bg);
+  color: var(--jl-primary);
   margin-bottom: 20px;
 }
 
@@ -935,6 +1064,7 @@
   height: 36px;
   border-radius: 8px;
   background: var(--jl-badge-bg);
+  color: var(--jl-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -952,7 +1082,7 @@
   color: var(--jl-primary-fg);
   font-weight: 600;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -962,7 +1092,7 @@
 .jl-btn-primary:hover {
   background: var(--jl-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+  box-shadow: var(--shadow-brand);
 }
 
 .jl-btn-outline {
@@ -975,7 +1105,7 @@
   color: var(--jl-primary);
   font-weight: 600;
   font-size: 14px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   border: 1.5px solid var(--jl-primary);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1003,7 +1133,7 @@
 
 .jl-input:focus {
   border-color: var(--jl-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
 }
 
 .jl-input::placeholder {
@@ -1070,8 +1200,8 @@
 }
 
 .jl-job-apply-btn:hover {
-  background: #2563EB;
-  color: #FFFFFF;
+  background: var(--jl-primary);
+  color: var(--jl-primary-fg);
 }
 
 /* ═══ FOOTER ═══ */
@@ -1092,7 +1222,140 @@
   color: var(--jl-primary);
 }
 
-/* Smooth scroll */
-.jobseeker-landing {
-  scroll-behavior: smooth;
+/* ═══════════════════════════════════════════════════════════════
+   MOTION PRIMITIVES
+   Shared entrance/emphasis animations. Every one is disabled under
+   prefers-reduced-motion at the bottom of this block.
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes hh-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hh-pop {
+  0%   { opacity: 0; transform: scale(0.96) translateY(6px); }
+  60%  { transform: scale(1.01) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes hh-sheen {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes hh-breathe {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.06); }
+}
+
+@keyframes hh-blink {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40%           { opacity: 1;    transform: translateY(-3px); }
+}
+
+.hh-rise      { animation: hh-rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hh-pop       { animation: hh-pop 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hh-breathe   { animation: hh-breathe 2.6s ease-in-out infinite; }
+
+/* Staggered list entrances — apply to a parent's children */
+.hh-stagger > *              { animation: hh-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hh-stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.hh-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.hh-stagger > *:nth-child(3) { animation-delay: 0.10s; }
+.hh-stagger > *:nth-child(4) { animation-delay: 0.14s; }
+.hh-stagger > *:nth-child(5) { animation-delay: 0.18s; }
+.hh-stagger > *:nth-child(6) { animation-delay: 0.22s; }
+
+/* Typing indicator dots */
+.hh-dot { animation: hh-blink 1.25s ease-in-out infinite; }
+.hh-dot:nth-child(2) { animation-delay: 0.16s; }
+.hh-dot:nth-child(3) { animation-delay: 0.32s; }
+
+/* Premium surface: faint brand gradient + hairline top highlight */
+.hh-panel {
+  position: relative;
+  background:
+    linear-gradient(to bottom, color-mix(in oklab, var(--primary) 4%, var(--card)), var(--card));
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.hh-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--primary) 45%, transparent),
+    transparent
+  );
+}
+
+.hh-panel:hover {
+  border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+  box-shadow: var(--shadow-soft-md);
+}
+
+/* Interactive chip — lifts and tints toward the brand on hover */
+.hh-chip {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.hh-chip:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.hh-chip:active:not(:disabled) { transform: translateY(0); }
+
+/* Shimmering skeleton fill */
+.hh-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    color-mix(in oklab, var(--primary) 12%, var(--muted)) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: hh-sheen 1.4s ease-in-out infinite;
+}
+
+/* Focus glow for the primary composer */
+.hh-composer {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.hh-composer:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+/* Thin, themed scrollbar for the chat + sidebar rails */
+.hh-scroll { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.hh-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.hh-scroll::-webkit-scrollbar-track { background: transparent; }
+.hh-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.hh-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--primary) 50%, var(--border));
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hh-rise, .hh-pop, .hh-breathe, .hh-stagger > *, .hh-dot, .hh-shimmer {
+    animation: none !important;
+  }
+  .hh-chip:hover:not(:disabled) { transform: none; }
 }
