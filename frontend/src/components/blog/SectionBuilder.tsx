@@ -69,7 +69,7 @@ export function SectionBuilder({ sections, setSections }: SectionBuilderProps) {
                             <button
                                 type="button"
                                 onClick={() => removeSection(section.id)}
-                                className="p-1 text-red-500 hover:bg-red-50 rounded"
+                                className="p-1 text-destructive hover:bg-destructive-subtle rounded"
                             >
                                 <Trash size={16} />
                             </button>
@@ -83,7 +83,7 @@ export function SectionBuilder({ sections, setSections }: SectionBuilderProps) {
                                 type="text"
                                 value={section.heading || ""}
                                 onChange={(e) => updateSection(section.id, "heading", e.target.value)}
-                                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-ring outline-none"
                                 placeholder="e.g. Introduction"
                             />
                         </div>

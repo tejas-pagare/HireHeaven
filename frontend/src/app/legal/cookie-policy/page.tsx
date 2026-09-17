@@ -6,18 +6,18 @@ export const metadata = {
 };
 
 export default function CookiePolicyPage() {
-    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "#0F172A", marginTop: 32, marginBottom: 12 };
-    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "#4B5563", marginBottom: 16 };
+    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "var(--foreground)", marginTop: 32, marginBottom: 12 };
+    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "var(--muted-foreground)", marginBottom: 16 };
 
     return (
         <>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#3B82F6", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
                 Legal
             </p>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: "#0F172A", marginBottom: 8 }}>Cookie Policy</h1>
-            <p style={{ fontSize: 14, color: "#9CA3AF", marginBottom: 32 }}>Last updated: February 22, 2025</p>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: "var(--foreground)", marginBottom: 8 }}>Cookie Policy</h1>
+            <p style={{ fontSize: 14, color: "var(--muted-foreground)", marginBottom: 32 }}>Last updated: February 22, 2025</p>
 
-            <hr style={{ border: "none", borderTop: "1px solid #E5E7EB", marginBottom: 32 }} />
+            <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 32 }} />
 
             <p style={paraStyle}>
                 This Cookie Policy explains how HireHeaven uses cookies and similar technologies to recognize you when you
@@ -56,25 +56,25 @@ export default function CookiePolicyPage() {
             <div style={{ overflowX: "auto", marginBottom: 16 }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                     <thead>
-                        <tr style={{ borderBottom: "2px solid #E5E7EB" }}>
-                            <th style={{ textAlign: "left", padding: "10px 12px", color: "#0F172A", fontWeight: 600 }}>Cookie Name</th>
-                            <th style={{ textAlign: "left", padding: "10px 12px", color: "#0F172A", fontWeight: 600 }}>Type</th>
-                            <th style={{ textAlign: "left", padding: "10px 12px", color: "#0F172A", fontWeight: 600 }}>Purpose</th>
-                            <th style={{ textAlign: "left", padding: "10px 12px", color: "#0F172A", fontWeight: 600 }}>Duration</th>
+                        <tr style={{ borderBottom: "2px solid var(--border)" }}>
+                            <th style={{ textAlign: "left", padding: "10px 12px", color: "var(--foreground)", fontWeight: 600 }}>Cookie Name</th>
+                            <th style={{ textAlign: "left", padding: "10px 12px", color: "var(--foreground)", fontWeight: 600 }}>Type</th>
+                            <th style={{ textAlign: "left", padding: "10px 12px", color: "var(--foreground)", fontWeight: 600 }}>Purpose</th>
+                            <th style={{ textAlign: "left", padding: "10px 12px", color: "var(--foreground)", fontWeight: 600 }}>Duration</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style={{ borderBottom: "1px solid #F3F4F6" }}>
-                            <td style={{ padding: "10px 12px", color: "#4B5563", fontFamily: "monospace" }}>token</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>Essential</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>Authentication &amp; session management</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>7 days</td>
+                        <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)", fontFamily: "monospace" }}>token</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>Essential</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>Authentication &amp; session management</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>7 days</td>
                         </tr>
-                        <tr style={{ borderBottom: "1px solid #F3F4F6" }}>
-                            <td style={{ padding: "10px 12px", color: "#4B5563", fontFamily: "monospace" }}>user_prefs</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>Functional</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>User preference storage</td>
-                            <td style={{ padding: "10px 12px", color: "#4B5563" }}>30 days</td>
+                        <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)", fontFamily: "monospace" }}>user_prefs</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>Functional</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>User preference storage</td>
+                            <td style={{ padding: "10px 12px", color: "var(--muted-foreground)" }}>30 days</td>
                         </tr>
                     </tbody>
                 </table>
@@ -100,7 +100,7 @@ export default function CookiePolicyPage() {
             <h2 style={headingStyle}>6. Contact Us</h2>
             <p style={paraStyle}>
                 If you have questions about our use of cookies, please contact us at{" "}
-                <a href="mailto:contact@hireheaven.com" style={{ color: "#3B82F6" }}>contact@hireheaven.com</a>.
+                <a href="mailto:contact@hireheaven.com" style={{ color: "var(--primary)" }}>contact@hireheaven.com</a>.
             </p>
         </>
     );

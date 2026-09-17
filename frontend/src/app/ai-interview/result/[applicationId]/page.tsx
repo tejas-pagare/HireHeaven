@@ -8,8 +8,10 @@ import { Card } from "@/components/ui/card";
 import { Mic, ArrowLeft, Brain, CheckCircle, XCircle } from "lucide-react";
 import Loading from "@/components/loading";
 import Link from "next/link";
+import { BACKEND_URL } from "@/lib/config";
+import MarkdownText from "@/components/markdown-text";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+
 
 interface InterviewResult {
   id: number;
@@ -39,7 +41,7 @@ export default function AiInterviewResultPage() {
         return;
       }
       try {
-        const { data } = await axios.get(
+        const { data } = await axios.get<InterviewResult>(
           `${BACKEND_URL}/api/ai/interview/result/${applicationId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -79,7 +81,7 @@ export default function AiInterviewResultPage() {
   const { evaluation, transcript } = result;
   
   // Score color logic
-  const scoreColor = evaluation.score >= 80 ? "text-green-600" : evaluation.score >= 60 ? "text-yellow-600" : "text-red-600";
+  const scoreColor = evaluation.score >= 80 ? "text-success-subtle-foreground" : evaluation.score >= 60 ? "text-warning-subtle-foreground" : "text-destructive-subtle-foreground";
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-5xl">
@@ -88,7 +90,7 @@ export default function AiInterviewResultPage() {
       </Link>
       
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-xl flex items-center justify-center">
+        <div className="w-12 h-12 bg-success-subtle text-success-subtle-foreground rounded-xl flex items-center justify-center">
           <Mic size={24} />
         </div>
         <div>
@@ -119,12 +121,12 @@ export default function AiInterviewResultPage() {
           </Card>
 
           <Card className="p-6">
-            <h3 className="font-semibold text-green-600 flex items-center gap-2 mb-4">
+            <h3 className="font-semibold text-success-subtle-foreground flex items-center gap-2 mb-4">
               <CheckCircle size={16} /> Strengths
             </h3>
             <ul className="space-y-3">
               {evaluation.strengths.map((str, i) => (
-                <li key={i} className="text-sm bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-lg border border-green-100 dark:border-green-900/50 text-green-800 dark:text-green-300">
+                <li key={i} className="text-sm bg-success-subtle px-3 py-2 rounded-lg border border-success/25 text-success-subtle-foreground">
                   {str}
                 </li>
               ))}
@@ -132,12 +134,12 @@ export default function AiInterviewResultPage() {
           </Card>
 
           <Card className="p-6">
-            <h3 className="font-semibold text-red-600 flex items-center gap-2 mb-4">
+            <h3 className="font-semibold text-destructive-subtle-foreground flex items-center gap-2 mb-4">
               <XCircle size={16} /> Weaknesses
             </h3>
             <ul className="space-y-3">
               {evaluation.weaknesses.map((wk, i) => (
-                <li key={i} className="text-sm bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg border border-red-100 dark:border-red-900/50 text-red-800 dark:text-red-300">
+                <li key={i} className="text-sm bg-destructive-subtle px-3 py-2 rounded-lg border border-destructive/25 text-destructive-subtle-foreground">
                   {wk}
                 </li>
               ))}
@@ -158,7 +160,11 @@ export default function AiInterviewResultPage() {
                      <p className="text-sm font-semibold mb-1 opacity-70 uppercase tracking-wider text-[10px]">
                        {msg.role === 'assistant' ? 'AI Interviewer' : 'Candidate'}
                      </p>
-                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                     {msg.role === 'assistant' ? (
+                       <MarkdownText content={msg.text} className="text-sm" />
+                     ) : (
+                       <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                     )}
                    </div>
                  </div>
                ))}

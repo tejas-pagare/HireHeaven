@@ -9,9 +9,10 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { MessageSquare, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { BACKEND_URL } from "@/lib/config";
 
-const chat_service =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const chat_service = BACKEND_URL;
 
 const ChatPage = () => {
     const { user, isAuth, loading } = useAppData();
@@ -114,7 +115,7 @@ const ChatPage = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[80vh]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
         );
     }
@@ -128,7 +129,7 @@ const ChatPage = () => {
                 </p>
                 <Link
                     href="/login"
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-[var(--primary-hover)] transition-colors"
                 >
                     Sign In
                 </Link>
@@ -137,26 +138,24 @@ const ChatPage = () => {
     }
 
     return (
-        <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="mx-auto max-w-3xl px-4 py-8">
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl font-bold flex items-center gap-2">
-                    <MessageSquare className="text-blue-500" />
+                    <MessageSquare className="text-primary" />
                     Messages
                 </h1>
             </div>
 
             {/* Search */}
             <div className="relative mb-6">
-                <Search
-                    size={18}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                />
-                <input
+                <Search className="icon-style" />
+                <Input
                     type="text"
-                    placeholder="Search conversations..."
+                    placeholder="Search conversations…"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
+                    className="h-11 pl-10"
+                    aria-label="Search conversations"
                 />
             </div>
 
@@ -199,14 +198,14 @@ const ChatPage = () => {
                                 href={`/chat/${conv.conversation_id}`}
                             >
                                 <div
-                                    className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all hover:bg-accent/50 hover:shadow-sm ${conv.unread_count > 0
-                                        ? "bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800"
+                                    className={`flex cursor-pointer items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md ${conv.unread_count > 0
+                                        ? "border-primary/30 bg-brand-subtle/40"
                                         : ""
                                         }`}
                                 >
-                                    <Avatar className="h-12 w-12 ring-2 ring-offset-2 ring-offset-background ring-blue-500/20">
+                                    <Avatar className="h-12 w-12 ring-2 ring-offset-2 ring-offset-background ring-ring/20">
                                         <AvatarImage src={otherPic || ""} alt={otherName} />
-                                        <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 font-semibold">
+                                        <AvatarFallback className="bg-brand-subtle text-brand-subtle-foreground font-semibold">
                                             {otherName.charAt(0).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
@@ -238,7 +237,7 @@ const ChatPage = () => {
                                                 {conv.last_message || "No messages yet"}
                                             </p>
                                             {conv.unread_count > 0 && (
-                                                <span className="ml-2 bg-blue-500 text-white text-xs rounded-full h-5 min-w-[20px] px-1.5 flex items-center justify-center font-bold">
+                                                <span className="ml-2 bg-primary text-primary-foreground text-xs rounded-full h-5 min-w-[20px] px-1.5 flex items-center justify-center font-bold">
                                                     {conv.unread_count}
                                                 </span>
                                             )}

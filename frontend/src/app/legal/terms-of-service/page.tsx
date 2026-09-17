@@ -6,18 +6,18 @@ export const metadata = {
 };
 
 export default function TermsOfServicePage() {
-    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "#0F172A", marginTop: 32, marginBottom: 12 };
-    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "#4B5563", marginBottom: 16 };
+    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "var(--foreground)", marginTop: 32, marginBottom: 12 };
+    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "var(--muted-foreground)", marginBottom: 16 };
 
     return (
         <>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#3B82F6", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
                 Legal
             </p>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: "#0F172A", marginBottom: 8 }}>Terms of Service</h1>
-            <p style={{ fontSize: 14, color: "#9CA3AF", marginBottom: 32 }}>Last updated: February 22, 2025</p>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: "var(--foreground)", marginBottom: 8 }}>Terms of Service</h1>
+            <p style={{ fontSize: 14, color: "var(--muted-foreground)", marginBottom: 32 }}>Last updated: February 22, 2025</p>
 
-            <hr style={{ border: "none", borderTop: "1px solid #E5E7EB", marginBottom: 32 }} />
+            <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 32 }} />
 
             <p style={paraStyle}>
                 Welcome to HireHeaven. By accessing or using our platform, you agree to be bound by these Terms of Service.
@@ -104,7 +104,7 @@ export default function TermsOfServicePage() {
             <h2 style={headingStyle}>11. Contact Us</h2>
             <p style={paraStyle}>
                 For questions about these Terms of Service, contact us at{" "}
-                <a href="mailto:contact@hireheaven.com" style={{ color: "#3B82F6" }}>contact@hireheaven.com</a>.
+                <a href="mailto:contact@hireheaven.com" style={{ color: "var(--primary)" }}>contact@hireheaven.com</a>.
             </p>
         </>
     );

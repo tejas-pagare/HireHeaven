@@ -50,7 +50,7 @@ const Footer = () => {
                         <div style={{ marginBottom: 16 }}>
                             <span style={{ fontSize: 22, fontWeight: 700 }}>
                                 <span style={{ color: "var(--rl-primary)" }}>Hire</span>
-                                <span style={{ color: "#EF4444" }}>Heaven</span>
+                                <span className="hh-wordmark">Heaven</span>
                             </span>
                         </div>
                         <p className="rl-small" style={{ color: "var(--rl-text-muted)", marginBottom: 20, maxWidth: 260 }}>

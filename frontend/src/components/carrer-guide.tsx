@@ -92,7 +92,7 @@ const CarrerGuide = () => {
               <>
                 <DialogHeader>
                   <DialogTitle className="text-2xl flex items-center gap-2">
-                    <Sparkles className="text-blue-600" />
+                    <Sparkles className="text-primary" />
                     Tell us about your skills
                   </DialogTitle>
                   <DialogDescription>
@@ -126,12 +126,12 @@ const CarrerGuide = () => {
                         {skills.map((s) => (
                           <div
                             key={s}
-                            className="inline-flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800"
+                            className="inline-flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full bg-brand-subtle border border-primary/25"
                           >
                             <span className="text-sm font-medium">{s}</span>
                             <button
                               onClick={() => removeSkill(s)}
-                              className="h-5 w-5 rounded-full bg-red-500 text-white flex in-checked: justify-center"
+                              className="h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex in-checked: justify-center"
                             >
                               <X size={13} />
                             </button>
@@ -163,17 +163,17 @@ const CarrerGuide = () => {
               <>
                 <DialogHeader>
                   <DialogTitle className="text-2xl flex items-center gap-2">
-                    <Target className="text-blue-600" />
+                    <Target className="text-primary" />
                     Your Personlized Carrer Guide
                   </DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-6 py-4">
                   {/* summary */}
-                  <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-b-blue-200 dark:border-b-blue-800">
+                  <div className="p-4 rounded-lg bg-brand-subtle border border-b-blue-200 dark:border-b-blue-800">
                     <div className="flex items-start gap-3">
                       <Lightbulb
-                        className="text-blue-600 mt-1 shrink-0"
+                        className="text-primary mt-1 shrink-0"
                         size={20}
                       />
                       <div>
@@ -188,13 +188,13 @@ const CarrerGuide = () => {
                   {/* job options */}
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                      <Briefcase size={20} className="text-blue-600" />
+                      <Briefcase size={20} className="text-primary" />
                       Recomended Carrer Paths
                     </h3>
                     <div className="space-y-3">
                       {response.jobOptions.map((job, index) => (
                         <div
-                          className="p-4 rounded-lg border hover:border-blue-500 transition-colors"
+                          className="p-4 rounded-lg border hover:border-primary/25 transition-colors"
                           key={index}
                         >
                           <h4 className="font-semibold text-base mb-2">
@@ -223,13 +223,13 @@ const CarrerGuide = () => {
                   {/* Skills to learn */}
                   <div>
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                      <TrendingUp size={20} className="text-blue-600" />
+                      <TrendingUp size={20} className="text-primary" />
                       Skills to Enhance Your Carrer
                     </h3>
                     <div className="space-y-4">
                       {response.skillsToLearn.map((category, index) => (
                         <div className="space-y-2" key={index}>
-                          <h4 className="font-semibold text-sm text-blue-600">
+                          <h4 className="font-semibold text-sm text-primary">
                             {category.category}
                           </h4>
                           <div className="space-y-2">
@@ -260,9 +260,9 @@ const CarrerGuide = () => {
                   </div>
 
                   {/* Learning approch */}
-                  <div className="p-4 rounded-lg border bg-blue-950/20 dark:bg-red-950/20">
+                  <div className="p-4 rounded-lg border bg-brand-subtle/40">
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                      <BookOpen size={20} className="text-blue-600" />
+                      <BookOpen size={20} className="text-primary" />
                       {response?.learningApproach?.title}
                     </h3>
 
@@ -273,7 +273,7 @@ const CarrerGuide = () => {
                             key={index}
                             className="text-sm flex items-start gap-2"
                           >
-                            <span className="text-blue-600 mt-0.5">•</span>
+                            <span className="text-primary mt-0.5">•</span>
                             <span
                               className="opacity-90"
                               dangerouslySetInnerHTML={{ __html: point }}

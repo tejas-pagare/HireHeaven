@@ -13,7 +13,7 @@ export default function DiscoverPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+            <Loader2 className="animate-spin h-8 w-8 text-primary" />
         </div>
     );
 }

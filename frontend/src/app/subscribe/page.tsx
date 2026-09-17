@@ -67,7 +67,8 @@ const SubscriptionPage = () => {
         }
       },
       theme: {
-        color: "#F37254",
+        // Razorpay needs a literal hex — keep in sync with --primary (blue 600)
+        color: "#2563EB",
       },
     };
     if (!razorpayLoaded) console.log("some thing went wrong with script");
@@ -77,30 +78,30 @@ const SubscriptionPage = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-secondary/30">
+    <div className="hh-page flex items-center justify-center px-4 py-12">
       <Card className="max-w-md w-full p-8 text-center shadow-lg border-2">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 mb-4">
-          <Crown size={32} className="text-blue-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-subtle mb-4">
+          <Crown size={32} className="text-primary" />
         </div>
 
         <h1 className="text-3xl font-bold mb-2">Premium Subscription</h1>
         <p className="text-sm opacity-70 mb-6">Boost your job search</p>
 
         <div className="mb-6">
-          <p className="text-5xl font-bold text-blue-600">₹ 119</p>
+          <p className="text-5xl font-bold text-primary">₹ 119</p>
           <p className="text-sm opacity-60 mt-1">Per month</p>
         </div>
 
         <div className="space-y-3 mb-8 text-left">
           <div className="flex items-start gap-3">
-            <CheckCircle size={20} className="text-green-600 shrink-0 mt-0.5" />
+            <CheckCircle size={20} className="text-success-subtle-foreground shrink-0 mt-0.5" />
             <p className="text-sm">
               Your application will be shown first to recruiters
             </p>
           </div>
 
           <div className="flex items-start gap-3">
-            <CheckCircle size={20} className="text-green-600 shrink-0 mt-0.5" />
+            <CheckCircle size={20} className="text-success-subtle-foreground shrink-0 mt-0.5" />
             <p className="text-sm">Priority support</p>
           </div>
         </div>

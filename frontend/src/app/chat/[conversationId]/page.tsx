@@ -10,9 +10,9 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { ArrowLeft, Send, Briefcase, Building2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BACKEND_URL } from "@/lib/config";
 
-const chat_service =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const chat_service = BACKEND_URL;
 
 const ChatConversationPage = () => {
     const params = useParams();
@@ -257,7 +257,7 @@ const ChatConversationPage = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[80vh]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
         );
     }
@@ -281,9 +281,9 @@ const ChatConversationPage = () => {
                     <ArrowLeft size={20} />
                 </Link>
 
-                <Avatar className="h-10 w-10 ring-2 ring-offset-1 ring-offset-background ring-blue-500/20">
+                <Avatar className="h-10 w-10 ring-2 ring-offset-1 ring-offset-background ring-ring/20">
                     <AvatarImage src={otherPic || ""} alt={otherName || ""} />
-                    <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 font-semibold">
+                    <AvatarFallback className="bg-brand-subtle text-brand-subtle-foreground font-semibold">
                         {otherName?.charAt(0).toUpperCase() || "?"}
                     </AvatarFallback>
                 </Avatar>
@@ -300,8 +300,8 @@ const ChatConversationPage = () => {
                 </div>
 
                 {isConnected && (
-                    <div className="flex items-center gap-1 text-xs text-green-500">
-                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <div className="flex items-center gap-1 text-xs text-success">
+                        <div className="h-2 w-2 rounded-full bg-success animate-pulse"></div>
                         Live
                     </div>
                 )}
@@ -311,8 +311,8 @@ const ChatConversationPage = () => {
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
                 {messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground">
-                        <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
-                            <Send size={24} className="text-blue-500" />
+                        <div className="h-16 w-16 rounded-full bg-brand-subtle flex items-center justify-center">
+                            <Send size={24} className="text-primary" />
                         </div>
                         <p className="text-center">
                             No messages yet. Say hello! 👋
@@ -342,7 +342,7 @@ const ChatConversationPage = () => {
                                     >
                                         <div
                                             className={`max-w-[75%] px-4 py-2.5 rounded-2xl ${isOwn
-                                                ? "bg-blue-500 text-white rounded-br-md"
+                                                ? "bg-primary text-primary-foreground rounded-br-md"
                                                 : "bg-muted rounded-bl-md"
                                                 }`}
                                         >
@@ -355,7 +355,7 @@ const ChatConversationPage = () => {
                                                 {msg.content}
                                             </p>
                                             <div
-                                                className={`flex items-center justify-end gap-1 mt-1 ${isOwn ? "text-blue-100" : "text-muted-foreground"
+                                                className={`flex items-center justify-end gap-1 mt-1 ${isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
                                                     }`}
                                             >
                                                 <span className="text-[10px]">
@@ -406,12 +406,12 @@ const ChatConversationPage = () => {
                         value={newMessage}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        className="flex-1 px-4 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
+                        className="flex-1 px-4 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-ring/40 transition-all"
                     />
                     <button
                         onClick={handleSend}
                         disabled={!newMessage.trim() || sending}
-                        className="p-3 rounded-xl bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-md active:scale-95"
+                        className="p-3 rounded-xl bg-primary text-primary-foreground hover:bg-[var(--primary-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-md active:scale-95"
                     >
                         <Send size={20} />
                     </button>
