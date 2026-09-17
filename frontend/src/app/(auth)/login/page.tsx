@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loading from "@/components/loading";
+import AuthShell from "@/components/auth-shell";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -54,81 +55,72 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            Welcome back to HireHeaven
-          </h1>
-          <p className="text-sm opacity-70">Sign in to continue your journey</p>
-        </div>
-        <div className="border border-gray-400 rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-          <form onSubmit={submitHandler} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email Address
-              </Label>
-              <div className="relative">
-                <Mail className="icon-style" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="pl-10 h-11"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">
-                Password
-              </Label>
-              <div className="relative">
-                <Lock className="icon-style" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="pl-10 h-11"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end">
-              <Link
-                href={"/forgot"}
-                className="text-sm text-blue-500 hover:underline transition-all"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
-            <Button disabled={btnLoading} className="w-full">
-              {btnLoading ? "Signing in..." : "Sign In"}
-              <ArrowRight size={18} />
-            </Button>
-          </form>
-
-          <div className="mt-6 pt-6 border-t border-gray-400">
-            <p className="text-center text-sm">
-              Don't have an account?{" "}
-              <Link
-                href={"/register"}
-                className="text-blue-500 font-medium hover:underline transition-all"
-              >
-                Create a new account?
-              </Link>
-            </p>
+    <AuthShell
+      title="Welcome back"
+      subtitle="Sign in to continue your journey"
+      footer={
+        <>
+          <span className="text-muted-foreground">
+            Don&apos;t have an account?{" "}
+          </span>
+          <Link
+            href="/register"
+            className="font-semibold text-primary hover:underline"
+          >
+            Create one
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={submitHandler} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email address</Label>
+          <div className="relative">
+            <Mail className="icon-style" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="h-11 pl-10"
+            />
           </div>
         </div>
-      </div>
-    </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              href="/forgot"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <div className="relative">
+            <Lock className="icon-style" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              className="h-11 pl-10"
+            />
+          </div>
+        </div>
+
+        <Button disabled={btnLoading} size="lg" className="w-full">
+          {btnLoading ? "Signing in…" : "Sign in"}
+          <ArrowRight size={18} />
+        </Button>
+      </form>
+    </AuthShell>
   );
 };
 

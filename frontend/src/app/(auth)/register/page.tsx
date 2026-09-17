@@ -6,11 +6,38 @@ import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Briefcase, Lock, Mail } from "lucide-react";
+import {
+  ArrowRight,
+  Briefcase,
+  FileText,
+  Lock,
+  Mail,
+  Phone,
+  Search,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Loading from "@/components/loading";
+import AuthShell from "@/components/auth-shell";
+import { cn } from "@/lib/utils";
+
+const roles = [
+  {
+    value: "jobseeker",
+    label: "Find a job",
+    description: "Browse roles and apply",
+    icon: <Search size={20} />,
+  },
+  {
+    value: "recruiter",
+    label: "Hire talent",
+    description: "Post roles and review applicants",
+    icon: <Briefcase size={20} />,
+  },
+] as const;
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -71,172 +98,186 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Join HireHeaven</h1>
-          <p className="text-sm opacity-70">
-            Create your account to start a new journey
-          </p>
-        </div>
-        <div className="border border-gray-400 rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-          <form onSubmit={submitHandler} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="role" className="text-sm font-medium">
-                I want to
-              </Label>
-              <div className="relative">
-                <Briefcase className="icon-style" />
-                <select
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full h-11 pl-10 pr-4 border-2 border-gray-300 rounded-md bg-transparent "
-                  required
+    <AuthShell
+      wide
+      title="Join HireHeaven"
+      subtitle="Create your account to start a new journey"
+      footer={
+        <>
+          <span className="text-muted-foreground">
+            Already have an account?{" "}
+          </span>
+          <Link
+            href="/login"
+            className="font-semibold text-primary hover:underline"
+          >
+            Sign in
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={submitHandler} className="space-y-6">
+        {/* Role picker — cards read better than a bare <select> here */}
+        <fieldset className="space-y-3">
+          <legend className="mb-3 text-sm font-medium">I want to</legend>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {roles.map((option) => {
+              const selected = role === option.value;
+              return (
+                <button
+                  type="button"
+                  key={option.value}
+                  onClick={() => setRole(option.value)}
+                  aria-pressed={selected}
+                  aria-label={`${option.label} — ${option.description}`}
+                  className={cn(
+                    "flex items-start gap-3 rounded-xl border p-4 text-left transition-all",
+                    "focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
+                    selected
+                      ? "border-primary bg-brand-subtle shadow-soft"
+                      : "border-border hover:border-primary/40 hover:bg-accent/50"
+                  )}
                 >
-                  <option value="">Select your role</option>
-                  <option value="jobseeker">Find a Job</option>
-                  <option value="recruiter">Hire Talent</option>
-                </select>
+                  <span
+                    className={cn(
+                      "flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors",
+                      selected
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
+                    )}
+                  >
+                    {option.icon}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-semibold">{option.label}</span>
+                    <span className="block text-xs text-muted-foreground">
+                      {option.description}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        {role && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 space-y-5 border-t pt-6 duration-300">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full name</Label>
+              <div className="relative">
+                <User className="icon-style" />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  autoComplete="name"
+                  className="h-11 pl-10"
+                />
               </div>
             </div>
 
-            {role && (
-              <div className="space-y-5 animate-in fade-in duration-300">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email address</Label>
+              <div className="relative">
+                <Mail className="icon-style" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  className="h-11 pl-10"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Lock className="icon-style" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                  className="h-11 pl-10"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone number</Label>
+              <div className="relative">
+                <Phone className="icon-style" />
+                <Input
+                  id="phone"
+                  type="tel"
+                  inputMode="tel"
+                  placeholder="+91 1234567890"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                  autoComplete="tel"
+                  className="h-11 pl-10"
+                />
+              </div>
+            </div>
+
+            {role === "jobseeker" && (
+              <div className="space-y-5 border-t pt-5">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium">
-                    Full Name
+                  <Label htmlFor="resume">
+                    <FileText size={15} className="text-muted-foreground" />
+                    Resume (PDF)
                   </Label>
-                  <div className="relative">
-                    <Mail className="icon-style" />
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className="pl-10 h-11"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email Address
-                  </Label>
-                  <div className="relative">
-                    <Mail className="icon-style" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-10 h-11"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Lock className="icon-style" />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="********"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pl-10 h-11"
-                    />
-                  </div>
+                  <Input
+                    id="resume"
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setResume(e.target.files[0]);
+                      }
+                    }}
+                    className="h-11 cursor-pointer py-2.5 file:mr-3 file:rounded-md file:bg-brand-subtle file:px-3 file:py-1 file:font-semibold file:text-brand-subtle-foreground"
+                  />
+                  {resume && (
+                    <p className="text-xs text-muted-foreground">
+                      Selected: {resume.name}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">
-                    Phone Number
-                  </Label>
-                  <div className="relative">
-                    <Lock className="icon-style" />
-                    <Input
-                      id="phone"
-                      type="number"
-                      placeholder="+91 1234567890"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      className="pl-10 h-11"
-                    />
-                  </div>
+                  <Label htmlFor="bio">Bio</Label>
+                  <Textarea
+                    id="bio"
+                    placeholder="Tell us about yourself — your experience, what you're looking for…"
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    required
+                    rows={3}
+                  />
                 </div>
-
-                {role === "jobseeker" && (
-                  <div className="space-y-5 pt-4 border-t border-gray-400">
-                    <div className="space-y-2">
-                      <Label htmlFor="resume" className="text-sm font-medium">
-                        Resume (PDF)
-                      </Label>
-                      <div className="relative">
-                        <Lock className="icon-style" />
-                        <Input
-                          id="resume"
-                          type="file"
-                          accept="application/pdf"
-                          onChange={(e) => {
-                            if (e.target.files && e.target.files[0]) {
-                              setResume(e.target.files[0]);
-                            }
-                          }}
-                          className="h-11 cursor-pointer"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="bio" className="text-sm font-medium">
-                        Bio
-                      </Label>
-                      <div className="relative">
-                        <Lock className="icon-style" />
-                        <Input
-                          id="bio"
-                          type="text"
-                          placeholder="Tell us about yourself..."
-                          value={bio}
-                          onChange={(e) => setBio(e.target.value)}
-                          required
-                          className="pl-10 h-11"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <Button disabled={btnLoading} className="w-full">
-                  {btnLoading ? "Please Wait..." : "Register"}
-                  <ArrowRight size={18} />
-                </Button>
               </div>
             )}
-          </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-400">
-            <p className="text-center text-sm">
-              Already have an account{" "}
-              <Link
-                href={"/register"}
-                className="text-blue-500 font-medium hover:underline transition-all"
-              >
-                Login?
-              </Link>
-            </p>
+            <Button disabled={btnLoading} size="lg" className="w-full">
+              {btnLoading ? "Creating account…" : "Create account"}
+              <ArrowRight size={18} />
+            </Button>
           </div>
-        </div>
-      </div>
-    </div>
+        )}
+      </form>
+    </AuthShell>
   );
 };
 
