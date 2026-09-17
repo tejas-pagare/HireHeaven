@@ -5,6 +5,7 @@ import app from "./app.js";
 import { initDB } from "./db.js";
 import redisClient from "./redis.js";
 import { setupSocket } from "./socket/handlers.js";
+import { setupAIInterviewSocket } from "./socket/ai-interview.js";
 import { warmUpEmbeddings } from "./utils/embedding.js";
 
 dotenv.config();
@@ -36,6 +37,7 @@ async function start() {
 
   // ── 4. Setup Socket Handlers ──────────────────────────────────────────────────
   setupSocket(io);
+  setupAIInterviewSocket(io);
 
   // ── 5. Start Server ───────────────────────────────────────────────────────────
   httpServer.listen(PORT, () => {
