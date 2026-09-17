@@ -49,7 +49,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // ── Helper: call Groq and parse JSON response ────────────────────────────────
 async function askGroq(prompt: string): Promise<string> {
   const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-120b",
     messages: [
       {
         role: "user",
