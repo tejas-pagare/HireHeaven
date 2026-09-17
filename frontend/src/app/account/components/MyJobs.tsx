@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { job_service } from "@/context/AppContext";
 import { Company as CompanyType, Job } from "@/type";
 import Loading from "@/components/loading";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import SectionHeader from "./section-header";
 import { Button } from "@/components/ui/button";
 import {
     Table,
@@ -99,25 +99,19 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
     };
 
     return (
-        <Card className="shadow-lg border-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                    <CardTitle className="text-2xl">My Jobs</CardTitle>
-                    <CardDescription>
-                        All jobs posted across your companies
-                    </CardDescription>
-                </div>
-                {/* Link to first company page where they can create a job,
-                    or show a tooltip if no companies exist */}
-            </CardHeader>
-            <CardContent>
+        <div className="mx-auto w-full max-w-6xl">
+            <SectionHeader
+                title="My jobs"
+                description="All jobs posted across your companies"
+            />
+            <div>
                 {loading ? (
                     <div className="flex justify-center py-20">
                         <Loading />
                     </div>
                 ) : jobs.length > 0 ? (
                     <div className="space-y-4">
-                        <div className="rounded-md border overflow-x-auto">
+                        <div className="overflow-x-auto rounded-xl border bg-card">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -199,12 +193,12 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                                             {/* Status */}
                                             <TableCell>
                                                 {job.is_active ? (
-                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-green-50 text-green-600 dark:bg-green-900/30">
+                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-success-subtle text-success-subtle-foreground">
                                                         <CheckCircle size={12} />
                                                         Active
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-500 dark:bg-gray-800">
+                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
                                                         <XCircle size={12} />
                                                         Inactive
                                                     </span>
@@ -224,7 +218,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            className="h-8 gap-1 text-blue-600"
+                                                            className="h-8 gap-1 text-primary"
                                                             title="Preview Job"
                                                         >
                                                             <Eye size={14} />
@@ -237,7 +231,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            className="h-8 gap-1 text-purple-600"
+                                                            className="h-8 gap-1 text-brand-subtle-foreground"
                                                             title="View Applicants"
                                                             onClick={onViewApplicants}
                                                         >
@@ -249,7 +243,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                                                             <Button
                                                                 variant="ghost"
                                                                 size="sm"
-                                                                className="h-8 gap-1 text-purple-600"
+                                                                className="h-8 gap-1 text-brand-subtle-foreground"
                                                                 title="View on Company Page"
                                                             >
                                                                 <Users size={14} />
@@ -262,7 +256,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        className="h-8 w-8 text-red-500"
+                                                        className="h-8 w-8 text-destructive"
                                                         title="Delete Job"
                                                         onClick={() => deleteJob(job.job_id)}
                                                     >
@@ -282,7 +276,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                     </div>
                 ) : (
                     <div className="text-center py-12">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
                             <Briefcase size={32} className="opacity-40" />
                         </div>
                         <p className="text-muted-foreground mb-4">
@@ -296,7 +290,7 @@ export default function MyJobs({ onViewApplicants }: { onViewApplicants?: () => 
                         </Link>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }
