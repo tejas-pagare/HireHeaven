@@ -27,17 +27,17 @@ export function TagInput({ tags, setTags }: TagInputProps) {
     };
 
     return (
-        <div className="flex flex-wrap items-center gap-2 p-2 border rounded-md focus-within:ring-2 focus-within:ring-blue-500">
+        <div className="flex flex-wrap items-center gap-2 p-2 border rounded-md focus-within:ring-2 focus-within:ring-ring">
             {tags.map((tag, index) => (
                 <span
                     key={index}
-                    className="flex items-center gap-1 px-2 py-1 text-sm bg-blue-100 text-blue-800 rounded-full"
+                    className="flex items-center gap-1 px-2 py-1 text-sm bg-brand-subtle text-brand-subtle-foreground rounded-full"
                 >
                     {tag}
                     <button
                         type="button"
                         onClick={() => removeTag(tag)}
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-primary hover:text-brand-subtle-foreground"
                     >
                         <X size={14} />
                     </button>
