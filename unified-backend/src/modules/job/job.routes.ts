@@ -12,8 +12,12 @@ import {
   getSingleJob,
   getAllApplicationsForJob,
   updateApplication,
+  getJobRounds,
+  addJobRound,
+  deleteJobRound,
+  getApplicationTimeline,
 } from "./job.controller.js";
-import { scheduleInterview, evaluateInterview } from "./interview.controller.js";
+import { scheduleInterview, evaluateInterview, cancelInterview } from "./interview.controller.js";
 import { createQuiz, getQuizByJob, submitQuizAttempt } from "./quiz.controller.js";
 import { getJobSeekerAnalytics } from "./analytics.controller.js";
 
@@ -31,9 +35,15 @@ router.put("/:jobId", isAuth, updateJob);
 router.get("/", getAllActiveJobs);
 router.get("/:jobId", getSingleJob);
 
+// ── Job Rounds ────────────────────────────────────────────────────────────────
+router.get("/:jobId/rounds", getJobRounds);
+router.post("/:jobId/rounds", isAuth, addJobRound);
+router.delete("/:jobId/rounds/:roundId", isAuth, deleteJobRound);
+
 // ── Applications ──────────────────────────────────────────────────────────────
 router.get("/:jobId/applications", isAuth, getAllApplicationsForJob);
 router.put("/application/:id", isAuth, updateApplication);
+router.get("/application/:applicationId/timeline", isAuth, getApplicationTimeline);
 
 // ── Quiz ──────────────────────────────────────────────────────────────────────
 router.post("/quiz", isAuth, createQuiz);
@@ -43,6 +53,7 @@ router.post("/quiz/submit", isAuth, submitQuizAttempt);
 // ── Interview ─────────────────────────────────────────────────────────────────
 router.post("/interview", isAuth, scheduleInterview);
 router.post("/interview/evaluate", isAuth, evaluateInterview);
+router.delete("/interview/:interviewId", isAuth, cancelInterview);
 
 // ── Analytics ─────────────────────────────────────────────────────────────────
 router.get("/analytics/jobseeker", isAuth, getJobSeekerAnalytics);
