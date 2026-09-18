@@ -8,6 +8,7 @@ import { Company as CompanyType, Job } from "@/type";
 import Loading from "@/components/loading";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
     Building2,
     ChevronDown,
@@ -17,6 +18,7 @@ import {
     Clock,
     Eye,
     FileText,
+    ListChecks,
     MessageSquare,
     Users,
     Brain,
@@ -35,7 +37,16 @@ interface ApplicationItem {
     applied_at: string;
     subscribed: boolean;
     ai_interview_completed?: boolean;
+    ai_interview_recommendation?: "Strong Yes" | "Yes" | "Borderline" | "No" | null;
+    ai_interview_manual_review?: boolean;
 }
+
+const AI_RECOMMENDATION_BADGE_STYLES: Record<string, string> = {
+    "Strong Yes": "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400",
+    Yes: "bg-teal-50 text-teal-700 dark:bg-teal-900/20 dark:text-teal-400",
+    Borderline: "bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
+    No: "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400",
+};
 
 interface JobWithApps {
     job: Job;
@@ -260,48 +271,25 @@ export default function Applicants() {
         }
     };
 
-    const getStatusConfig = (status: string) => {
-        switch (status) {
-            case "Hired":
-                return {
-                    icon: CheckCircle2,
-                    color: "text-green-600",
-                    bg: "bg-green-50 dark:bg-green-900/20",
-                    border: "border-green-200 dark:border-green-800",
-                    label: "Hired",
-                };
-            case "Rejected":
-                return {
-                    icon: XCircle,
-                    color: "text-red-600",
-                    bg: "bg-red-50 dark:bg-red-900/20",
-                    border: "border-red-200 dark:border-red-800",
-                    label: "Rejected",
-                };
-            default:
-                return {
-                    icon: Clock,
-                    color: "text-yellow-600",
-                    bg: "bg-yellow-50 dark:bg-yellow-900/20",
-                    border: "border-yellow-200 dark:border-yellow-800",
-                    label: "Submitted",
-                };
-        }
+    const STATUS_CONFIG: Record<string, { icon: typeof Clock; color: string; bg: string; border: string; label: string }> = {
+        Submitted: { icon: Clock, color: "text-gray-600", bg: "bg-gray-50 dark:bg-gray-800/40", border: "border-gray-200 dark:border-gray-700", label: "Submitted" },
+        Screening: { icon: Clock, color: "text-blue-600", bg: "bg-blue-50 dark:bg-blue-900/20", border: "border-blue-200 dark:border-blue-800", label: "Screening" },
+        Interview: { icon: Clock, color: "text-purple-600", bg: "bg-purple-50 dark:bg-purple-900/20", border: "border-purple-200 dark:border-purple-800", label: "Interview" },
+        Assignment: { icon: Clock, color: "text-amber-600", bg: "bg-amber-50 dark:bg-amber-900/20", border: "border-amber-200 dark:border-amber-800", label: "Assignment" },
+        "Final Review": { icon: Clock, color: "text-indigo-600", bg: "bg-indigo-50 dark:bg-indigo-900/20", border: "border-indigo-200 dark:border-indigo-800", label: "Final Review" },
+        Offer: { icon: Clock, color: "text-teal-600", bg: "bg-teal-50 dark:bg-teal-900/20", border: "border-teal-200 dark:border-teal-800", label: "Offer" },
+        Hired: { icon: CheckCircle2, color: "text-green-600", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-200 dark:border-green-800", label: "Hired" },
+        Rejected: { icon: XCircle, color: "text-red-600", bg: "bg-red-50 dark:bg-red-900/20", border: "border-red-200 dark:border-red-800", label: "Rejected" },
     };
 
+    const getStatusConfig = (status: string) => STATUS_CONFIG[status] || STATUS_CONFIG.Submitted;
+
     const groupByStatus = (apps: ApplicationItem[]) => {
-        const groups: Record<string, ApplicationItem[]> = {
-            Submitted: [],
-            Hired: [],
-            Rejected: [],
-        };
+        const groups: Record<string, ApplicationItem[]> = {};
+        Object.keys(STATUS_CONFIG).forEach((s) => { groups[s] = []; });
 
         apps.forEach((app) => {
-            if (groups[app.status]) {
-                groups[app.status].push(app);
-            } else {
-                groups["Submitted"].push(app);
-            }
+            (groups[app.status] || groups["Submitted"]).push(app);
         });
 
         return groups;
@@ -438,50 +426,37 @@ export default function Applicants() {
                                                                         </div>
 
                                                                         {/* Table */}
-                                                                        <div className="rounded-lg border overflow-hidden">
-                                                                            <table className="w-full text-sm">
-                                                                                <thead>
-                                                                                    <tr className="bg-muted/50 border-b">
-                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
-                                                                                            #
-                                                                                        </th>
-                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
-                                                                                            Email
-                                                                                        </th>
-                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
-                                                                                            Applied
-                                                                                        </th>
-                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
-                                                                                            Premium
-                                                                                        </th>
-                                                                                        <th className="text-right px-4 py-2.5 font-medium text-muted-foreground">
-                                                                                            Actions
-                                                                                        </th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
+                                                                        <div className="rounded-lg border overflow-hidden overflow-x-auto">
+                                                                            <Table>
+                                                                                <TableHeader>
+                                                                                    <TableRow>
+                                                                                        <TableHead>#</TableHead>
+                                                                                        <TableHead>Email</TableHead>
+                                                                                        <TableHead>Applied</TableHead>
+                                                                                        <TableHead>Premium</TableHead>
+                                                                                        <TableHead className="text-right">Actions</TableHead>
+                                                                                    </TableRow>
+                                                                                </TableHeader>
+                                                                                <TableBody>
                                                                                     {apps.map((app, idx) => (
-                                                                                        <tr
-                                                                                            key={app.application_id}
-                                                                                            className="border-b last:border-b-0 hover:bg-muted/20 transition-colors"
-                                                                                        >
-                                                                                            <td className="px-4 py-3 text-muted-foreground">
+                                                                                        <TableRow key={app.application_id}>
+                                                                                            <TableCell className="text-muted-foreground">
                                                                                                 {idx + 1}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 <Link
                                                                                                     href={`/account/${app.applicant_id}`}
                                                                                                     className="text-blue-600 hover:underline font-medium"
                                                                                                 >
                                                                                                     {app.applicant_email}
                                                                                                 </Link>
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3 text-muted-foreground">
+                                                                                            </TableCell>
+                                                                                            <TableCell className="text-muted-foreground">
                                                                                                 {new Date(
                                                                                                     app.applied_at
                                                                                                 ).toLocaleDateString()}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 {app.subscribed ? (
                                                                                                     <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30">
                                                                                                         ⭐ Premium
@@ -491,8 +466,8 @@ export default function Applicants() {
                                                                                                         Free
                                                                                                     </span>
                                                                                                 )}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 <div className="flex items-center justify-end gap-1.5">
                                                                                                     {/* Resume */}
                                                                                                     {app.resume && (
@@ -529,6 +504,7 @@ export default function Applicants() {
                                                                                                     {app.ai_interview_completed && (
                                                                                                         <Link
                                                                                                             href={`/ai-interview/result/${app.application_id}`}
+                                                                                                            className="flex items-center gap-1"
                                                                                                         >
                                                                                                             <Button
                                                                                                                 variant="ghost"
@@ -538,6 +514,15 @@ export default function Applicants() {
                                                                                                             >
                                                                                                                 <Mic size={14} />
                                                                                                             </Button>
+                                                                                                            {app.ai_interview_manual_review ? (
+                                                                                                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                                                                                                                    Review
+                                                                                                                </span>
+                                                                                                            ) : app.ai_interview_recommendation ? (
+                                                                                                                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${AI_RECOMMENDATION_BADGE_STYLES[app.ai_interview_recommendation]}`}>
+                                                                                                                    {app.ai_interview_recommendation}
+                                                                                                                </span>
+                                                                                                            ) : null}
                                                                                                         </Link>
                                                                                                     )}
 
@@ -577,6 +562,20 @@ export default function Applicants() {
                                                                                                             />
                                                                                                         </Button>
                                                                                                     )}
+
+                                                                                                    {/* Full status + round timeline */}
+                                                                                                    <Link
+                                                                                                        href={`/jobs/${jobSection.job.job_id}/applicants/${app.application_id}`}
+                                                                                                    >
+                                                                                                        <Button
+                                                                                                            variant="ghost"
+                                                                                                            size="icon"
+                                                                                                            className="h-8 w-8 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                                                                                                            title="View Status"
+                                                                                                        >
+                                                                                                            <ListChecks size={14} />
+                                                                                                        </Button>
+                                                                                                    </Link>
 
                                                                                                     {/* Status actions */}
                                                                                                     {app.status ===
@@ -626,11 +625,11 @@ export default function Applicants() {
                                                                                                             </>
                                                                                                         )}
                                                                                                 </div>
-                                                                                            </td>
-                                                                                        </tr>
+                                                                                            </TableCell>
+                                                                                        </TableRow>
                                                                                     ))}
-                                                                                </tbody>
-                                                                            </table>
+                                                                                </TableBody>
+                                                                            </Table>
                                                                         </div>
                                                                     </div>
                                                                 );

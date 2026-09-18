@@ -12,7 +12,8 @@ import {
   MessageSquare,
   Mic,
   XCircle,
-  ChevronRight
+  ChevronRight,
+  ListChecks
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -176,6 +177,14 @@ const AppliedJobs: React.FC<AppliedJobsProps> = ({ applications }) => {
                       )
                     )}
                     
+                    <Link
+                      href={`/applications/${a.application_id}/status`}
+                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-teal-50 text-teal-700 text-sm font-medium hover:bg-teal-100 dark:bg-teal-500/10 dark:text-teal-400 dark:hover:bg-teal-500/20 transition-colors"
+                    >
+                      <ListChecks size={16} />
+                      View Status
+                    </Link>
+
                     <Link
                       href={`/jobs/${a.job_id}`}
                       className="ml-auto sm:ml-2 flex items-center justify-center p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
