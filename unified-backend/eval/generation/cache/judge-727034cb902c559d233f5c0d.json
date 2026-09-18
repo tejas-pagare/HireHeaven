@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nAny Angular experience?\n\nGOLD EVIDENCE (the résumé text that answers the question; the answer does not need to repeat every detail of it):\n1. Built Angular dashboards for an insurance client\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — experience]\nExperience\nSoftware Engineer, Capgemini (2015 - 2017)\nBuilt Angular dashboards for an insurance client.\n\n---\n\n[Source 2 — skills]\nSkills\nNode.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management\n\nCandidate Skills: Node.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management, full-stack development, team management, coaching, quarterly planning, product collaboration, design collaboration, career ladder development, leadership, PHP, caching\nExperience Summary: Meera has over nine years of full‑stack engineering experience, including four years leading and managing engineering teams. She has held roles as Software Engineer at Capgemini (2015‑2017), Tech Lead at MakeMyTrip (2017‑2021), and Engineering Manager at Nykaa (2021‑Present), driving product rewrites, performance improvements, and team growth.\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. The candidate built Angular dashboards for an insurance client while at Capgemini (2015‑2017) and lists Angular among their technical skills.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <if there is gold evidence: true if the answer gives the answer that evidence supports (for several numbered items, it must reflect each one); false if it refuses, contradicts it, or misses the point. If gold evidence is NONE: true if the answer says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies the candidate's Angular experience by citing the specific project mentioned in the gold evidence and the skills list, both of which are supported by the provided context.\"\n}"
+}

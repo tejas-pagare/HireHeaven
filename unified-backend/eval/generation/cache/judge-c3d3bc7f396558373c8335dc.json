@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nHas the candidate mentored or guided other engineers?\n\nGOLD FACTS (text from the résumé that answers the question):\n1. Mentored two junior engineers\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — summary]\nSUMMARY\nBackend engineer with four years of experience building payment and ledger services.\nEnjoys owning services end to end, from design review to on-call.\n\n[Source 2 — experience]\nEXPERIENCE\nSenior Software Engineer, Razorpay (2022 - Present)\nDesigned an idempotent double-entry ledger processing 3 million transactions per day.\nCut p99 settlement latency from 900ms to 180ms by moving reconciliation to Kafka consumers.\nMentored two junior engineers and ran the payments on-call rotation.\nSoftware Engineer, Infosys (2020 - 2022)\nBuilt REST APIs in Spring Boot for a banking client's loan origination workflow.\nWrote the batch job that migrated 40 million customer records from Oracle to PostgreSQL.\n\n[Source 3 — education]\nEDUCATION\nB.E. Computer Engineering, College of Engineering Pune, 2020, CGPA 8.6\n\n[Source 4 — achievements]\nCERTIFICATIONS\nAWS Certified Solutions Architect Associate (2023)\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. While at Razorpay, the candidate mentored two junior engineers.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <for gold facts: true only if the answer conveys EVERY gold fact (paraphrase is fine); false otherwise. If there are no gold facts: true if the answer refuses or says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies that the candidate mentored two junior engineers, which matches the gold fact and is supported by the context.\"\n}"
+}

@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — experience]\nExperience\nEngineering Manager, Nykaa (2021 - Present)\nManaged a team of 8 engineers across checkout and loyalty; hired 5 of them.\nRan quarterly planning with product and design and cut the release cycle from monthly to weekly.\nCoached two engineers into senior roles and introduced a career ladder for the team.\nTech Lead, MakeMyTrip (2017 - 2021)\nLed the rewrite of hotel search from a PHP monolith to Node.js services.\nDesigned the caching strategy with Redis and Elasticsearch that halved search latency.\n\n---\n\n[Source 2 — skills]\nSkills\nNode.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management\n\nCandidate Skills: Node.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management, full-stack development, team management, coaching, quarterly planning, product collaboration, design collaboration, career ladder development, leadership, PHP, caching\nExperience Summary: Meera has over nine years of full‑stack engineering experience, including four years leading and managing engineering teams. She has held roles as Software Engineer at Capgemini (2015‑2017), Tech Lead at MakeMyTrip (2017‑2021), and Engineering Manager at Nykaa (2021‑Present), driving product rewrites, performance improvements, and team growth.\n--- END CONTEXT ---\n\nRecruiter's Question: Does she know Elasticsearch?\n"
+      }
+    ]
+  },
+  "content": "Yes, the resume indicates she has experience with Elasticsearch."
+}

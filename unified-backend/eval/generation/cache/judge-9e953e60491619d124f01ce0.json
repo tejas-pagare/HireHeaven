@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nHas the candidate mentored or guided other engineers?\n\nGOLD EVIDENCE (the résumé text that answers the question; the answer does not need to repeat every detail of it):\n1. Mentored two junior engineers\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — summary]\nSUMMARY\nBackend engineer with four years of experience building payment and ledger services.\nEnjoys owning services end to end, from design review to on-call.\n\n---\n\n[Source 2 — achievements]\nCERTIFICATIONS\nAWS Certified Solutions Architect Associate (2023)\n\n---\n\n[Source 3 — education]\nEDUCATION\nB.E. Computer Engineering, College of Engineering Pune, 2020, CGPA 8.6\n\nCandidate Skills: Java, Kotlin, Go, SQL, Spring Boot, gRPC, Hibernate, PostgreSQL, Cassandra, Kafka, Redis, AWS, ECS, SQS, DynamoDB, Terraform, Mentoring, On-call rotation, Service ownership, Design review\nExperience Summary: A backend engineer with four years of experience, currently a Senior Software Engineer at Razorpay (2022‑present) where he designed high‑throughput ledger services and improved settlement latency, previously a Software Engineer at Infosys (2020‑2022) building Spring Boot APIs and large‑scale data migration pipelines.\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. The resume lists “Mentoring” among the candidate’s skills, indicating experience guiding other engineers.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <if there is gold evidence: true if the answer gives the answer that evidence supports (for several numbered items, it must reflect each one); false if it refuses, contradicts it, or misses the point. If gold evidence is NONE: true if the answer says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies that the candidate has mentoring experience based on the 'Mentoring' skill listed in the context, which aligns with the gold evidence.\"\n}"
+}

@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — skills]\nSKILLS\n• Python, PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers\n• LLM fine-tuning (LoRA), retrieval-augmented generation, vector databases (FAISS, Milvus)\n• MLOps: MLflow, Kubeflow, Docker, model monitoring\n\n---\n\n[Source 2 — experience]\nPROFESSIONAL EXPERIENCE\nMachine Learning Engineer, Flipkart (2021 - Present)\n• Trained a BERT-based query classifier that improved search click-through rate by 7%.\n• Built a learning-to-rank model with LightGBM for product search serving 50k queries per second.\n• Fine-tuned a 7B parameter model with LoRA to generate product attribute summaries.\n• Set up drift detection that alerts when feature distributions shift beyond a PSI of 0.2.\nResearch Intern, IISc Bangalore (2020)\n• Published a workshop paper on low-resource Marathi named entity recognition.\n\nCandidate Skills: Python, PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers, LLM fine-tuning, LoRA, retrieval-augmented generation, vector databases, FAISS, Milvus, MLOps, MLflow, Kubeflow, Docker, model monitoring, LightGBM, BERT\nExperience Summary: Sneha has worked as a Machine Learning Engineer at Flipkart since 2021, building BERT-based classifiers, LightGBM ranking models, and fine‑tuning large language models, and previously completed a research internship at IISc Bangalore in 2020, giving her over three years of experience in NLP, search ranking, and MLOps.\n--- END CONTEXT ---\n\nRecruiter's Question: Has she fine-tuned large language models with LoRA?\n"
+      }
+    ]
+  },
+  "content": "Yes, she has fine‑tuned large language models using LoRA."
+}

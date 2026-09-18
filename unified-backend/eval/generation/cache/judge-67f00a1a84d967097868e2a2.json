@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nAny Terraform experience?\n\nGOLD FACTS (text from the résumé that answers the question):\n1. Cloud: AWS (ECS, SQS, DynamoDB), Terraform\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — skills]\nTECHNICAL SKILLS\nLanguages: Java, Kotlin, Go, SQL\nFrameworks: Spring Boot, gRPC, Hibernate\nData: PostgreSQL, Cassandra, Kafka, Redis\nCloud: AWS (ECS, SQS, DynamoDB), Terraform\n\n[Source 2 — achievements]\nCERTIFICATIONS\nAWS Certified Solutions Architect Associate (2023)\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. The resume lists Terraform under the candidate’s technical skills.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <for gold facts: true only if the answer conveys EVERY gold fact (paraphrase is fine); false otherwise. If there are no gold facts: true if the answer refuses or says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies that the candidate has Terraform experience, which is explicitly listed in the provided context under technical skills.\"\n}"
+}

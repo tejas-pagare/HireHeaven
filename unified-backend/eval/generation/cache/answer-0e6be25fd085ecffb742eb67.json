@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — experience]\nRohan Das — Frontend Developer — Kolkata — rohan.das@example.com\nI am a frontend developer with three years of experience shipping consumer web apps in React and TypeScript. At Zomato (2022 to present) I rebuilt the restaurant listing page with Next.js server components and improved Largest Contentful Paint from 4.1s to 1.9s. I built a shared design system in Storybook used by eleven product teams and added visual regression testing with Chromatic.\n\nCandidate Skills: React, TypeScript, Next.js, Server components, Storybook, Chromatic, React Native, Razorpay, Redux Toolkit, React Query, Tailwind CSS, Jest, Playwright, Vite, Figma, Accessibility, WCAG 2.1 AA, Visual regression testing, Design system, Keyboard navigation, Screen reader labels, Leadership, Collaboration\nExperience Summary: Rohan Das is a frontend developer with three years of experience, currently at Zomato (2022‑present) where he rebuilt a restaurant listing page using Next.js server components and created a shared Storybook design system. Previously, he worked at Kitchenly (2021‑2022) building a React Native ordering flow and leading a WCAG 2.1 AA accessibility audit.\n--- END CONTEXT ---\n\nRecruiter's Question: Any Playwright or end-to-end testing?\n"
+      }
+    ]
+  },
+  "content": "Yes. The resume lists **Playwright** among Rohan Das’s skills, indicating experience with end‑to‑end testing."
+}

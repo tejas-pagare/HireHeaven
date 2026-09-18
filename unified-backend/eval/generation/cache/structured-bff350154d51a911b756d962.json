@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nAnalyze the following resume text and extract structured information.\nReturn ONLY valid JSON with no markdown formatting.\n\nResume:\n\"\"\"\nKarthik Reddy\nHyderabad | karthik.reddy@example.com\n\nSUMMARY\nAndroid engineer with five years of experience building high-traffic consumer apps.\n\nSKILLS\nKotlin, Java, Jetpack Compose, Coroutines, Flow, Dagger Hilt, Room, Retrofit, Firebase, Gradle, Espresso\n\nEXPERIENCE\nSenior Android Engineer, PhonePe (2021 - Present)\nMigrated the home screen from XML views to Jetpack Compose, cutting frame drops by 30%.\nReduced cold start time from 2.8s to 1.3s with baseline profiles and lazy module loading.\nOwned the offline-first sync layer built on Room and WorkManager.\n\nAndroid Developer, Dunzo (2019 - 2021)\nBuilt the live order tracking screen using Google Maps SDK and WebSockets.\nSet up crash monitoring with Firebase Crashlytics and brought the crash-free rate to 99.7%.\n\nPROJECTS\nBudgetBuddy: an expense tracker on the Play Store with 100k downloads.\n\nEDUCATION\nB.Tech Computer Science, JNTU Hyderabad, 2019\n\n\"\"\"\n\nReturn this exact JSON structure:\n{\n  \"skills\": [\"skill1\", \"skill2\", ...],\n  \"experience_summary\": \"A 2-3 sentence summary of their work experience\",\n  \"projects\": [\"Project 1: brief description\", ...],\n  \"education\": \"Degree, University, Year\"\n}\n\nRules:\n- skills: extract ALL technical and soft skills mentioned\n- experience_summary: summarize roles, companies, and years of experience\n- projects: list each project with a one-line description\n- education: most recent degree with institution\n- If a section is not found, use empty string or empty array\n"
+      }
+    ]
+  },
+  "content": "{\n  \"skills\": [\n    \"Kotlin\",\n    \"Java\",\n    \"Jetpack Compose\",\n    \"Coroutines\",\n    \"Flow\",\n    \"Dagger Hilt\",\n    \"Room\",\n    \"Retrofit\",\n    \"Firebase\",\n    \"Gradle\",\n    \"Espresso\",\n    \"baseline profiles\",\n    \"lazy module loading\",\n    \"WorkManager\",\n    \"Google Maps SDK\",\n    \"WebSockets\",\n    \"Firebase Crashlytics\"\n  ],\n  \"experience_summary\": \"Senior Android Engineer at PhonePe since 2021 and Android Developer at Dunzo from 2019 to 2021, totaling five years of experience building high‑traffic consumer Android applications. Focused on performance improvements, Jetpack Compose migration, offline‑first sync, and crash monitoring.\",\n  \"projects\": [\n    \"BudgetBuddy: an expense tracker app on the Play Store with 100k downloads\"\n  ],\n  \"education\": \"B.Tech Computer Science, JNTU Hyderabad, 2019\"\n}"
+}

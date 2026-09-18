@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — summary]\nSUMMARY\nAndroid engineer with five years of experience building high-traffic consumer apps.\n\n---\n\n[Source 2 — experience]\nEXPERIENCE\nSenior Android Engineer, PhonePe (2021 - Present)\nMigrated the home screen from XML views to Jetpack Compose, cutting frame drops by 30%.\nReduced cold start time from 2.8s to 1.3s with baseline profiles and lazy module loading.\nOwned the offline-first sync layer built on Room and WorkManager.\nAndroid Developer, Dunzo (2019 - 2021)\nBuilt the live order tracking screen using Google Maps SDK and WebSockets.\nSet up crash monitoring with Firebase Crashlytics and brought the crash-free rate to 99.7%.\n\n---\n\n[Source 3 — projects]\nPROJECTS\nBudgetBuddy: an expense tracker on the Play Store with 100k downloads.\n\nCandidate Skills: Kotlin, Java, Jetpack Compose, Coroutines, Flow, Dagger Hilt, Room, Retrofit, Firebase, Gradle, Espresso, baseline profiles, lazy module loading, WorkManager, Google Maps SDK, WebSockets, Firebase Crashlytics\nExperience Summary: Senior Android Engineer at PhonePe since 2021 and Android Developer at Dunzo from 2019 to 2021, totaling five years of experience building high‑traffic consumer Android applications. Focused on performance improvements, Jetpack Compose migration, offline‑first sync, and crash monitoring.\n--- END CONTEXT ---\n\nRecruiter's Question: Any published apps?\n"
+      }
+    ]
+  },
+  "content": "Yes. The candidate published **BudgetBuddy**, an expense‑tracker app on the Google Play Store that has achieved ~100 k downloads."
+}

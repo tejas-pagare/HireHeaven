@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — summary]\nOBJECTIVE\nFinal-year computer science student seeking a software engineering internship.\n\n---\n\n[Source 2 — experience]\nINTERNSHIP\nSoftware Engineering Intern, Freshworks (Summer 2024)\nAdded CSV bulk import to the CRM contacts module and wrote unit tests with Jest.\n\nCandidate Skills: C++, Java, JavaScript, React, Node.js, Express, MongoDB, Git, JWT, Stripe, Jest, unit testing, MERN stack\nExperience Summary: Software Engineering Intern at Freshworks during Summer 2024, where they added CSV bulk import functionality to the CRM contacts module and wrote unit tests using Jest. This internship provided hands‑on experience in full‑stack development and testing.\n--- END CONTEXT ---\n\nRecruiter's Question: Has she done an internship?\n"
+      }
+    ]
+  },
+  "content": "Yes, she completed a Software Engineering internship at Freshworks in Summer 2024."
+}

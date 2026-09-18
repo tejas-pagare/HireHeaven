@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — education]\nEducation:\nM.Sc. Statistics, University of Hyderabad, 2019\nB.Sc. Mathematics, St. Teresa's College, 2017\n\nCandidate Skills: Python, Scala, SQL, PySpark, Apache Airflow, dbt, Snowflake, BigQuery, Delta Lake, Databricks, Great Expectations\nExperience Summary: Priya Nair has over five years of data engineering experience, working as an Associate Data Engineer at Mu Sigma from 2019 to 2021 and as a Data Engineer II at Swiggy from 2021 to present. She has built and optimized batch and streaming pipelines, orchestrated large numbers of Airflow DAGs, and collaborated with cross‑functional teams to deliver real‑time data products.\n--- END CONTEXT ---\n\nRecruiter's Question: What is her educational background?\n"
+      }
+    ]
+  },
+  "content": "Priya Nair holds a **M.Sc. in Statistics** from the University of Hyderabad (2019) and a **B.Sc. in Mathematics** from St. Teresa's College (2017)."
+}

@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — experience]\nExperience\nSoftware Engineer, Capgemini (2015 - 2017)\nBuilt Angular dashboards for an insurance client.\n\n---\n\n[Source 2 — skills]\nSkills\nNode.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management\n\nCandidate Skills: Node.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management, full-stack development, team management, coaching, quarterly planning, product collaboration, design collaboration, career ladder development, leadership, PHP, caching\nExperience Summary: Meera has over nine years of full‑stack engineering experience, including four years leading and managing engineering teams. She has held roles as Software Engineer at Capgemini (2015‑2017), Tech Lead at MakeMyTrip (2017‑2021), and Engineering Manager at Nykaa (2021‑Present), driving product rewrites, performance improvements, and team growth.\n--- END CONTEXT ---\n\nRecruiter's Question: Any Angular experience?\n"
+      }
+    ]
+  },
+  "content": "Yes. The candidate built Angular dashboards for an insurance client while at Capgemini (2015‑2017) and lists Angular among their technical skills."
+}

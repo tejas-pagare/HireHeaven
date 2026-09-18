@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nDoes he know Kubernetes?\n\nGOLD EVIDENCE (the résumé text that answers the question; the answer does not need to repeat every detail of it):\n1. K8s, Helm, ArgoCD\n2. Migrated 120 microservices from VMs to GKE clusters\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — achievements]\nCERTIFICATIONS\nCertified Kubernetes Administrator (CKA)\nGoogle Professional Cloud DevOps Engineer\n\n---\n\n[Source 2 — skills]\nTECH STACK\nK8s, Helm, ArgoCD, Terraform, Ansible, GCP, AWS, Prometheus, Grafana, Loki, Jenkins, GitHub Actions, Linux, Bash, Python\n\nCandidate Skills: Kubernetes, Helm, ArgoCD, Terraform, Ansible, Google Cloud Platform, AWS, Prometheus, Grafana, Loki, Jenkins, GitHub Actions, Linux, Bash, Python, Incident Management, SLOs, Error Budgets, Monitoring, Automation, Infrastructure as Code, CI/CD, Cloud Architecture, Team Leadership, Problem Solving\nExperience Summary: Vikram Singh has over 8 years of experience in DevOps and Site Reliability Engineering, working as a DevOps Engineer at HCL Technologies from 2018 to 2021 and as a Senior SRE at Paytm since 2021. He specializes in cloud infrastructure automation, CI/CD pipeline development, and reliability engineering across GCP and AWS environments.\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. The resume lists Kubernetes as a skill and includes a Certified Kubernetes Administrator (CKA) certification.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <if there is gold evidence: true if the answer gives the answer that evidence supports (for several numbered items, it must reflect each one); false if it refuses, contradicts it, or misses the point. If gold evidence is NONE: true if the answer says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies that the candidate knows Kubernetes based on the skills list and CKA certification provided in the context.\"\n}"
+}
