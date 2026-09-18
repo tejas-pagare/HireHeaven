@@ -153,6 +153,17 @@ async function initJobTables() {
     )
   `;
 
+  // Post-interview analysis fields — added for the timeboxed, multi-pass
+  // evaluation pipeline. Nullable/defaulted so existing rows stay valid.
+  await sql`ALTER TABLE ai_interviews ADD COLUMN IF NOT EXISTS recommendation VARCHAR(20)`;
+  await sql`ALTER TABLE ai_interviews ADD COLUMN IF NOT EXISTS manual_review_required BOOLEAN NOT NULL DEFAULT false`;
+  await sql`ALTER TABLE ai_interviews ADD COLUMN IF NOT EXISTS turn_meta JSONB NOT NULL DEFAULT '[]'::jsonb`;
+  await sql`ALTER TABLE ai_interviews ADD COLUMN IF NOT EXISTS started_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE ai_interviews ADD COLUMN IF NOT EXISTS duration_seconds INTEGER`;
+  // score is now always code-computed post-validation; a failed evaluation
+  // leaves it NULL (pending manual review) instead of a misleading 0.
+  await sql`ALTER TABLE ai_interviews ALTER COLUMN score DROP NOT NULL`;
+
   await sql`
     DO $$
     BEGIN
@@ -216,6 +227,43 @@ async function initJobTables() {
       UNIQUE (interview_id)
     )
   `;
+
+  // ── Interview rounds ──────────────────────────────────────────────────────
+  // A job defines named rounds; each application's progress through them is
+  // derived from `interviews` rows scoped to a round rather than stored as
+  // its own status column — no interview row for (application, round) means
+  // Pending, the latest interview row with no evaluation means Scheduled,
+  // and an evaluation means Completed (decision: passed/failed). Deriving
+  // status this way means adding a round to a job with existing applicants
+  // needs no backfill, and a failed round can simply be rescheduled (a new
+  // interviews row) without any extra bookkeeping.
+  await sql`
+    CREATE TABLE IF NOT EXISTS job_rounds (
+      round_id SERIAL PRIMARY KEY,
+      job_id INTEGER NOT NULL REFERENCES jobs(job_id) ON DELETE CASCADE,
+      round_number INTEGER NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (job_id, round_number)
+    )
+  `;
+
+  // Nullable and with no ON DELETE clause: legacy interviews (scheduled
+  // before this feature, or for jobs that never define rounds) simply have
+  // round_id = NULL, and Postgres's default NO ACTION means deleting a
+  // round that already has interviews attached throws a clean FK violation
+  // (23503) instead of silently orphaning scheduled interviews.
+  await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS round_id INTEGER REFERENCES job_rounds(round_id)`;
+
+  await sql`
+    DO $$
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'round_decision') THEN
+            CREATE TYPE round_decision AS ENUM ('passed', 'failed');
+        END IF;
+    END $$;
+  `;
+  await sql`ALTER TABLE interview_evaluations ADD COLUMN IF NOT EXISTS decision round_decision`;
 
   console.log("✅ Job tables ready");
 }
@@ -323,6 +371,22 @@ async function initRAGTables() {
     await sql`
       CREATE INDEX IF NOT EXISTS idx_resume_chunks_user_id
       ON resume_chunks (user_id)
+    `;
+
+    // Keyword leg of hybrid retrieval. A generated column stays in sync with
+    // chunk_text on every insert (including the atomic re-index swap) and is
+    // backfilled for existing rows when the column is added — no migration
+    // script or re-index needed.
+    await sql`
+      ALTER TABLE resume_chunks
+      ADD COLUMN IF NOT EXISTS tsv tsvector
+      GENERATED ALWAYS AS (to_tsvector('english', chunk_text)) STORED
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_resume_chunks_tsv
+      ON resume_chunks
+      USING gin (tsv)
     `;
 
     console.log("✅ RAG tables ready (pgvector)");

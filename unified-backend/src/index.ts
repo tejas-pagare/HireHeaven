@@ -6,6 +6,7 @@ import { initDB } from "./db.js";
 import redisClient from "./redis.js";
 import { setupSocket } from "./socket/handlers.js";
 import { setupAIInterviewSocket } from "./socket/ai-interview.js";
+import { startInterviewEvaluationWorker } from "./jobs/interview-evaluation.worker.js";
 import { warmUpEmbeddings } from "./utils/embedding.js";
 
 dotenv.config();
@@ -38,6 +39,9 @@ async function start() {
   // ── 4. Setup Socket Handlers ──────────────────────────────────────────────────
   setupSocket(io);
   setupAIInterviewSocket(io);
+
+  // ── 4b. Start Background Workers ──────────────────────────────────────────────
+  startInterviewEvaluationWorker();
 
   // ── 5. Start Server ───────────────────────────────────────────────────────────
   httpServer.listen(PORT, () => {
