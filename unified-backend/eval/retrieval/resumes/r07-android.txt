@@ -1,0 +1,24 @@
+Karthik Reddy
+Hyderabad | karthik.reddy@example.com
+
+SUMMARY
+Android engineer with five years of experience building high-traffic consumer apps.
+
+SKILLS
+Kotlin, Java, Jetpack Compose, Coroutines, Flow, Dagger Hilt, Room, Retrofit, Firebase, Gradle, Espresso
+
+EXPERIENCE
+Senior Android Engineer, PhonePe (2021 - Present)
+Migrated the home screen from XML views to Jetpack Compose, cutting frame drops by 30%.
+Reduced cold start time from 2.8s to 1.3s with baseline profiles and lazy module loading.
+Owned the offline-first sync layer built on Room and WorkManager.
+
+Android Developer, Dunzo (2019 - 2021)
+Built the live order tracking screen using Google Maps SDK and WebSockets.
+Set up crash monitoring with Firebase Crashlytics and brought the crash-free rate to 99.7%.
+
+PROJECTS
+BudgetBuddy: an expense tracker on the Play Store with 100k downloads.
+
+EDUCATION
+B.Tech Computer Science, JNTU Hyderabad, 2019

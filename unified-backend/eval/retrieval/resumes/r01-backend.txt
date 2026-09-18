@@ -1,0 +1,32 @@
+Aarav Mehta
+Pune, India | aarav.mehta@example.com | +91 98200 11111
+
+SUMMARY
+Backend engineer with four years of experience building payment and ledger services.
+Enjoys owning services end to end, from design review to on-call.
+
+TECHNICAL SKILLS
+Languages: Java, Kotlin, Go, SQL
+Frameworks: Spring Boot, gRPC, Hibernate
+Data: PostgreSQL, Cassandra, Kafka, Redis
+Cloud: AWS (ECS, SQS, DynamoDB), Terraform
+
+EXPERIENCE
+Senior Software Engineer, Razorpay (2022 - Present)
+Designed an idempotent double-entry ledger processing 3 million transactions per day.
+Cut p99 settlement latency from 900ms to 180ms by moving reconciliation to Kafka consumers.
+Mentored two junior engineers and ran the payments on-call rotation.
+
+Software Engineer, Infosys (2020 - 2022)
+Built REST APIs in Spring Boot for a banking client's loan origination workflow.
+Wrote the batch job that migrated 40 million customer records from Oracle to PostgreSQL.
+
+PROJECTS
+RateGuard: a distributed rate limiter in Go using Redis sliding windows.
+LedgerLens: an open-source tool that diffs ledger snapshots to find reconciliation breaks.
+
+EDUCATION
+B.E. Computer Engineering, College of Engineering Pune, 2020, CGPA 8.6
+
+CERTIFICATIONS
+AWS Certified Solutions Architect Associate (2023)

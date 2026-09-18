@@ -1,0 +1,26 @@
+Farhan Sheikh
+Bengaluru | farhan.sec@example.com
+
+PROFILE
+Application security engineer who builds secure-by-default tooling for developers.
+
+EXPERIENCE
+Security Engineer, CRED (2022 - Present)
+Rolled out SAST with Semgrep and dependency scanning with Snyk across 200 repositories.
+Ran threat modelling sessions for the rewards platform using STRIDE.
+Found and fixed an IDOR vulnerability that exposed other users' transaction history.
+Built a secrets-detection pre-commit hook that blocked 1,400 leaked keys in its first year.
+
+Security Analyst, Wipro (2019 - 2022)
+Performed web application penetration tests with Burp Suite against OWASP Top 10.
+Triaged SOC alerts in Splunk and wrote incident runbooks.
+
+SKILLS
+Python, Go, Burp Suite, Semgrep, Snyk, OWASP ZAP, AWS IAM, Vault, OAuth 2.0, JWT, threat modelling
+
+CERTIFICATIONS
+OSCP (Offensive Security Certified Professional)
+AWS Certified Security Specialty
+
+EDUCATION
+B.Tech Computer Science, Manipal Institute of Technology, 2019

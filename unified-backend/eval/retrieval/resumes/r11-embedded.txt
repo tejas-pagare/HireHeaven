@@ -1,0 +1,22 @@
+Arjun Pillai
+Bengaluru | arjun.embedded@example.com
+
+SUMMARY
+Embedded software engineer working on automotive ECUs and real-time firmware.
+
+TECHNICAL SKILLS
+C, C++17, Embedded C, FreeRTOS, AUTOSAR, CAN, LIN, SPI, I2C, ARM Cortex-M, MISRA C, Python, Git
+
+EXPERIENCE
+Embedded Software Engineer, Bosch (2020 - Present)
+Developed AUTOSAR basic software modules for a brake control ECU.
+Implemented a CAN bootloader that supports secure over-the-air firmware updates.
+Brought the codebase to MISRA C compliance with static analysis in Polyspace.
+Debugged timing issues with an oscilloscope and a Lauterbach TRACE32 debugger.
+
+Firmware Intern, Ather Energy (2019)
+Wrote a battery management system driver for cell voltage monitoring over SPI.
+
+EDUCATION
+M.Tech Embedded Systems, VIT Vellore, 2020
+B.E. Electronics, PES University, 2018

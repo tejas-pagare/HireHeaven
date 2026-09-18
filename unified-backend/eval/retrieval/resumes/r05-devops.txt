@@ -1,0 +1,25 @@
+Vikram Singh
+Gurugram | vikram.devops@example.com
+
+SUMMARY
+Site reliability engineer who automates infrastructure and keeps production boring.
+
+TECH STACK
+K8s, Helm, ArgoCD, Terraform, Ansible, GCP, AWS, Prometheus, Grafana, Loki, Jenkins, GitHub Actions, Linux, Bash, Python
+
+EXPERIENCE
+Senior SRE, Paytm (2021 - Present)
+Migrated 120 microservices from VMs to GKE clusters with zero customer-facing downtime.
+Wrote Terraform modules (IaC) for VPCs, Cloud SQL and IAM used by every platform team.
+Introduced SLOs and error budgets; paging volume dropped by 45% in two quarters.
+Led the incident review for a 2023 DNS outage and drove the fix to multi-region failover.
+
+DevOps Engineer, HCL Technologies (2018 - 2021)
+Built Jenkins CI pipelines and Ansible playbooks for 300 on-prem Linux servers.
+
+EDUCATION
+B.Tech Electronics and Communication, NIT Kurukshetra, 2018
+
+CERTIFICATIONS
+Certified Kubernetes Administrator (CKA)
+Google Professional Cloud DevOps Engineer
