@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — education]\nEDUCATION\nB.Tech Computer Science, SRM Institute of Science and Technology, expected 2025, CGPA 9.1\nRelevant coursework: Operating Systems, DBMS, Computer Networks, Compiler Design\n\n---\n\n[Source 2 — summary]\nOBJECTIVE\nFinal-year computer science student seeking a software engineering internship.\n\n---\n\n[Source 3 — projects]\nPROJECTS\nCampusCart: a MERN stack marketplace for students to sell used books, with JWT auth and Stripe payments.\nPathFinder Visualizer: an interactive visualizer for Dijkstra and A* search built with React and Canvas.\nTinyDB: a key-value store in C++ with a write-ahead log and LSM-tree compaction.\n\n---\n\n[Source 4 — experience]\nINTERNSHIP\nSoftware Engineering Intern, Freshworks (Summer 2024)\nAdded CSV bulk import to the CRM contacts module and wrote unit tests with Jest.\n\nCandidate Skills: C++, Java, JavaScript, React, Node.js, Express, MongoDB, Git, JWT, Stripe, Jest, unit testing, MERN stack\nExperience Summary: Software Engineering Intern at Freshworks during Summer 2024, where they added CSV bulk import functionality to the CRM contacts module and wrote unit tests using Jest. This internship provided hands‑on experience in full‑stack development and testing.\n--- END CONTEXT ---\n\nRecruiter's Question: What courses has she taken?\n"
+      }
+    ]
+  },
+  "content": "She has taken the following relevant courses: Operating Systems, DBMS, Computer Networks, and Compiler Design."
+}

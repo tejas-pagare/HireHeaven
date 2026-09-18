@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — experience]\nEXPERIENCE\nEmbedded Software Engineer, Bosch (2020 - Present)\nDeveloped AUTOSAR basic software modules for a brake control ECU.\nImplemented a CAN bootloader that supports secure over-the-air firmware updates.\nBrought the codebase to MISRA C compliance with static analysis in Polyspace.\nDebugged timing issues with an oscilloscope and a Lauterbach TRACE32 debugger.\nFirmware Intern, Ather Energy (2019)\nWrote a battery management system driver for cell voltage monitoring over SPI.\n\nCandidate Skills: C, C++17, Embedded C, FreeRTOS, AUTOSAR, CAN, LIN, SPI, I2C, ARM Cortex-M, MISRA C, Python, Git, Oscilloscope, Lauterbach TRACE32, Polyspace, Static analysis\nExperience Summary: Embedded Software Engineer at Bosch since 2020, developing AUTOSAR basic software for brake control ECUs, implementing a secure CAN bootloader, achieving MISRA C compliance, and performing low‑level debugging; previously served as a Firmware Intern at Ather Energy in 2019, creating a battery‑management system driver.\n--- END CONTEXT ---\n\nRecruiter's Question: How does he ensure code quality and safety standards?\n"
+      }
+    ]
+  },
+  "content": "He ensures code quality and safety by enforcing MISRA‑C compliance and running static‑analysis checks with Polyspace. Additionally, he validates low‑level behavior through hardware debugging (oscilloscope and Lauterbach TRACE32)."
+}

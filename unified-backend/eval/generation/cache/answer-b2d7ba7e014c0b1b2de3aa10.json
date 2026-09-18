@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — skills]\nTECHNICAL SKILLS\nC, C++17, Embedded C, FreeRTOS, AUTOSAR, CAN, LIN, SPI, I2C, ARM Cortex-M, MISRA C, Python, Git\n\n---\n\n[Source 2 — other]\nArjun Pillai\nBengaluru | arjun.embedded@example.com\n\nCandidate Skills: C, C++17, Embedded C, FreeRTOS, AUTOSAR, CAN, LIN, SPI, I2C, ARM Cortex-M, MISRA C, Python, Git, Oscilloscope, Lauterbach TRACE32, Polyspace, Static analysis\nExperience Summary: Embedded Software Engineer at Bosch since 2020, developing AUTOSAR basic software for brake control ECUs, implementing a secure CAN bootloader, achieving MISRA C compliance, and performing low‑level debugging; previously served as a Firmware Intern at Ather Energy in 2019, creating a battery‑management system driver.\n--- END CONTEXT ---\n\nRecruiter's Question: What are his qualifications?\n"
+      }
+    ]
+  },
+  "content": "**Qualifications Summary**\n\n- **Professional Experience**\n  - *Embedded Software Engineer, Bosch (2020 – present)*  \n    - Developed AUTOSAR basic software for brake‑control ECUs.  \n    - Implemented a secure CAN bootloader.  \n    - Achieved MISRA‑C compliance and performed low‑level debugging.\n  - *Firmware Intern, Ather Energy (2019)*  \n    - Created a driver for a battery‑management system.\n\n- **Technical Skills**\n  - Programming: C, C++17, Embedded C, Python.  \n  - Real‑time OS & Frameworks: FreeRTOS, AUTOSAR.  \n  - Microcontroller & Communication: ARM Cortex‑M, CAN, LIN, SPI, I²C.  \n  - Standards & Quality: MISRA C, static analysis (Polyspace).  \n  - Tools: Git, Oscilloscope, Lauterbach TRACE32.\n\nThese experiences and skills qualify him for roles involving embedded software development, automotive ECU programming, and safety‑critical firmware engineering."
+}

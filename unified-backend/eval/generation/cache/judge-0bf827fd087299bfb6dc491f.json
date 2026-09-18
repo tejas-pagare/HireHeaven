@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nAny experience with FAISS?\n\nGOLD EVIDENCE (the résumé text that answers the question; the answer does not need to repeat every detail of it):\n1. ResumeRanker: semantic resume-to-job matching with sentence embeddings and FAISS\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — skills]\nSKILLS\n• Python, PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers\n• LLM fine-tuning (LoRA), retrieval-augmented generation, vector databases (FAISS, Milvus)\n• MLOps: MLflow, Kubeflow, Docker, model monitoring\n\n---\n\n[Source 2 — projects]\nPROJECTS\n• ResumeRanker: semantic resume-to-job matching with sentence embeddings and FAISS.\n\nCandidate Skills: Python, PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers, LLM fine-tuning, LoRA, retrieval-augmented generation, vector databases, FAISS, Milvus, MLOps, MLflow, Kubeflow, Docker, model monitoring, LightGBM, BERT\nExperience Summary: Sneha has worked as a Machine Learning Engineer at Flipkart since 2021, building BERT-based classifiers, LightGBM ranking models, and fine‑tuning large language models, and previously completed a research internship at IISc Bangalore in 2020, giving her over three years of experience in NLP, search ranking, and MLOps.\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes. The candidate used FAISS in the **ResumeRanker** project for semantic resume‑to‑job matching and lists FAISS among their technical skills.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <if there is gold evidence: true if the answer gives the answer that evidence supports (for several numbered items, it must reflect each one); false if it refuses, contradicts it, or misses the point. If gold evidence is NONE: true if the answer says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly identifies the candidate's experience with FAISS by citing the ResumeRanker project and the skills section, both of which are supported by the provided context.\"\n}"
+}

@@ -1,0 +1,947 @@
+{
+  "version": 1,
+  "description": "Retrieval eval set for the résumé RAG copilot. 12 synthetic résumés; dev = r01-r06 (used for tuning), test = r07-r12 (held out). gold = text spans that must appear in a retrieved chunk; [] = unanswerable (the ideal retriever returns nothing relevant).",
+  "queries": [
+    {
+      "id": "q001",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "exact",
+      "query": "Has he used Kafka?",
+      "gold": [
+        "Cut p99 settlement latency from 900ms to 180ms by moving reconciliation to Kafka consumers"
+      ]
+    },
+    {
+      "id": "q002",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "exact",
+      "query": "Any Terraform experience?",
+      "gold": [
+        "Cloud: AWS (ECS, SQS, DynamoDB), Terraform"
+      ]
+    },
+    {
+      "id": "q003",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "semantic",
+      "query": "Has the candidate mentored or guided other engineers?",
+      "gold": [
+        "Mentored two junior engineers"
+      ]
+    },
+    {
+      "id": "q004",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "semantic",
+      "query": "Has he worked on large data migrations between databases?",
+      "gold": [
+        "migrated 40 million customer records from Oracle to PostgreSQL"
+      ]
+    },
+    {
+      "id": "q005",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "semantic",
+      "query": "What performance improvements has he delivered?",
+      "gold": [
+        "Cut p99 settlement latency from 900ms to 180ms"
+      ]
+    },
+    {
+      "id": "q006",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "exact",
+      "query": "Did he work at Infosys?",
+      "gold": [
+        "Software Engineer, Infosys (2020 - 2022)"
+      ]
+    },
+    {
+      "id": "q007",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "section",
+      "query": "Where did he study?",
+      "gold": [
+        "College of Engineering Pune"
+      ]
+    },
+    {
+      "id": "q008",
+      "split": "dev",
+      "resume": "r01-backend",
+      "type": "unanswerable",
+      "query": "Does he have experience with Kubernetes?",
+      "gold": []
+    },
+    {
+      "id": "q009",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "exact",
+      "query": "Does she know Airflow?",
+      "gold": [
+        "Orchestrated 140 Airflow DAGs"
+      ]
+    },
+    {
+      "id": "q010",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "exact",
+      "query": "Has she used Snowflake?",
+      "gold": [
+        "Modelled a star schema in Snowflake"
+      ]
+    },
+    {
+      "id": "q011",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "semantic",
+      "query": "Has she saved infrastructure costs anywhere?",
+      "gold": [
+        "reducing daily compute cost by 38%"
+      ]
+    },
+    {
+      "id": "q012",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "semantic",
+      "query": "How does she ensure data is correct in pipelines?",
+      "gold": [
+        "data quality checks with Great Expectations"
+      ]
+    },
+    {
+      "id": "q013",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "mixed",
+      "query": "Any hackathon wins?",
+      "gold": [
+        "Winner, Swiggy internal hackathon 2022"
+      ]
+    },
+    {
+      "id": "q014",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "section",
+      "query": "What is her educational background?",
+      "gold": [
+        "M.Sc. Statistics, University of Hyderabad"
+      ]
+    },
+    {
+      "id": "q015",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "semantic",
+      "query": "Has she built anything real-time or low latency?",
+      "gold": [
+        "near-real-time surge pricing feature store"
+      ]
+    },
+    {
+      "id": "q016",
+      "split": "dev",
+      "resume": "r02-data",
+      "type": "unanswerable",
+      "query": "Has she worked with iOS development?",
+      "gold": []
+    },
+    {
+      "id": "q017",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "exact",
+      "query": "Does he know Next.js?",
+      "gold": [
+        "rebuilt the restaurant listing page with Next.js server components"
+      ]
+    },
+    {
+      "id": "q018",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "semantic",
+      "query": "Has he improved page load speed?",
+      "gold": [
+        "Largest Contentful Paint from 4.1s to 1.9s"
+      ]
+    },
+    {
+      "id": "q019",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "semantic",
+      "query": "Does he care about users with disabilities?",
+      "gold": [
+        "WCAG 2.1 AA audit"
+      ]
+    },
+    {
+      "id": "q020",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "exact",
+      "query": "Any Playwright or end-to-end testing?",
+      "gold": [
+        "Jest, Playwright"
+      ]
+    },
+    {
+      "id": "q021",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "semantic",
+      "query": "Has he built reusable UI components for other teams?",
+      "gold": [
+        "shared design system in Storybook used by eleven product teams"
+      ]
+    },
+    {
+      "id": "q022",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "exact",
+      "query": "Has he done mobile work with React Native?",
+      "gold": [
+        "ordering flow in React Native"
+      ]
+    },
+    {
+      "id": "q023",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "section",
+      "query": "Which university did he attend?",
+      "gold": [
+        "Jadavpur University"
+      ]
+    },
+    {
+      "id": "q024",
+      "split": "dev",
+      "resume": "r03-frontend-noheadings",
+      "type": "unanswerable",
+      "query": "Does he have Kotlin experience?",
+      "gold": []
+    },
+    {
+      "id": "q025",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "exact",
+      "query": "Has she used PyTorch?",
+      "gold": [
+        "Python, PyTorch, TensorFlow"
+      ]
+    },
+    {
+      "id": "q026",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "exact",
+      "query": "Has she fine-tuned large language models with LoRA?",
+      "gold": [
+        "Fine-tuned a 7B parameter model with LoRA"
+      ]
+    },
+    {
+      "id": "q027",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "semantic",
+      "query": "Has she done any academic research or publications?",
+      "gold": [
+        "Published a workshop paper on low-resource Marathi named entity recognition"
+      ]
+    },
+    {
+      "id": "q028",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "semantic",
+      "query": "How does she monitor models in production?",
+      "gold": [
+        "drift detection that alerts when feature distributions shift"
+      ]
+    },
+    {
+      "id": "q029",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "mixed",
+      "query": "What ranking or search systems has she built?",
+      "gold": [
+        "learning-to-rank model with LightGBM"
+      ]
+    },
+    {
+      "id": "q030",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "exact",
+      "query": "Any experience with FAISS?",
+      "gold": [
+        "ResumeRanker: semantic resume-to-job matching with sentence embeddings and FAISS"
+      ]
+    },
+    {
+      "id": "q031",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "section",
+      "query": "What degree does she hold?",
+      "gold": [
+        "M.Tech Artificial Intelligence, IIT Madras"
+      ]
+    },
+    {
+      "id": "q032",
+      "split": "dev",
+      "resume": "r04-ml",
+      "type": "unanswerable",
+      "query": "Has she worked with Salesforce CRM?",
+      "gold": []
+    },
+    {
+      "id": "q033",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "exact",
+      "query": "Does he know Kubernetes?",
+      "gold": [
+        "K8s, Helm, ArgoCD",
+        "Migrated 120 microservices from VMs to GKE clusters"
+      ]
+    },
+    {
+      "id": "q034",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "exact",
+      "query": "Has he written infrastructure as code?",
+      "gold": [
+        "Wrote Terraform modules (IaC)"
+      ]
+    },
+    {
+      "id": "q035",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "semantic",
+      "query": "How has he improved reliability or reduced alerts?",
+      "gold": [
+        "paging volume dropped by 45%"
+      ]
+    },
+    {
+      "id": "q036",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "semantic",
+      "query": "Has he handled production outages?",
+      "gold": [
+        "Led the incident review for a 2023 DNS outage"
+      ]
+    },
+    {
+      "id": "q037",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "exact",
+      "query": "Is he certified in Kubernetes administration?",
+      "gold": [
+        "Certified Kubernetes Administrator (CKA)"
+      ]
+    },
+    {
+      "id": "q038",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "mixed",
+      "query": "What CI/CD tools has he used?",
+      "gold": [
+        [
+          "Built Jenkins CI pipelines",
+          "Jenkins, GitHub Actions"
+        ]
+      ],
+      "note": "E1 label fix: the TECH STACK line listing Jenkins and GitHub Actions is an equally correct answer."
+    },
+    {
+      "id": "q039",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "section",
+      "query": "Which college did he graduate from?",
+      "gold": [
+        "NIT Kurukshetra"
+      ]
+    },
+    {
+      "id": "q040",
+      "split": "dev",
+      "resume": "r05-devops",
+      "type": "unanswerable",
+      "query": "Has he built machine learning models?",
+      "gold": []
+    },
+    {
+      "id": "q041",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "exact",
+      "query": "What is her CGPA?",
+      "gold": [
+        "CGPA 9.1"
+      ]
+    },
+    {
+      "id": "q042",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "exact",
+      "query": "Has she built anything in C++?",
+      "gold": [
+        "TinyDB: a key-value store in C++"
+      ]
+    },
+    {
+      "id": "q043",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "semantic",
+      "query": "How good is she at competitive programming?",
+      "gold": [
+        "LeetCode Knight, rating 1950"
+      ]
+    },
+    {
+      "id": "q044",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "semantic",
+      "query": "Has she done an internship?",
+      "gold": [
+        "Software Engineering Intern, Freshworks (Summer 2024)"
+      ]
+    },
+    {
+      "id": "q045",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "mixed",
+      "query": "Any projects involving payments?",
+      "gold": [
+        "JWT auth and Stripe payments"
+      ]
+    },
+    {
+      "id": "q046",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "semantic",
+      "query": "Does she understand database internals or storage engines?",
+      "gold": [
+        "write-ahead log and LSM-tree compaction"
+      ]
+    },
+    {
+      "id": "q047",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "section",
+      "query": "What courses has she taken?",
+      "gold": [
+        "Relevant coursework: Operating Systems, DBMS"
+      ]
+    },
+    {
+      "id": "q048",
+      "split": "dev",
+      "resume": "r06-fresher",
+      "type": "unanswerable",
+      "query": "How many years of full-time work experience does she have in banking?",
+      "gold": []
+    },
+    {
+      "id": "q049",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "exact",
+      "query": "Does he know Jetpack Compose?",
+      "gold": [
+        "Migrated the home screen from XML views to Jetpack Compose"
+      ]
+    },
+    {
+      "id": "q050",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "semantic",
+      "query": "Has he improved app startup performance?",
+      "gold": [
+        "Reduced cold start time from 2.8s to 1.3s"
+      ]
+    },
+    {
+      "id": "q051",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "semantic",
+      "query": "How has he improved app stability?",
+      "gold": [
+        "crash-free rate to 99.7%"
+      ]
+    },
+    {
+      "id": "q052",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "exact",
+      "query": "Has he used WorkManager?",
+      "gold": [
+        "Room and WorkManager"
+      ]
+    },
+    {
+      "id": "q053",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "mixed",
+      "query": "Any published apps?",
+      "gold": [
+        "BudgetBuddy: an expense tracker on the Play Store"
+      ]
+    },
+    {
+      "id": "q054",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "semantic",
+      "query": "Has he built features that work without internet?",
+      "gold": [
+        "offline-first sync layer"
+      ]
+    },
+    {
+      "id": "q055",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "section",
+      "query": "Where did he study?",
+      "gold": [
+        "JNTU Hyderabad"
+      ]
+    },
+    {
+      "id": "q056",
+      "split": "test",
+      "resume": "r07-android",
+      "type": "unanswerable",
+      "query": "Has he worked with Terraform?",
+      "gold": []
+    },
+    {
+      "id": "q057",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "semantic",
+      "query": "Has she led or managed people?",
+      "gold": [
+        "Managed a team of 8 engineers"
+      ]
+    },
+    {
+      "id": "q058",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "semantic",
+      "query": "Has she been involved in recruiting?",
+      "gold": [
+        "hired 5 of them"
+      ]
+    },
+    {
+      "id": "q059",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "exact",
+      "query": "Does she know Elasticsearch?",
+      "gold": [
+        "caching strategy with Redis and Elasticsearch"
+      ]
+    },
+    {
+      "id": "q060",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "semantic",
+      "query": "Has she helped engineers grow in their careers?",
+      "gold": [
+        "Coached two engineers into senior roles"
+      ]
+    },
+    {
+      "id": "q061",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "mixed",
+      "query": "Has she worked on legacy modernisation or rewrites?",
+      "gold": [
+        "rewrite of hotel search from a PHP monolith to Node.js services"
+      ]
+    },
+    {
+      "id": "q062",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "exact",
+      "query": "Any Angular experience?",
+      "gold": [
+        "Built Angular dashboards for an insurance client"
+      ]
+    },
+    {
+      "id": "q063",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "semantic",
+      "query": "Has she improved how often the team ships?",
+      "gold": [
+        "cut the release cycle from monthly to weekly"
+      ]
+    },
+    {
+      "id": "q064",
+      "split": "test",
+      "resume": "r08-lead",
+      "type": "unanswerable",
+      "query": "Does she have a PhD?",
+      "gold": []
+    },
+    {
+      "id": "q065",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "exact",
+      "query": "Has he used Burp Suite?",
+      "gold": [
+        "penetration tests with Burp Suite"
+      ]
+    },
+    {
+      "id": "q066",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "exact",
+      "query": "Is he OSCP certified?",
+      "gold": [
+        "OSCP (Offensive Security Certified Professional)"
+      ]
+    },
+    {
+      "id": "q067",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "semantic",
+      "query": "Has he found real vulnerabilities in production?",
+      "gold": [
+        "Found and fixed an IDOR vulnerability"
+      ]
+    },
+    {
+      "id": "q068",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "semantic",
+      "query": "How has he prevented credentials from leaking into code?",
+      "gold": [
+        "secrets-detection pre-commit hook"
+      ]
+    },
+    {
+      "id": "q069",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "mixed",
+      "query": "Has he done threat modelling?",
+      "gold": [
+        "threat modelling sessions for the rewards platform using STRIDE"
+      ]
+    },
+    {
+      "id": "q070",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "exact",
+      "query": "Any Splunk or SOC experience?",
+      "gold": [
+        "Triaged SOC alerts in Splunk"
+      ]
+    },
+    {
+      "id": "q071",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "section",
+      "query": "What is his degree?",
+      "gold": [
+        "B.Tech Computer Science, Manipal Institute of Technology"
+      ]
+    },
+    {
+      "id": "q072",
+      "split": "test",
+      "resume": "r09-security",
+      "type": "unanswerable",
+      "query": "Has he built Android apps?",
+      "gold": []
+    },
+    {
+      "id": "q073",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "exact",
+      "query": "Does she know Playwright?",
+      "gold": [
+        "Built a Playwright framework in TypeScript"
+      ]
+    },
+    {
+      "id": "q074",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "semantic",
+      "query": "Has she made test suites run faster?",
+      "gold": [
+        "Cut the regression suite runtime from 6 hours to 40 minutes"
+      ]
+    },
+    {
+      "id": "q075",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "semantic",
+      "query": "Has she done performance or load testing?",
+      "gold": [
+        "Ran load tests with k6"
+      ]
+    },
+    {
+      "id": "q076",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "exact",
+      "query": "Has she used Pact for contract testing?",
+      "gold": [
+        "contract tests between 14 microservices using Pact"
+      ]
+    },
+    {
+      "id": "q077",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "exact",
+      "query": "Any Appium or mobile automation?",
+      "gold": [
+        "Automated mobile regression tests with Appium"
+      ]
+    },
+    {
+      "id": "q078",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "mixed",
+      "query": "Any testing certifications?",
+      "gold": [
+        "ISTQB Certified Tester Foundation Level"
+      ]
+    },
+    {
+      "id": "q079",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "semantic",
+      "query": "How much manual testing has she automated?",
+      "gold": [
+        "replaced 1,800 manual regression cases"
+      ]
+    },
+    {
+      "id": "q080",
+      "split": "test",
+      "resume": "r10-qa",
+      "type": "unanswerable",
+      "query": "Has she designed database schemas for a bank?",
+      "gold": []
+    },
+    {
+      "id": "q081",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "exact",
+      "query": "Has he worked with AUTOSAR?",
+      "gold": [
+        "Developed AUTOSAR basic software modules"
+      ]
+    },
+    {
+      "id": "q082",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "exact",
+      "query": "Does he know the CAN protocol?",
+      "gold": [
+        "Implemented a CAN bootloader"
+      ]
+    },
+    {
+      "id": "q083",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "semantic",
+      "query": "Has he built firmware update mechanisms?",
+      "gold": [
+        "secure over-the-air firmware updates"
+      ]
+    },
+    {
+      "id": "q084",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "semantic",
+      "query": "How does he ensure code quality and safety standards?",
+      "gold": [
+        "MISRA C compliance with static analysis in Polyspace"
+      ]
+    },
+    {
+      "id": "q085",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "mixed",
+      "query": "What hardware debugging tools has he used?",
+      "gold": [
+        "oscilloscope and a Lauterbach TRACE32 debugger"
+      ]
+    },
+    {
+      "id": "q086",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "semantic",
+      "query": "Any experience with batteries or electric vehicles?",
+      "gold": [
+        "battery management system driver"
+      ]
+    },
+    {
+      "id": "q087",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "section",
+      "query": "What are his qualifications?",
+      "gold": [
+        "M.Tech Embedded Systems, VIT Vellore"
+      ]
+    },
+    {
+      "id": "q088",
+      "split": "test",
+      "resume": "r11-embedded",
+      "type": "unanswerable",
+      "query": "Has he built React web applications?",
+      "gold": []
+    },
+    {
+      "id": "q089",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "exact",
+      "query": "Does she know Tableau?",
+      "gold": [
+        "Built a Tableau dashboard for city-level unit economics"
+      ]
+    },
+    {
+      "id": "q090",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "semantic",
+      "query": "Has she run experiments?",
+      "gold": [
+        "Designed the A/B testing framework"
+      ]
+    },
+    {
+      "id": "q091",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "semantic",
+      "query": "Has she found insights that changed business strategy?",
+      "gold": [
+        "delivery delays above 12 minutes drove churn"
+      ]
+    },
+    {
+      "id": "q092",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "semantic",
+      "query": "Has she automated any reporting work?",
+      "gold": [
+        "Automated weekly marketing funnel reports"
+      ]
+    },
+    {
+      "id": "q093",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "mixed",
+      "query": "Any clustering or segmentation work?",
+      "gold": [
+        "customer segmentation using k-means clustering"
+      ]
+    },
+    {
+      "id": "q094",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "exact",
+      "query": "Does she have an MBA?",
+      "gold": [
+        "MBA Business Analytics, Symbiosis Pune"
+      ]
+    },
+    {
+      "id": "q095",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "exact",
+      "query": "Has she used Power BI?",
+      "gold": [
+        "Tableau, Power BI, Looker"
+      ]
+    },
+    {
+      "id": "q096",
+      "split": "test",
+      "resume": "r12-analyst",
+      "type": "unanswerable",
+      "query": "Has she deployed Kubernetes clusters?",
+      "gold": []
+    }
+  ]
+}

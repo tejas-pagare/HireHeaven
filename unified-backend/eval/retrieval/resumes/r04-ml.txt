@@ -1,0 +1,26 @@
+Sneha Kulkarni
+Bengaluru | sneha.k@example.com
+
+ABOUT ME
+Machine learning engineer focused on NLP and search ranking.
+
+SKILLS
+• Python, PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers
+• LLM fine-tuning (LoRA), retrieval-augmented generation, vector databases (FAISS, Milvus)
+• MLOps: MLflow, Kubeflow, Docker, model monitoring
+
+PROFESSIONAL EXPERIENCE
+Machine Learning Engineer, Flipkart (2021 - Present)
+• Trained a BERT-based query classifier that improved search click-through rate by 7%.
+• Built a learning-to-rank model with LightGBM for product search serving 50k queries per second.
+• Fine-tuned a 7B parameter model with LoRA to generate product attribute summaries.
+• Set up drift detection that alerts when feature distributions shift beyond a PSI of 0.2.
+
+Research Intern, IISc Bangalore (2020)
+• Published a workshop paper on low-resource Marathi named entity recognition.
+
+PROJECTS
+• ResumeRanker: semantic resume-to-job matching with sentence embeddings and FAISS.
+
+EDUCATION
+M.Tech Artificial Intelligence, IIT Madras, 2021

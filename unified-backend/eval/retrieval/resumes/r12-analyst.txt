@@ -1,0 +1,22 @@
+Neha Gupta
+Delhi | neha.gupta@example.com
+
+Summary:
+Data analyst who turns product data into decisions for growth and marketing teams.
+
+Skills:
+SQL, Excel, Python (pandas), Tableau, Power BI, Looker, Google Analytics, A/B testing, statistics
+
+Experience:
+Senior Data Analyst, Zepto (2022 - Present)
+Designed the A/B testing framework used for all checkout experiments, with sequential testing.
+Built a Tableau dashboard for city-level unit economics viewed daily by the leadership team.
+Identified that delivery delays above 12 minutes drove churn, informing a dark-store expansion.
+
+Data Analyst, Policybazaar (2020 - 2022)
+Automated weekly marketing funnel reports in SQL and Python, saving 10 hours a week.
+Built customer segmentation using k-means clustering for targeted campaigns.
+
+Education:
+MBA Business Analytics, Symbiosis Pune, 2020
+B.Com, Delhi University, 2018

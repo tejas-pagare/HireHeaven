@@ -1,0 +1,26 @@
+Ananya Iyer
+Chennai | ananya.iyer@example.com | github.com/ananya-dev
+
+OBJECTIVE
+Final-year computer science student seeking a software engineering internship.
+
+EDUCATION
+B.Tech Computer Science, SRM Institute of Science and Technology, expected 2025, CGPA 9.1
+Relevant coursework: Operating Systems, DBMS, Computer Networks, Compiler Design
+
+PROJECTS
+CampusCart: a MERN stack marketplace for students to sell used books, with JWT auth and Stripe payments.
+PathFinder Visualizer: an interactive visualizer for Dijkstra and A* search built with React and Canvas.
+TinyDB: a key-value store in C++ with a write-ahead log and LSM-tree compaction.
+
+INTERNSHIP
+Software Engineering Intern, Freshworks (Summer 2024)
+Added CSV bulk import to the CRM contacts module and wrote unit tests with Jest.
+
+ACHIEVEMENTS
+LeetCode Knight, rating 1950, 600+ problems solved
+Codeforces Specialist
+Smart India Hackathon 2023 finalist
+
+SKILLS
+C++, Java, JavaScript, React, Node.js, Express, MongoDB, Git

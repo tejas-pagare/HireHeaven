@@ -1,0 +1,14 @@
+{
+  "params": {
+    "model": "qwen/qwen3.8-27b",
+    "temperature": 0,
+    "json": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are grading an AI assistant that answers a recruiter's question about a candidate's résumé.\n\nQUESTION:\nHas she used Power BI?\n\nGOLD EVIDENCE (the résumé text that answers the question; the answer does not need to repeat every detail of it):\n1. Tableau, Power BI, Looker\n\nCONTEXT THE ASSISTANT WAS GIVEN:\n\"\"\"\n[Source 1 — skills]\nSkills:\nSQL, Excel, Python (pandas), Tableau, Power BI, Looker, Google Analytics, A/B testing, statistics\n\nCandidate Skills: SQL, Excel, Python, pandas, Tableau, Power BI, Looker, Google Analytics, A/B testing, statistics\nExperience Summary: Neha Gupta has over four years of experience as a data analyst, most recently serving as a Senior Data Analyst at Zepto since 2022, and previously as a Data Analyst at Policybazaar from 2020 to 2022. She has built analytics frameworks, dashboards, and automated reporting solutions that drive product and marketing decisions.\n\"\"\"\n\nASSISTANT'S ANSWER:\n\"\"\"\nYes, she has used Power BI.\n\"\"\"\n\nGrade strictly and return ONLY a JSON object:\n{\n  \"refused\": <true if the answer's main message is that the résumé/context does not contain the information>,\n  \"correct\": <if there is gold evidence: true if the answer gives the answer that evidence supports (for several numbered items, it must reflect each one); false if it refuses, contradicts it, or misses the point. If gold evidence is NONE: true if the answer says the information is not present, false if it claims the candidate has it>,\n  \"faithful\": <true if every factual claim about the candidate in the answer is supported by the CONTEXT above; a refusal is faithful>,\n  \"unsupported_claims\": [<each claim not supported by the context, verbatim or near-verbatim; empty if none>],\n  \"reason\": \"<one sentence>\"\n}"
+      }
+    ]
+  },
+  "content": "{\n  \"refused\": false,\n  \"correct\": true,\n  \"faithful\": true,\n  \"unsupported_claims\": [],\n  \"reason\": \"The answer correctly confirms the candidate's use of Power BI based on the skills listed in the context.\"\n}"
+}

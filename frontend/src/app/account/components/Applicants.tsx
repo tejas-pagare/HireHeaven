@@ -9,6 +9,7 @@ import Loading from "@/components/loading";
 import { Card } from "@/components/ui/card";
 import SectionHeader from "./section-header";
 import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
     Building2,
     ChevronDown,
@@ -18,6 +19,7 @@ import {
     Clock,
     Eye,
     FileText,
+    ListChecks,
     MessageSquare,
     Users,
     Brain,
@@ -37,7 +39,16 @@ interface ApplicationItem {
     applied_at: string;
     subscribed: boolean;
     ai_interview_completed?: boolean;
+    ai_interview_recommendation?: "Strong Yes" | "Yes" | "Borderline" | "No" | null;
+    ai_interview_manual_review?: boolean;
 }
+
+const AI_RECOMMENDATION_BADGE_STYLES: Record<string, string> = {
+    "Strong Yes": "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400",
+    Yes: "bg-teal-50 text-teal-700 dark:bg-teal-900/20 dark:text-teal-400",
+    Borderline: "bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
+    No: "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400",
+};
 
 interface JobWithApps {
     job: Job;
@@ -290,12 +301,11 @@ export default function Applicants() {
         }
     };
 
+    const getStatusConfig = (status: string) => STATUS_CONFIG[status] || STATUS_CONFIG.Submitted;
+
     const groupByStatus = (apps: ApplicationItem[]) => {
-        const groups: Record<string, ApplicationItem[]> = {
-            Submitted: [],
-            Hired: [],
-            Rejected: [],
-        };
+        const groups: Record<string, ApplicationItem[]> = {};
+        Object.keys(STATUS_CONFIG).forEach((s) => { groups[s] = []; });
 
         apps.forEach((app) => {
             if (groups[app.status]) {
@@ -468,27 +478,24 @@ export default function Applicants() {
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     {apps.map((app, idx) => (
-                                                                                        <tr
-                                                                                            key={app.application_id}
-                                                                                            className="border-b last:border-b-0 hover:bg-muted/20 transition-colors"
-                                                                                        >
-                                                                                            <td className="px-4 py-3 text-muted-foreground">
+                                                                                        <TableRow key={app.application_id}>
+                                                                                            <TableCell className="text-muted-foreground">
                                                                                                 {idx + 1}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 <Link
                                                                                                     href={`/account/${app.applicant_id}`}
                                                                                                     className="text-primary hover:underline font-medium"
                                                                                                 >
                                                                                                     {app.applicant_email}
                                                                                                 </Link>
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3 text-muted-foreground">
+                                                                                            </TableCell>
+                                                                                            <TableCell className="text-muted-foreground">
                                                                                                 {new Date(
                                                                                                     app.applied_at
                                                                                                 ).toLocaleDateString()}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 {app.subscribed ? (
                                                                                                     <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-brand-subtle text-brand-subtle-foreground">
                                                                                                         ⭐ Premium
@@ -498,8 +505,8 @@ export default function Applicants() {
                                                                                                         Free
                                                                                                     </span>
                                                                                                 )}
-                                                                                            </td>
-                                                                                            <td className="px-4 py-3">
+                                                                                            </TableCell>
+                                                                                            <TableCell>
                                                                                                 <div className="flex items-center justify-end gap-1.5">
                                                                                                     {/* Resume */}
                                                                                                     {app.resume && (
@@ -536,6 +543,7 @@ export default function Applicants() {
                                                                                                     {app.ai_interview_completed && (
                                                                                                         <Link
                                                                                                             href={`/ai-interview/result/${app.application_id}`}
+                                                                                                            className="flex items-center gap-1"
                                                                                                         >
                                                                                                             <Button
                                                                                                                 variant="ghost"
@@ -545,6 +553,15 @@ export default function Applicants() {
                                                                                                             >
                                                                                                                 <Mic size={14} />
                                                                                                             </Button>
+                                                                                                            {app.ai_interview_manual_review ? (
+                                                                                                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                                                                                                                    Review
+                                                                                                                </span>
+                                                                                                            ) : app.ai_interview_recommendation ? (
+                                                                                                                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${AI_RECOMMENDATION_BADGE_STYLES[app.ai_interview_recommendation]}`}>
+                                                                                                                    {app.ai_interview_recommendation}
+                                                                                                                </span>
+                                                                                                            ) : null}
                                                                                                         </Link>
                                                                                                     )}
 
@@ -584,6 +601,20 @@ export default function Applicants() {
                                                                                                             />
                                                                                                         </Button>
                                                                                                     )}
+
+                                                                                                    {/* Full status + round timeline */}
+                                                                                                    <Link
+                                                                                                        href={`/jobs/${jobSection.job.job_id}/applicants/${app.application_id}`}
+                                                                                                    >
+                                                                                                        <Button
+                                                                                                            variant="ghost"
+                                                                                                            size="icon"
+                                                                                                            className="h-8 w-8 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                                                                                                            title="View Status"
+                                                                                                        >
+                                                                                                            <ListChecks size={14} />
+                                                                                                        </Button>
+                                                                                                    </Link>
 
                                                                                                     {/* Status actions */}
                                                                                                     {app.status ===
@@ -633,11 +664,11 @@ export default function Applicants() {
                                                                                                             </>
                                                                                                         )}
                                                                                                 </div>
-                                                                                            </td>
-                                                                                        </tr>
+                                                                                            </TableCell>
+                                                                                        </TableRow>
                                                                                     ))}
-                                                                                </tbody>
-                                                                            </table>
+                                                                                </TableBody>
+                                                                            </Table>
                                                                         </div>
                                                                     </div>
                                                                 );

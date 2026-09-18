@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — summary]\nSUMMARY\nSite reliability engineer who automates infrastructure and keeps production boring.\n\nCandidate Skills: Kubernetes, Helm, ArgoCD, Terraform, Ansible, Google Cloud Platform, AWS, Prometheus, Grafana, Loki, Jenkins, GitHub Actions, Linux, Bash, Python, Incident Management, SLOs, Error Budgets, Monitoring, Automation, Infrastructure as Code, CI/CD, Cloud Architecture, Team Leadership, Problem Solving\nExperience Summary: Vikram Singh has over 8 years of experience in DevOps and Site Reliability Engineering, working as a DevOps Engineer at HCL Technologies from 2018 to 2021 and as a Senior SRE at Paytm since 2021. He specializes in cloud infrastructure automation, CI/CD pipeline development, and reliability engineering across GCP and AWS environments.\n--- END CONTEXT ---\n\nRecruiter's Question: How has he improved reliability or reduced alerts?\n"
+      }
+    ]
+  },
+  "content": "The resume does not contain specific information about how he has improved reliability or reduced alerts."
+}

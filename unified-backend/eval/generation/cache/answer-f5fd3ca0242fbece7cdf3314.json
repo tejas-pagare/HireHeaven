@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — experience]\nEXPERIENCE\nSenior SDET, UST Global (2020 - Present)\nBuilt a Playwright framework in TypeScript that replaced 1,800 manual regression cases.\nCut the regression suite runtime from 6 hours to 40 minutes with parallel sharding.\nAdded contract tests between 14 microservices using Pact.\nRan load tests with k6 before the annual sale, finding a connection pool bottleneck at 4k RPS.\nQA Engineer, Tata Consultancy Services (2017 - 2020)\nAutomated mobile regression tests with Appium for an airline booking app.\n\n---\n\n[Source 2 — skills]\nSKILLS\nSelenium, Playwright, Cypress, Appium, REST Assured, Postman, JMeter, k6, Java, TypeScript, TestNG, Allure, Jenkins\n\nCandidate Skills: Selenium, Playwright, Cypress, Appium, REST Assured, Postman, JMeter, k6, Java, TypeScript, TestNG, Allure, Jenkins, CI, Quality Gates, Parallel Sharding, Contract Testing, Pact, Load Testing, Microservices, Automation Frameworks\nExperience Summary: Divya Menon has over 7 years of experience as a Software Development Engineer in Test, working as a QA Engineer at Tata Consultancy Services from 2017 to 2020 and as a Senior SDET at UST Global since 2020, where she designs and implements automation frameworks and quality gates for continuous integration pipelines.\n--- END CONTEXT ---\n\nRecruiter's Question: Does she know Playwright?\n"
+      }
+    ]
+  },
+  "content": "Yes, she has experience with Playwright, having built a Playwright framework in TypeScript and listing it among her skills."
+}

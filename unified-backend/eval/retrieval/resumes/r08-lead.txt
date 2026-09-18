@@ -1,0 +1,24 @@
+Meera Joshi
+Mumbai | meera.joshi@example.com
+
+Professional Summary
+Engineering lead with nine years in full-stack development and four years managing teams.
+
+Experience
+Engineering Manager, Nykaa (2021 - Present)
+Managed a team of 8 engineers across checkout and loyalty; hired 5 of them.
+Ran quarterly planning with product and design and cut the release cycle from monthly to weekly.
+Coached two engineers into senior roles and introduced a career ladder for the team.
+
+Tech Lead, MakeMyTrip (2017 - 2021)
+Led the rewrite of hotel search from a PHP monolith to Node.js services.
+Designed the caching strategy with Redis and Elasticsearch that halved search latency.
+
+Software Engineer, Capgemini (2015 - 2017)
+Built Angular dashboards for an insurance client.
+
+Skills
+Node.js, TypeScript, React, Angular, Elasticsearch, Redis, MySQL, AWS, system design, hiring, mentoring, stakeholder management
+
+Education
+B.E. Information Technology, University of Mumbai, 2015

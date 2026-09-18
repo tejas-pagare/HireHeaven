@@ -1,0 +1,25 @@
+Priya Nair
+Kochi, Kerala | priya.nair@example.com
+
+Profile:
+Data engineer who builds batch and streaming pipelines for analytics teams.
+
+Technical Skills:
+Python, Scala, SQL, PySpark, Apache Airflow, dbt, Snowflake, BigQuery, Delta Lake, Databricks
+
+Work Experience:
+Data Engineer II, Swiggy (2021 - Present)
+Rebuilt the order-events pipeline on Databricks with Delta Lake, reducing daily compute cost by 38%.
+Orchestrated 140 Airflow DAGs and introduced data quality checks with Great Expectations.
+Partnered with the pricing team to ship a near-real-time surge pricing feature store.
+
+Associate Data Engineer, Mu Sigma (2019 - 2021)
+Wrote PySpark jobs that aggregated retail point-of-sale data for a US grocery chain.
+Modelled a star schema in Snowflake used by 60 business analysts.
+
+Education:
+M.Sc. Statistics, University of Hyderabad, 2019
+B.Sc. Mathematics, St. Teresa's College, 2017
+
+Achievements:
+Winner, Swiggy internal hackathon 2022 for a churn-prediction dashboard.

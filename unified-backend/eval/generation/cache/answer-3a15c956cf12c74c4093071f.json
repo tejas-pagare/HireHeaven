@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — education]\nEducation:\nMBA Business Analytics, Symbiosis Pune, 2020\nB.Com, Delhi University, 2018\n\n---\n\n[Source 2 — other]\nNeha Gupta\nDelhi | neha.gupta@example.com\n\n---\n\n[Source 3 — skills]\nSkills:\nSQL, Excel, Python (pandas), Tableau, Power BI, Looker, Google Analytics, A/B testing, statistics\n\n---\n\n[Source 4 — summary]\nSummary:\nData analyst who turns product data into decisions for growth and marketing teams.\n\nCandidate Skills: SQL, Excel, Python, pandas, Tableau, Power BI, Looker, Google Analytics, A/B testing, statistics\nExperience Summary: Neha Gupta has over four years of experience as a data analyst, most recently serving as a Senior Data Analyst at Zepto since 2022, and previously as a Data Analyst at Policybazaar from 2020 to 2022. She has built analytics frameworks, dashboards, and automated reporting solutions that drive product and marketing decisions.\n--- END CONTEXT ---\n\nRecruiter's Question: Does she have an MBA?\n"
+      }
+    ]
+  },
+  "content": "Yes, she holds an MBA in Business Analytics (Symbiosis Pune, 2020)."
+}

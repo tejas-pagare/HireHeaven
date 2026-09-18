@@ -30,9 +30,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const token = Cookies.get("token");
-
   async function fetchUser() {
+    // Read fresh on every call rather than closing over a stale value —
+    // AppProvider mounts once in the root layout and never remounts on
+    // client-side navigation, so a `const token` captured at render time
+    // goes stale the moment the cookie changes (e.g. right after login).
+    const token = Cookies.get("token");
     try {
       const { data } = await axios.get<User>(`${BACKEND_URL}/api/user/me`, {
         headers: {
@@ -51,6 +54,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   async function updateProfilePic(fromData: any) {
+    const token = Cookies.get("token");
     setLoading(true);
     try {
       const { data } = await axios.put<MessageResponse>(
@@ -73,6 +77,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   async function updateResume(fromData: any) {
+    const token = Cookies.get("token");
     setLoading(true);
     try {
       const { data } = await axios.put<MessageResponse>(
@@ -95,6 +100,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   async function updateUser(name: string, phoneNumber: string, bio: string) {
+    const token = Cookies.get("token");
     setBtnLoading(true);
     try {
       const { data } = await axios.put<MessageResponse>(
@@ -126,6 +132,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     skill: string,
     setSkill: React.Dispatch<React.SetStateAction<string>>
   ) {
+    const token = Cookies.get("token");
     setBtnLoading(true);
     try {
       const { data } = await axios.post<MessageResponse>(
@@ -148,6 +155,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   async function removeSkill(skill: string) {
+    const token = Cookies.get("token");
     try {
       const { data } = await axios.delete<MessageResponse>(`${BACKEND_URL}/api/user/skill`, {
         headers: {
@@ -163,6 +171,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   async function applyJob(job_id: number) {
+    const token = Cookies.get("token");
     setBtnLoading(true);
     try {
       const { data } = await axios.post<MessageResponse>(
@@ -187,6 +196,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [applications, setApplications] = useState<Application[]>([]);
 
   async function fetchApplications() {
+    const token = Cookies.get("token");
     try {
       const { data } = await axios.get<Application[]>(`${BACKEND_URL}/api/user/applications/me`, {
         headers: {

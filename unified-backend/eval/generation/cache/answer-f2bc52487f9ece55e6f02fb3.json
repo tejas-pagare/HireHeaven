@@ -1,0 +1,13 @@
+{
+  "params": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "user",
+        "content": "\nYou are an AI hiring assistant analyzing a candidate's resume for a recruiter.\nAnswer the recruiter's question accurately based ONLY on the resume information provided.\n\nCRITICAL RULES:\n- ONLY use information from the provided resume context\n- If the resume doesn't contain enough info, say \"The resume does not contain specific information about this.\"\n- Be concise and professional\n- Do NOT make assumptions\n\n--- RESUME CONTEXT ---\n[Source 1 — achievements]\nCERTIFICATIONS\nAWS Certified Solutions Architect Associate (2023)\n\n---\n\n[Source 2 — skills]\nTECHNICAL SKILLS\nLanguages: Java, Kotlin, Go, SQL\nFrameworks: Spring Boot, gRPC, Hibernate\nData: PostgreSQL, Cassandra, Kafka, Redis\nCloud: AWS (ECS, SQS, DynamoDB), Terraform\n\n---\n\n[Source 3 — experience]\nEXPERIENCE\nSenior Software Engineer, Razorpay (2022 - Present)\nDesigned an idempotent double-entry ledger processing 3 million transactions per day.\nCut p99 settlement latency from 900ms to 180ms by moving reconciliation to Kafka consumers.\nMentored two junior engineers and ran the payments on-call rotation.\nSoftware Engineer, Infosys (2020 - 2022)\nBuilt REST APIs in Spring Boot for a banking client's loan origination workflow.\nWrote the batch job that migrated 40 million customer records from Oracle to PostgreSQL.\n\nCandidate Skills: Java, Kotlin, Go, SQL, Spring Boot, gRPC, Hibernate, PostgreSQL, Cassandra, Kafka, Redis, AWS, ECS, SQS, DynamoDB, Terraform, Mentoring, On-call rotation, Service ownership, Design review\nExperience Summary: A backend engineer with four years of experience, currently a Senior Software Engineer at Razorpay (2022‑present) where he designed high‑throughput ledger services and improved settlement latency, previously a Software Engineer at Infosys (2020‑2022) building Spring Boot APIs and large‑scale data migration pipelines.\n--- END CONTEXT ---\n\nRecruiter's Question: Any Terraform experience?\n"
+      }
+    ]
+  },
+  "content": "Yes. The resume lists Terraform under the candidate’s technical skills."
+}

@@ -1,0 +1,5 @@
+Rohan Das — Frontend Developer — Kolkata — rohan.das@example.com
+I am a frontend developer with three years of experience shipping consumer web apps in React and TypeScript. At Zomato (2022 to present) I rebuilt the restaurant listing page with Next.js server components and improved Largest Contentful Paint from 4.1s to 1.9s. I built a shared design system in Storybook used by eleven product teams and added visual regression testing with Chromatic.
+Before that at a startup called Kitchenly (2021 to 2022) I built the ordering flow in React Native and integrated Razorpay checkout. I care about accessibility and led our WCAG 2.1 AA audit, fixing keyboard navigation and screen reader labels across the app.
+Tools I use daily: React, Next.js, TypeScript, Redux Toolkit, React Query, Tailwind CSS, Jest, Playwright, Vite, Figma.
+I studied B.Tech Information Technology at Jadavpur University and graduated in 2021.
