@@ -7,6 +7,10 @@ import {
   InterviewEvaluationSchema,
   isRateLimited,
   clearRateLimitState,
+  computeFinalScore,
+  deriveRecommendation,
+  shouldFlagManualReview,
+  type InterviewEvaluation,
 } from "../src/modules/ai/interview-guardrails";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -255,7 +259,7 @@ describe("buildInterviewSystemPrompt", () => {
     candidateName: "Tejas Pagare",
     jobTitle: "Senior Backend Engineer",
     jobDescription: "Build scalable APIs using Node.js, Express, PostgreSQL.",
-    resumeText: "3 years experience with Node.js and MongoDB.",
+    resumeSummary: "3 years experience with Node.js and MongoDB.",
   };
 
   it("should include the candidate name and job title", () => {
@@ -295,7 +299,6 @@ describe("buildInterviewSystemPrompt", () => {
 
 describe("InterviewEvaluationSchema", () => {
   const validEvaluation = {
-    score: 78,
     technical_depth_score: 20,
     communication_score: 22,
     problem_solving_score: 18,
@@ -309,6 +312,15 @@ describe("InterviewEvaluationSchema", () => {
     ],
     feedback:
       "The candidate demonstrated solid knowledge of backend development with Node.js and Express. Communication was clear and professional.",
+    per_question: [
+      { question: "Tell me about your recent project.", answer_summary: "Built a Stripe payment gateway.", score: 8, flag: "none" },
+    ],
+    competencies: [
+      { name: "Backend API design", status: "demonstrated", note: "Discussed REST design in depth." },
+    ],
+    resume_consistency: [
+      { claim: "Led a team of 3 engineers", verified: true, note: "Corroborated with a specific example." },
+    ],
   };
 
   it("should validate a correctly structured evaluation", () => {
@@ -316,13 +328,51 @@ describe("InterviewEvaluationSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("should reject score below 0", () => {
-    const result = InterviewEvaluationSchema.safeParse({ ...validEvaluation, score: -5 });
+  it("should not require a top-level score field — it's computed in code, not by the model", () => {
+    const { technical_depth_score, communication_score, problem_solving_score, job_relevance_score, ...rest } = validEvaluation;
+    const result = InterviewEvaluationSchema.safeParse({
+      ...rest,
+      technical_depth_score,
+      communication_score,
+      problem_solving_score,
+      job_relevance_score,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect((result.data as Record<string, unknown>).score).toBeUndefined();
+    }
+  });
+
+  it("should default resume_consistency to an empty array when omitted", () => {
+    const { resume_consistency, ...rest } = validEvaluation;
+    const result = InterviewEvaluationSchema.safeParse(rest);
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.resume_consistency).toEqual([]);
+  });
+
+  it("should reject an empty per_question array", () => {
+    const result = InterviewEvaluationSchema.safeParse({ ...validEvaluation, per_question: [] });
     expect(result.success).toBe(false);
   });
 
-  it("should reject score above 100", () => {
-    const result = InterviewEvaluationSchema.safeParse({ ...validEvaluation, score: 105 });
+  it("should reject an invalid per_question flag value", () => {
+    const result = InterviewEvaluationSchema.safeParse({
+      ...validEvaluation,
+      per_question: [{ ...validEvaluation.per_question[0], flag: "made_up_flag" }],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("should reject an empty competencies array", () => {
+    const result = InterviewEvaluationSchema.safeParse({ ...validEvaluation, competencies: [] });
+    expect(result.success).toBe(false);
+  });
+
+  it("should reject an invalid competency status value", () => {
+    const result = InterviewEvaluationSchema.safeParse({
+      ...validEvaluation,
+      competencies: [{ ...validEvaluation.competencies[0], status: "sort_of" }],
+    });
     expect(result.success).toBe(false);
   });
 
@@ -408,7 +458,6 @@ describe("InterviewEvaluationSchema", () => {
   it("should accept edge-case: all sub-scores at 25 (total 100)", () => {
     const result = InterviewEvaluationSchema.safeParse({
       ...validEvaluation,
-      score: 100,
       technical_depth_score: 25,
       communication_score: 25,
       problem_solving_score: 25,
@@ -420,7 +469,6 @@ describe("InterviewEvaluationSchema", () => {
   it("should accept edge-case: all sub-scores at 0 (total 0)", () => {
     const result = InterviewEvaluationSchema.safeParse({
       ...validEvaluation,
-      score: 0,
       technical_depth_score: 0,
       communication_score: 0,
       problem_solving_score: 0,
@@ -442,24 +490,123 @@ describe("buildEvaluationPrompt", () => {
     { role: "assistant", content: "How did you handle idempotency?" },
     { role: "user", content: "I used a unique transaction ID stored in Redis." },
   ];
+  const params = {
+    jobTitle: "Senior Backend Engineer",
+    jobDescription: "Build scalable APIs using Node.js, Express, PostgreSQL.",
+    cleanTranscript: sampleTranscript,
+  };
+
+  it("should include the job title and description", () => {
+    const prompt = buildEvaluationPrompt(params);
+    expect(prompt).toContain("Senior Backend Engineer");
+    expect(prompt).toContain("Build scalable APIs");
+  });
 
   it("should include the scoring rubric", () => {
-    const prompt = buildEvaluationPrompt(sampleTranscript);
+    const prompt = buildEvaluationPrompt(params);
     expect(prompt).toContain("technical_depth_score");
     expect(prompt).toContain("communication_score");
     expect(prompt).toContain("problem_solving_score");
     expect(prompt).toContain("job_relevance_score");
   });
 
+  it("should include all four analysis passes", () => {
+    const prompt = buildEvaluationPrompt(params);
+    expect(prompt).toContain("PASS 1");
+    expect(prompt).toContain("PASS 2");
+    expect(prompt).toContain("PASS 3");
+    expect(prompt).toContain("PASS 4");
+    expect(prompt).toContain("per_question");
+    expect(prompt).toContain("competencies");
+    expect(prompt).toContain("resume_consistency");
+  });
+
   it("should include the transcript JSON", () => {
-    const prompt = buildEvaluationPrompt(sampleTranscript);
+    const prompt = buildEvaluationPrompt(params);
     expect(prompt).toContain("payment gateway");
     expect(prompt).toContain("idempotency");
   });
 
-  it("should specify that score equals sum of sub-scores", () => {
-    const prompt = buildEvaluationPrompt(sampleTranscript);
-    expect(prompt).toContain("MUST equal the sum of the four sub-scores");
+  it("should not ask the model to compute a top-level score", () => {
+    const prompt = buildEvaluationPrompt(params);
+    expect(prompt).not.toContain("MUST equal the sum");
+  });
+});
+
+// ────────────────────────────────────────────────────────────────────────────────
+// LAYER 3C: CODE-COMPUTED SCORING TESTS
+// ────────────────────────────────────────────────────────────────────────────────
+
+describe("computeFinalScore", () => {
+  it("sums the four rubric sub-scores", () => {
+    const evaluation = {
+      technical_depth_score: 20,
+      communication_score: 15,
+      problem_solving_score: 10,
+      job_relevance_score: 5,
+    } as InterviewEvaluation;
+    expect(computeFinalScore(evaluation)).toBe(50);
+  });
+
+  it("ignores any stray top-level score the model might have included", () => {
+    const evaluation = {
+      technical_depth_score: 25,
+      communication_score: 25,
+      problem_solving_score: 25,
+      job_relevance_score: 25,
+      score: 1,
+    } as unknown as InterviewEvaluation;
+    expect(computeFinalScore(evaluation)).toBe(100);
+  });
+});
+
+describe("deriveRecommendation", () => {
+  it("returns 'Strong Yes' at and above 85", () => {
+    expect(deriveRecommendation(85)).toBe("Strong Yes");
+    expect(deriveRecommendation(100)).toBe("Strong Yes");
+  });
+
+  it("returns 'Yes' between 70 and 84", () => {
+    expect(deriveRecommendation(70)).toBe("Yes");
+    expect(deriveRecommendation(84)).toBe("Yes");
+  });
+
+  it("returns 'Borderline' between 50 and 69", () => {
+    expect(deriveRecommendation(50)).toBe("Borderline");
+    expect(deriveRecommendation(69)).toBe("Borderline");
+  });
+
+  it("returns 'No' below 50", () => {
+    expect(deriveRecommendation(0)).toBe("No");
+    expect(deriveRecommendation(49)).toBe("No");
+  });
+});
+
+describe("shouldFlagManualReview", () => {
+  const baseline = { evaluationFailed: false, turnCount: 6, durationMs: 5 * 60 * 1000, jailbreakAttempts: 0 };
+
+  it("does not flag a normal, complete interview", () => {
+    expect(shouldFlagManualReview(baseline)).toBe(false);
+  });
+
+  it("flags when the evaluation itself failed", () => {
+    expect(shouldFlagManualReview({ ...baseline, evaluationFailed: true })).toBe(true);
+  });
+
+  it("flags an interview with fewer than 3 turns", () => {
+    expect(shouldFlagManualReview({ ...baseline, turnCount: 2 })).toBe(true);
+  });
+
+  it("flags an interview shorter than 2 minutes", () => {
+    expect(shouldFlagManualReview({ ...baseline, durationMs: 90 * 1000 })).toBe(true);
+  });
+
+  it("flags an interview with 3 or more jailbreak attempts", () => {
+    expect(shouldFlagManualReview({ ...baseline, jailbreakAttempts: 3 })).toBe(true);
+  });
+
+  it("does not flag with only 2 jailbreak attempts", () => {
+    expect(shouldFlagManualReview({ ...baseline, jailbreakAttempts: 2 })).toBe(false);
   });
 });
 
