@@ -88,10 +88,10 @@ export function detectSectionType(text: string): string {
 
 /** Split one section's body into <=MAX_CHUNK_CHARS pieces, keeping the heading
  *  on every piece so retrieved fragments stay self-describing. */
-function packSection(heading: string, body: string, sectionType: string): ResumeChunk[] {
+function packSection(heading: string, body: string, sectionType: string, maxChars: number): ResumeChunk[] {
   const out: ResumeChunk[] = [];
   const prefix = heading ? `${heading}\n` : "";
-  const budget = Math.max(MAX_CHUNK_CHARS - prefix.length, 120);
+  const budget = Math.max(maxChars - prefix.length, 120);
 
   // Prefer paragraph boundaries, then lines, then a hard cut.
   const units = body
@@ -120,7 +120,7 @@ function packSection(heading: string, body: string, sectionType: string): Resume
   return out;
 }
 
-export function chunkResumeText(fullText: string): ResumeChunk[] {
+export function chunkResumeText(fullText: string, maxChars: number = MAX_CHUNK_CHARS): ResumeChunk[] {
   const lines = fullText.split("\n");
 
   // Group lines into sections, each keyed by the heading that opened it.
@@ -146,7 +146,7 @@ export function chunkResumeText(fullText: string): ResumeChunk[] {
     if (!body) continue;
 
     const sectionType = detectSectionType(`${section.heading}\n${body}`);
-    chunks.push(...packSection(section.heading, body, sectionType));
+    chunks.push(...packSection(section.heading, body, sectionType, maxChars));
   }
 
   const usable = chunks.filter((c) => c.text.trim().length >= MIN_CHUNK_CHARS);
@@ -156,8 +156,8 @@ export function chunkResumeText(fullText: string): ResumeChunk[] {
   // chunk, which the embedding model would silently truncate.
   const flat = fullText.trim();
   const windows: ResumeChunk[] = [];
-  for (let i = 0; i < flat.length; i += MAX_CHUNK_CHARS) {
-    const text = flat.slice(i, i + MAX_CHUNK_CHARS).trim();
+  for (let i = 0; i < flat.length; i += maxChars) {
+    const text = flat.slice(i, i + maxChars).trim();
     if (text.length >= MIN_CHUNK_CHARS) {
       windows.push({ text, sectionType: detectSectionType(text) });
     }
