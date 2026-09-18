@@ -10,6 +10,11 @@
 
 import { sql } from "../../db.js";
 import { generateEmbedding } from "../../utils/embedding.js";
+import { chunkResumeText, type ResumeChunk } from "./resume-chunking.js";
+import {
+  parseStructuredResume,
+  type StructuredResume,
+} from "./resume-structured-schema.js";
 // @ts-ignore
 import pdfParse from "pdf-parse";
 import Groq from "groq-sdk";
@@ -21,99 +26,11 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 async function askGroq(prompt: string): Promise<string> {
   const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-120b",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.4,
   });
   return completion.choices[0]?.message?.content ?? "";
-}
-
-// ─── Section Detection ────────────────────────────────────────────────────────
-
-interface ResumeChunk {
-  text: string;
-  sectionType: string;
-}
-
-const SECTION_PATTERNS: [RegExp, string][] = [
-  [/\b(skills?|technical\s*skills?|core\s*competenc|technologies|tech\s*stack)\b/i, "skills"],
-  [/\b(experience|work\s*experience|employment|professional\s*experience|work\s*history)\b/i, "experience"],
-  [/\b(education|academic|qualification|degree|university|college)\b/i, "education"],
-  [/\b(project|personal\s*project|academic\s*project|side\s*project)\b/i, "projects"],
-  [/\b(summary|objective|profile|about\s*me|introduction)\b/i, "summary"],
-  [/\b(certif|award|achievement|honor|accomplishment)\b/i, "achievements"],
-  [/\b(volunteer|extra.?curricular|activities|interests|hobbies)\b/i, "other"],
-];
-
-function detectSectionType(text: string): string {
-  const firstLine = text.split("\n")[0] || "";
-  for (const [pattern, type] of SECTION_PATTERNS) {
-    if (pattern.test(firstLine)) return type;
-  }
-  for (const [pattern, type] of SECTION_PATTERNS) {
-    if (pattern.test(text.substring(0, 300))) return type;
-  }
-  const lower = text.toLowerCase();
-  if (
-    /\b(java|python|react|node|typescript|javascript|sql|docker|aws|kubernetes|git|html|css|c\+\+)\b/i.test(text) &&
-    (lower.includes("language") || lower.includes("framework") || lower.includes("tool") || text.split(/[,|•·]/).length > 4)
-  ) return "skills";
-  if (/\b(\d{4}\s*[-–]\s*(\d{4}|present|current))\b/i.test(text) ||
-    /\b(intern|engineer|developer|manager|analyst|lead|senior|junior)\b/i.test(text)) return "experience";
-  if (/\b(bachelor|master|b\.?tech|m\.?tech|b\.?sc|m\.?sc|degree|gpa|cgpa|semester)\b/i.test(text)) return "education";
-  if (/\b(built|developed|created|implemented|designed|deployed|full.?stack|web\s*app|mobile\s*app)\b/i.test(text) && lower.includes("project")) return "projects";
-  if (/\b(leetcode|codeforces|hackathon|winner|award|certificate|certified|rank)\b/i.test(text)) return "achievements";
-  return "other";
-}
-
-function chunkResumeText(fullText: string): ResumeChunk[] {
-  const chunks: ResumeChunk[] = [];
-  const sectionSplitRegex =
-    /\n(?=[A-Z][A-Z\s&/,.:()-]{2,}\n)|(?=\n(?:SKILLS|EXPERIENCE|EDUCATION|PROJECTS|SUMMARY|OBJECTIVE|CERTIF|AWARDS|ACHIEVEMENTS|WORK|TECHNICAL|PROFESSIONAL|PERSONAL|ACADEMIC))/gi;
-
-  const rawSections = fullText.split(sectionSplitRegex).map((s) => s.trim()).filter((s) => s.length > 20);
-
-  if (rawSections.length <= 1) {
-    const paragraphs = fullText.split(/\n\s*\n/).map((p) => p.trim()).filter((p) => p.length > 20);
-    let buffer = "";
-    for (const para of paragraphs) {
-      if (buffer.length + para.length > 600 && buffer.length > 0) {
-        chunks.push({ text: buffer.trim(), sectionType: detectSectionType(buffer) });
-        buffer = para;
-      } else {
-        buffer += (buffer ? "\n\n" : "") + para;
-      }
-    }
-    if (buffer.trim().length > 20) chunks.push({ text: buffer.trim(), sectionType: detectSectionType(buffer) });
-  } else {
-    for (const section of rawSections) {
-      if (section.length > 1000) {
-        const subParagraphs = section.split(/\n\s*\n/).map((p) => p.trim()).filter((p) => p.length > 20);
-        let buffer = "";
-        const sectionType = detectSectionType(section);
-        for (const para of subParagraphs) {
-          if (buffer.length + para.length > 600 && buffer.length > 0) {
-            chunks.push({ text: buffer.trim(), sectionType });
-            buffer = para;
-          } else {
-            buffer += (buffer ? "\n\n" : "") + para;
-          }
-        }
-        if (buffer.trim().length > 20) chunks.push({ text: buffer.trim(), sectionType });
-      } else {
-        chunks.push({ text: section, sectionType: detectSectionType(section) });
-      }
-    }
-  }
-
-  return chunks.length > 0 ? chunks : [{ text: fullText.substring(0, 2000), sectionType: "other" }];
-}
-
-interface StructuredResume {
-  skills: string[];
-  experience_summary: string;
-  projects: string[];
-  education: string;
 }
 
 async function extractStructuredData(fullText: string): Promise<StructuredResume> {
@@ -142,12 +59,13 @@ Rules:
 - If a section is not found, use empty string or empty array
 `;
 
-  const rawText = (await askGroq(prompt)).replace(/```json/g, "").replace(/```/g, "").trim();
-  try {
-    return JSON.parse(rawText);
-  } catch {
-    return { skills: [], experience_summary: "", projects: [], education: "" };
+  const { data, ok, reason } = parseStructuredResume(await askGroq(prompt));
+  if (!ok) {
+    // Never fatal: indexing proceeds with chunks only, and the sidebar just
+    // renders without the structured summary.
+    console.warn(`Structured extraction rejected (${reason}); continuing with chunks only.`);
   }
+  return data;
 }
 
 // ─── Process Resume ───────────────────────────────────────────────────────────
@@ -163,25 +81,48 @@ export async function processResume(
     throw new Error("Could not extract meaningful text from the PDF");
   }
 
-  await sql`DELETE FROM resume_chunks WHERE user_id = ${userId}`;
-  await sql`DELETE FROM resume_structured WHERE user_id = ${userId}`;
-
+  // ── Build phase ────────────────────────────────────────────────────────────
+  // Everything fallible (chunking, the LLM call, N embedding round trips) runs
+  // BEFORE anything is deleted. The previous version deleted first and then did
+  // this work untransacted, so any failure left the candidate with a destroyed
+  // or half-built index.
   const chunks = chunkResumeText(fullText);
-  const structured = await extractStructuredData(fullText);
-
-  for (const chunk of chunks) {
-    const embedding = await generateEmbedding(chunk.text);
-    const embeddingStr = `[${embedding.join(",")}]`;
-    await sql`
-      INSERT INTO resume_chunks (user_id, chunk_text, section_type, embedding)
-      VALUES (${userId}, ${chunk.text}, ${chunk.sectionType}, ${embeddingStr}::vector)
-    `;
+  if (chunks.length === 0) {
+    throw new Error("Could not derive any indexable content from the PDF");
   }
 
-  await sql`
-    INSERT INTO resume_structured (user_id, skills, experience_summary, projects, education, full_text, processed_at)
-    VALUES (${userId}, ${structured.skills}, ${structured.experience_summary}, ${structured.projects}, ${structured.education}, ${fullText.substring(0, 10000)}, NOW())
-  `;
+  const structured = await extractStructuredData(fullText);
+
+  const embedded: { chunk: ResumeChunk; embeddingStr: string }[] = [];
+  for (const chunk of chunks) {
+    const embedding = await generateEmbedding(chunk.text);
+    embedded.push({ chunk, embeddingStr: `[${embedding.join(",")}]` });
+  }
+
+  // ── Swap phase ─────────────────────────────────────────────────────────────
+  // One non-interactive transaction: the old index is only dropped as part of
+  // the same commit that writes the new one, so a re-index is never destructive.
+  await sql.transaction([
+    sql`DELETE FROM resume_chunks WHERE user_id = ${userId}`,
+    sql`DELETE FROM resume_structured WHERE user_id = ${userId}`,
+    ...embedded.map(
+      ({ chunk, embeddingStr }) => sql`
+        INSERT INTO resume_chunks (user_id, chunk_text, section_type, embedding)
+        VALUES (${userId}, ${chunk.text}, ${chunk.sectionType}, ${embeddingStr}::vector)
+      `
+    ),
+    sql`
+      INSERT INTO resume_structured (user_id, skills, experience_summary, projects, education, full_text, processed_at)
+      VALUES (${userId}, ${structured.skills}, ${structured.experience_summary}, ${structured.projects}, ${structured.education}, ${fullText.substring(0, 10000)}, NOW())
+      ON CONFLICT (user_id) DO UPDATE SET
+        skills = EXCLUDED.skills,
+        experience_summary = EXCLUDED.experience_summary,
+        projects = EXCLUDED.projects,
+        education = EXCLUDED.education,
+        full_text = EXCLUDED.full_text,
+        processed_at = EXCLUDED.processed_at
+    `,
+  ]);
 
   console.log(`✅ Resume indexed for user ${userId}: ${chunks.length} chunks`);
   return { chunksCreated: chunks.length, structured };
