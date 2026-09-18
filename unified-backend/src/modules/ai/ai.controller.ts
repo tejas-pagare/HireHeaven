@@ -277,12 +277,40 @@ export const uploadResume = async (req: AuthenticatedRequest, res: Response): Pr
   }
 };
 
+// ── Resume RAG: Access Control ────────────────────────────────────────────────
+import { sql } from "../../db.js";
+
+/**
+ * A candidate may only query their own resume. A recruiter may query a
+ * candidate's resume only if that candidate has actually applied to one of
+ * the recruiter's own jobs — being logged in as "any recruiter" used to be
+ * enough to pull any candidate's resume summary or ask arbitrary questions
+ * about it.
+ */
+async function assertResumeAccess(req: AuthenticatedRequest, targetUserId: number): Promise<boolean> {
+  if (!req.user) return false;
+  if (req.user.user_id === targetUserId) return true;
+  if (req.user.role !== "recruiter") return false;
+
+  const [relationship] = await sql`
+    SELECT 1 FROM applications a
+    JOIN jobs j ON a.job_id = j.job_id
+    WHERE a.applicant_id = ${targetUserId} AND j.posted_by_recuriter_id = ${req.user.user_id}
+    LIMIT 1
+  `;
+  return Boolean(relationship);
+}
+
 // ── Resume RAG: Query ─────────────────────────────────────────────────────────
 export const queryResumeEndpoint = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { userId, question } = req.body;
     if (!userId) { res.status(400).json({ message: "userId is required" }); return; }
     if (!question || question.trim().length < 3) { res.status(400).json({ message: "A valid question is required" }); return; }
+    if (!(await assertResumeAccess(req, Number(userId)))) {
+      res.status(403).json({ message: "You do not have access to this candidate's resume" });
+      return;
+    }
     const result = await queryResume(userId, question);
     res.json(result);
   } catch (error: any) {
@@ -297,6 +325,10 @@ export const queryResumeVsJobEndpoint = async (req: AuthenticatedRequest, res: R
     if (!userId) { res.status(400).json({ message: "userId is required" }); return; }
     if (!question || question.trim().length < 3) { res.status(400).json({ message: "A valid question is required" }); return; }
     if (!jobDescription || jobDescription.trim().length < 10) { res.status(400).json({ message: "A valid job description is required" }); return; }
+    if (!(await assertResumeAccess(req, Number(userId)))) {
+      res.status(403).json({ message: "You do not have access to this candidate's resume" });
+      return;
+    }
     const result = await queryResumeVsJob(userId, question, jobDescription);
     res.json(result);
   } catch (error: any) {
@@ -309,6 +341,10 @@ export const resumeStatusEndpoint = async (req: AuthenticatedRequest, res: Respo
   try {
     const userId = parseInt(req.params.userId as string, 10);
     if (isNaN(userId)) { res.status(400).json({ message: "Invalid userId" }); return; }
+    if (!(await assertResumeAccess(req, userId))) {
+      res.status(403).json({ message: "You do not have access to this candidate's resume" });
+      return;
+    }
     const status = await getResumeStatus(userId);
     res.json(status);
   } catch (error: any) {
@@ -317,21 +353,32 @@ export const resumeStatusEndpoint = async (req: AuthenticatedRequest, res: Respo
 };
 
 // ── AI Interview Result ───────────────────────────────────────────────────────
-import { sql } from "../../db.js";
 export const getAiInterviewResult = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const applicationId = parseInt(req.params.applicationId as string, 10);
     if (isNaN(applicationId)) { res.status(400).json({ message: "Invalid applicationId" }); return; }
 
-    const [interview] = await sql`
-      SELECT * FROM ai_interviews WHERE application_id = ${applicationId}
+    const [row] = await sql`
+      SELECT ai.*, a.applicant_id, j.posted_by_recuriter_id
+      FROM ai_interviews ai
+      JOIN applications a ON a.application_id = ai.application_id
+      JOIN jobs j ON j.job_id = a.job_id
+      WHERE ai.application_id = ${applicationId}
     `;
 
-    if (!interview) {
+    if (!row) {
       res.status(404).json({ message: "AI Interview result not found for this application." });
       return;
     }
 
+    const isOwner = req.user?.user_id === row.applicant_id;
+    const isHiringRecruiter = req.user?.role === "recruiter" && req.user?.user_id === row.posted_by_recuriter_id;
+    if (!isOwner && !isHiringRecruiter) {
+      res.status(403).json({ message: "You do not have access to this interview result" });
+      return;
+    }
+
+    const { applicant_id, posted_by_recuriter_id, ...interview } = row;
     res.json(interview);
   } catch (error: any) {
     res.status(500).json({ message: error.message || "Failed to get AI interview result" });
