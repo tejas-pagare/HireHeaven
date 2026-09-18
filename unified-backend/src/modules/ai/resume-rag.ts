@@ -4,13 +4,31 @@
  *
  * Pipeline:
  *  1. processResume()    — PDF → text → chunks → embeddings → pgvector
- *  2. queryResume()      — question → embed → similarity search → Groq LLM → answer
+ *  2. queryResume()      — question → hybrid retrieval (pgvector cosine + Postgres
+ *                          full-text, fused with RRF) → Groq LLM → answer
  *  3. queryResumeVsJob() — question + JD → context-aware analysis
  */
 
 import { sql } from "../../db.js";
 import { generateEmbedding } from "../../utils/embedding.js";
 import { chunkResumeText, type ResumeChunk } from "./resume-chunking.js";
+import {
+  buildKeywordQuery,
+  detectQuerySection,
+  fuseAndFilter,
+  HYBRID_CANDIDATES_PER_LEG,
+  RELEVANCE_THRESHOLD,
+  type CandidateRow,
+  type MatchType,
+  type RetrievedChunk,
+} from "./resume-hybrid.js";
+import {
+  RAG_ANSWER_MODEL,
+  RAG_ANSWER_TEMPERATURE,
+  NO_RELEVANT_INFO_ANSWER,
+  buildStructuredExtractionPrompt,
+  buildResumeQAPrompt,
+} from "./resume-prompts.js";
 import {
   parseStructuredResume,
   type StructuredResume,
@@ -26,38 +44,15 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 async function askGroq(prompt: string): Promise<string> {
   const completion = await groq.chat.completions.create({
-    model: "openai/gpt-oss-120b",
+    model: RAG_ANSWER_MODEL,
     messages: [{ role: "user", content: prompt }],
-    temperature: 0.4,
+    temperature: RAG_ANSWER_TEMPERATURE,
   });
   return completion.choices[0]?.message?.content ?? "";
 }
 
 async function extractStructuredData(fullText: string): Promise<StructuredResume> {
-  const prompt = `
-Analyze the following resume text and extract structured information.
-Return ONLY valid JSON with no markdown formatting.
-
-Resume:
-"""
-${fullText.substring(0, 5000)}
-"""
-
-Return this exact JSON structure:
-{
-  "skills": ["skill1", "skill2", ...],
-  "experience_summary": "A 2-3 sentence summary of their work experience",
-  "projects": ["Project 1: brief description", ...],
-  "education": "Degree, University, Year"
-}
-
-Rules:
-- skills: extract ALL technical and soft skills mentioned
-- experience_summary: summarize roles, companies, and years of experience
-- projects: list each project with a one-line description
-- education: most recent degree with institution
-- If a section is not found, use empty string or empty array
-`;
+  const prompt = buildStructuredExtractionPrompt(fullText);
 
   const { data, ok, reason } = parseStructuredResume(await askGroq(prompt));
   if (!ok) {
@@ -128,9 +123,71 @@ export async function processResume(
   return { chunksCreated: chunks.length, structured };
 }
 
-// ─── Query Resume ─────────────────────────────────────────────────────────────
+// ─── Adaptive Retrieval (shared by recruiter Q&A + the live interview) ────────
 
-const RELEVANCE_THRESHOLD = 0.2;
+export type { RetrievedChunk, MatchType };
+
+/**
+ * Hybrid retrieval: returns the top-k resume chunks for `userId`, fusing
+ *   1. a semantic leg — cosine distance over the pgvector HNSW index,
+ *   2. a keyword leg — Postgres full-text search (GIN over a generated tsvector), and
+ *   3. a section leg — chunks of the section the question is about, when it
+ *      names one ("which college…" → education),
+ * with Reciprocal Rank Fusion. This is the one retrieval path used by both
+ * the recruiter Q&A endpoints and the live interview's per-turn adaptive
+ * context. scripts/eval-retrieval.ts runs these same three statements.
+ *
+ * The keyword leg is best-effort: if it errors (e.g. the tsv column hasn't
+ * been created on this database yet) retrieval degrades to semantic-only
+ * rather than failing the request.
+ */
+export async function retrieveTopChunks(
+  userId: number,
+  queryText: string,
+  limit: number
+): Promise<RetrievedChunk[]> {
+  const queryEmbedding = await generateEmbedding(queryText);
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
+  const keywordQuery = buildKeywordQuery(queryText);
+
+  const vectorLeg = Promise.resolve(sql`
+    SELECT id, chunk_text, section_type, 1 - (embedding <=> ${embeddingStr}::vector) AS similarity
+    FROM resume_chunks WHERE user_id = ${userId}
+    ORDER BY embedding <=> ${embeddingStr}::vector
+    LIMIT ${HYBRID_CANDIDATES_PER_LEG}
+  `) as unknown as Promise<CandidateRow[]>;
+
+  const keywordLeg: Promise<CandidateRow[]> = keywordQuery
+    ? (Promise.resolve(sql`
+        SELECT id, chunk_text, section_type, 1 - (embedding <=> ${embeddingStr}::vector) AS similarity
+        FROM resume_chunks, websearch_to_tsquery('english', ${keywordQuery}) AS q
+        WHERE user_id = ${userId} AND tsv @@ q
+        ORDER BY ts_rank_cd(tsv, q) DESC, id
+        LIMIT ${HYBRID_CANDIDATES_PER_LEG}
+      `) as unknown as Promise<CandidateRow[]>).catch((err: unknown) => {
+        console.warn("⚠️ Keyword retrieval failed, using semantic results only:", (err as Error).message);
+        return [];
+      })
+    : Promise.resolve([]);
+
+  const section = detectQuerySection(queryText);
+  const sectionLeg: Promise<CandidateRow[]> = section
+    ? (Promise.resolve(sql`
+        SELECT id, chunk_text, section_type, 1 - (embedding <=> ${embeddingStr}::vector) AS similarity
+        FROM resume_chunks WHERE user_id = ${userId} AND section_type = ${section}
+        ORDER BY embedding <=> ${embeddingStr}::vector
+        LIMIT ${HYBRID_CANDIDATES_PER_LEG}
+      `) as unknown as Promise<CandidateRow[]>).catch((err: unknown) => {
+        console.warn("⚠️ Section retrieval failed, continuing without it:", (err as Error).message);
+        return [];
+      })
+    : Promise.resolve([]);
+
+  const [vectorRows, keywordRows, sectionRows] = await Promise.all([vectorLeg, keywordLeg, sectionLeg]);
+  return fuseAndFilter(vectorRows, keywordRows, { limit, relevanceThreshold: RELEVANCE_THRESHOLD }, sectionRows);
+}
+
+// ─── Query Resume ─────────────────────────────────────────────────────────────
 
 interface QueryResult {
   answer: string;
@@ -139,61 +196,25 @@ interface QueryResult {
 }
 
 export async function queryResume(userId: number, question: string): Promise<QueryResult> {
-  const chunks = await sql`SELECT COUNT(*) AS count FROM resume_chunks WHERE user_id = ${userId}`;
-  if (!chunks[0] || Number(chunks[0].count) === 0) {
+  const chunkCount = await sql`SELECT COUNT(*) AS count FROM resume_chunks WHERE user_id = ${userId}`;
+  if (!chunkCount[0] || Number(chunkCount[0].count) === 0) {
     return { answer: "This candidate's resume has not been indexed yet.", sources: [], confidence: 0 };
   }
 
-  const queryEmbedding = await generateEmbedding(question);
-  const embeddingStr = `[${queryEmbedding.join(",")}]`;
-
-  const topChunks = await sql`
-    SELECT chunk_text, section_type, 1 - (embedding <=> ${embeddingStr}::vector) AS similarity
-    FROM resume_chunks WHERE user_id = ${userId}
-    ORDER BY embedding <=> ${embeddingStr}::vector LIMIT 5
-  `;
-
-  const relevantChunks = topChunks.filter((c: any) => Number(c.similarity) >= RELEVANCE_THRESHOLD);
+  const relevantChunks = await retrieveTopChunks(userId, question, 5);
   if (relevantChunks.length === 0) {
-    return { answer: "No relevant information found in this candidate's resume.", sources: [], confidence: 0 };
+    return { answer: NO_RELEVANT_INFO_ANSWER, sources: [], confidence: 0 };
   }
 
-  const context = relevantChunks.map((c: any, i: number) => `[Source ${i + 1} — ${c.section_type}]\n${c.chunk_text}`).join("\n\n---\n\n");
-
   const structuredRows = await sql`SELECT skills, experience_summary FROM resume_structured WHERE user_id = ${userId}`;
-  const structured = structuredRows[0] || {};
-  let structuredContext = "";
-  if (structured.skills?.length > 0) structuredContext += `\nCandidate Skills: ${structured.skills.join(", ")}`;
-  if (structured.experience_summary) structuredContext += `\nExperience Summary: ${structured.experience_summary}`;
-
-  const prompt = `
-You are an AI hiring assistant analyzing a candidate's resume for a recruiter.
-Answer the recruiter's question accurately based ONLY on the resume information provided.
-
-CRITICAL RULES:
-- ONLY use information from the provided resume context
-- If the resume doesn't contain enough info, say "The resume does not contain specific information about this."
-- Be concise and professional
-- Do NOT make assumptions
-
---- RESUME CONTEXT ---
-${context}
-${structuredContext}
---- END CONTEXT ---
-
-Recruiter's Question: ${question}
-`;
+  const prompt = buildResumeQAPrompt(relevantChunks, structuredRows[0] || {}, question);
 
   const answer = await askGroq(prompt);
-  const avgSimilarity = relevantChunks.reduce((sum: number, c: any) => sum + Number(c.similarity), 0) / relevantChunks.length;
+  const avgSimilarity = relevantChunks.reduce((sum, c) => sum + c.relevanceScore, 0) / relevantChunks.length;
 
   return {
     answer: answer.trim(),
-    sources: relevantChunks.map((c: any) => ({
-      chunkText: c.chunk_text,
-      sectionType: c.section_type,
-      relevanceScore: Math.round(Number(c.similarity) * 100) / 100,
-    })),
+    sources: relevantChunks,
     confidence: Math.round(avgSimilarity * 100) / 100,
   };
 }
@@ -201,27 +222,18 @@ Recruiter's Question: ${question}
 // ─── Query Resume vs Job Description ─────────────────────────────────────────
 
 export async function queryResumeVsJob(userId: number, question: string, jobDescription: string): Promise<QueryResult> {
-  const chunks = await sql`SELECT COUNT(*) AS count FROM resume_chunks WHERE user_id = ${userId}`;
-  if (!chunks[0] || Number(chunks[0].count) === 0) {
+  const chunkCount = await sql`SELECT COUNT(*) AS count FROM resume_chunks WHERE user_id = ${userId}`;
+  if (!chunkCount[0] || Number(chunkCount[0].count) === 0) {
     return { answer: "This candidate's resume has not been indexed yet.", sources: [], confidence: 0 };
   }
 
   const combinedQuery = `${question}\n\nJob Description Context: ${jobDescription.substring(0, 500)}`;
-  const queryEmbedding = await generateEmbedding(combinedQuery);
-  const embeddingStr = `[${queryEmbedding.join(",")}]`;
-
-  const topChunks = await sql`
-    SELECT chunk_text, section_type, 1 - (embedding <=> ${embeddingStr}::vector) AS similarity
-    FROM resume_chunks WHERE user_id = ${userId}
-    ORDER BY embedding <=> ${embeddingStr}::vector LIMIT 6
-  `;
-
-  const relevantChunks = topChunks.filter((c: any) => Number(c.similarity) >= RELEVANCE_THRESHOLD);
+  const relevantChunks = await retrieveTopChunks(userId, combinedQuery, 6);
   if (relevantChunks.length === 0) {
     return { answer: "No relevant information found to compare with the job description.", sources: [], confidence: 0 };
   }
 
-  const context = relevantChunks.map((c: any, i: number) => `[Source ${i + 1} — ${c.section_type}]\n${c.chunk_text}`).join("\n\n---\n\n");
+  const context = relevantChunks.map((c, i) => `[Source ${i + 1} — ${c.sectionType}]\n${c.chunkText}`).join("\n\n---\n\n");
   const structuredRows = await sql`SELECT skills, experience_summary FROM resume_structured WHERE user_id = ${userId}`;
   const structured = structuredRows[0] || {};
 
@@ -243,15 +255,11 @@ Recruiter's Question: ${question}
 `;
 
   const answer = await askGroq(prompt);
-  const avgSimilarity = relevantChunks.reduce((sum: number, c: any) => sum + Number(c.similarity), 0) / relevantChunks.length;
+  const avgSimilarity = relevantChunks.reduce((sum, c) => sum + c.relevanceScore, 0) / relevantChunks.length;
 
   return {
     answer: answer.trim(),
-    sources: relevantChunks.map((c: any) => ({
-      chunkText: c.chunk_text,
-      sectionType: c.section_type,
-      relevanceScore: Math.round(Number(c.similarity) * 100) / 100,
-    })),
+    sources: relevantChunks,
     confidence: Math.round(avgSimilarity * 100) / 100,
   };
 }
