@@ -1,0 +1,3471 @@
+{
+  "config": {
+    "split": "all",
+    "retrievers": [
+      "hybrid",
+      "vector"
+    ],
+    "spotCheck": 20,
+    "save": "v1"
+  },
+  "answerModel": "openai/gpt-oss-120b",
+  "judgeModel": "qwen/qwen3.8-27b",
+  "rows": [
+    {
+      "id": "q001",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he used Kafka?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he has used Kafka.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of Kafka, which is supported by both the experience description and the skills list in the context."
+      }
+    },
+    {
+      "id": "q002",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any Terraform experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. The resume lists Terraform under the candidate’s technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has Terraform experience based on the provided skills section in the context."
+      }
+    },
+    {
+      "id": "q003",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has the candidate mentored or guided other engineers?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes. While at Razorpay, the candidate mentored two junior engineers.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate mentored two junior engineers at Razorpay, which is directly supported by the provided context."
+      }
+    },
+    {
+      "id": "q004",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he worked on large data migrations between databases?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At Infosys, he wrote a batch job that migrated 40 million customer records from Oracle to PostgreSQL, demonstrating experience with large‑scale data migrations between databases.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific migration of 40 million records from Oracle to PostgreSQL at Infosys, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q005",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "What performance improvements has he delivered?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "He reduced the p99 settlement latency from 900 ms to 180 ms by moving reconciliation to Kafka consumers, and designed an idempotent double‑entry ledger capable of processing 3 million transactions per day.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific performance improvement (latency reduction) supported by the gold evidence and context, and the additional detail about the ledger is also supported by the provided context."
+      }
+    },
+    {
+      "id": "q006",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Did he work at Infosys?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he worked at Infosys from 2020 to 2022.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate worked at Infosys and provides the accurate dates found in the context."
+      }
+    },
+    {
+      "id": "q007",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "Where did he study?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He earned his B.E. in Computer Engineering from the College of Engineering Pune.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the College of Engineering Pune as the place of study, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q008",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Does he have experience with Kubernetes?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Kubernetes, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q009",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does she know Airflow?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she knows Airflow. She has orchestrated 140 Airflow DAGs and lists Apache Airflow among her technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate knows Airflow based on the specific experience of orchestrating 140 DAGs and the listed skill, both of which are supported by the provided context."
+      }
+    },
+    {
+      "id": "q010",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she used Snowflake?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she has used Snowflake—she modeled a star schema in Snowflake while working at Mu Sigma.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate used Snowflake and accurately cites the specific experience (modeling a star schema at Mu Sigma) found in the provided context."
+      }
+    },
+    {
+      "id": "q011",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she saved infrastructure costs anywhere?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Swiggy, she rebuilt the order‑events pipeline on Databricks with Delta Lake, which reduced daily compute costs by 38%.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific infrastructure cost saving (38% reduction in daily compute costs) mentioned in the context and supports it with accurate details from the Swiggy role."
+      }
+    },
+    {
+      "id": "q012",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How does she ensure data is correct in pipelines?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "She adds data‑quality checks to her pipelines using Great Expectations, which she introduced while orchestrating the Airflow DAGs. This ensures that data is validated at key points before it moves downstream.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the use of Great Expectations for data quality checks as stated in the context, and the additional detail about validation before moving downstream is a reasonable inference from the context of pipeline orchestration."
+      }
+    },
+    {
+      "id": "q013",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Any hackathon wins?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. Priya Nair won Swiggy’s internal hackathon in 2022 for a churn‑prediction dashboard.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the hackathon win mentioned in the context and includes the specific project details provided in the source."
+      }
+    },
+    {
+      "id": "q014",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "What is her educational background?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Priya Nair holds a **M.Sc. in Statistics** from the University of Hyderabad (2019) and a **B.Sc. in Mathematics** from St. Teresa's College (2017).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the M.Sc. in Statistics from the University of Hyderabad as required by the gold evidence and accurately includes the B.Sc. details supported by the context."
+      }
+    },
+    {
+      "id": "q015",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she built anything real-time or low latency?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Swiggy she partnered with the pricing team to ship a **near‑real‑time surge‑pricing feature store**, and her experience summary notes that she has built and optimized **streaming pipelines**, both of which involve real‑time or low‑latency data processing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the near-real-time surge pricing feature store mentioned in the gold evidence and context, and accurately cites the experience summary regarding streaming pipelines."
+      }
+    },
+    {
+      "id": "q016",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has she worked with iOS development?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about iOS development, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q017",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does he know Next.js?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he has experience with Next.js, having rebuilt a restaurant listing page using Next.js server components at Zomato.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's knowledge of Next.js and cites the specific evidence from the context regarding the restaurant listing page at Zomato."
+      }
+    },
+    {
+      "id": "q018",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he improved page load speed?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Zomato, he rebuilt the restaurant‑listing page with Next.js server components and reduced the Largest Contentful Paint from 4.1 seconds to 1.9 seconds, indicating a significant improvement in page load speed.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the improvement in page load speed (LCP from 4.1s to 1.9s) and accurately cites the context regarding the Zomato role and Next.js server components."
+      }
+    },
+    {
+      "id": "q019",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Does he care about users with disabilities?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. The resume states that he “cares about accessibility” and led a WCAG 2.1 AA audit, fixing keyboard navigation and screen‑reader labels across the app.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate cares about users with disabilities by citing the specific evidence of leading a WCAG 2.1 AA audit and fixing accessibility issues, all of which are supported by the provided context."
+      }
+    },
+    {
+      "id": "q020",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any Playwright or end-to-end testing?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. The resume lists Playwright among the tools he uses daily, indicating experience with Playwright for end‑to‑end testing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that Playwright is listed in the context and accurately interprets it as experience with end-to-end testing, which is supported by the tool list."
+      }
+    },
+    {
+      "id": "q021",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he built reusable UI components for other teams?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At Zomato, he built a shared design system in Storybook that is used by eleven product teams, providing reusable UI components for those teams.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built a shared design system used by eleven teams, which aligns with the gold evidence and context."
+      }
+    },
+    {
+      "id": "q022",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he done mobile work with React Native?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he built a mobile ordering flow using React Native at Kitchenly (2021‑2022).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built a React Native ordering flow at Kitchenly, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q023",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "Which university did he attend?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He attended Jadavpur University, where he earned a B.Tech in Information Technology.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies Jadavpur University as the institution attended, which is supported by the context stating the candidate studied B.Tech Information Technology there."
+      }
+    },
+    {
+      "id": "q024",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Does he have Kotlin experience?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Kotlin experience, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q025",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she used PyTorch?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, she has used PyTorch.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has used PyTorch, which is explicitly listed in the provided skills context."
+      }
+    },
+    {
+      "id": "q026",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she fine-tuned large language models with LoRA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she has fine‑tuned large language models using LoRA.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms that the candidate has fine-tuned large language models with LoRA, which is directly supported by the context stating she 'Fine-tuned a 7B parameter model with LoRA'."
+      }
+    },
+    {
+      "id": "q027",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she done any academic research or publications?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. During her 2020 research internship at IISc Bangalore, she published a workshop paper on low‑resource Marathi named entity recognition.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the publication mentioned in the gold evidence and accurately cites the context regarding the research internship at IISc Bangalore."
+      }
+    },
+    {
+      "id": "q028",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How does she monitor models in production?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "She set up production drift detection that triggers alerts when feature‑distribution shifts exceed a PSI of 0.2, and her MLOps toolkit (MLflow, Kubeflow, Docker) includes model‑monitoring capabilities.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the drift detection mechanism with the specific PSI threshold mentioned in the context and accurately cites the MLOps tools listed in the skills section."
+      }
+    },
+    {
+      "id": "q029",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "What ranking or search systems has she built?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "She has built:\n\n- A **learning‑to‑rank model** using **LightGBM** for Flipkart’s product search, handling about 50 k queries per second.  \n- A **semantic resume‑to‑job matching system (ResumeRanker)** that uses sentence embeddings and a **FAISS** vector index to perform similarity‑based search.  \n\nAdditionally, her BERT‑based query classifier (also at Flipkart) contributed to improving the search click‑through rate, but the primary ranking system mentioned is the LightGBM learning‑to‑rank model.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the learning-to-rank model with LightGBM as requested by the gold evidence and accurately describes the additional ResumeRanker project and BERT classifier based on the provided context."
+      }
+    },
+    {
+      "id": "q030",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any experience with FAISS?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. The candidate used FAISS in the **ResumeRanker** project for semantic resume‑to‑job matching and lists FAISS among their technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's experience with FAISS by citing the ResumeRanker project and the skills section, both of which are supported by the provided context."
+      }
+    },
+    {
+      "id": "q031",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "What degree does she hold?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "She holds an M.Tech degree in Artificial Intelligence from IIT Madras (2021).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the degree, institution, and year as stated in the provided context."
+      }
+    },
+    {
+      "id": "q032",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has she worked with Salesforce CRM?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Salesforce CRM, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q033",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does he know Kubernetes?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The resume shows he works with Kubernetes (K8s) in his tech stack, holds a Certified Kubernetes Administrator (CKA) certification, and migrated 120 microservices to GKE clusters.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's knowledge of Kubernetes by citing the specific skills, certification, and migration experience found in the provided context."
+      }
+    },
+    {
+      "id": "q034",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he written infrastructure as code?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "Yes. The resume states that he “wrote Terraform modules (IaC) for VPCs, Cloud SQL and IAM” while working as a Senior SRE at Paytm.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate wrote Terraform modules (IaC) and accurately cites the specific details and role from the provided context."
+      }
+    },
+    {
+      "id": "q035",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How has he improved reliability or reduced alerts?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about how he has improved reliability or reduced alerts.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer, claiming the information was not present, but the gold evidence explicitly states that paging volume dropped by 45%."
+      }
+    },
+    {
+      "id": "q036",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he handled production outages?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at Paytm, he led the incident review for a 2023 DNS outage and drove the fix to a multi‑region failover, demonstrating direct handling of a production outage.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate handled a production outage by citing the specific 2023 DNS outage incident review mentioned in the context."
+      }
+    },
+    {
+      "id": "q037",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Is he certified in Kubernetes administration?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes, he holds the Certified Kubernetes Administrator (CKA) certification.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate holds the CKA certification, which is explicitly stated in the provided context."
+      }
+    },
+    {
+      "id": "q038",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "What CI/CD tools has he used?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He has used **Jenkins** and **GitHub Actions** for CI/CD pipelines.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies Jenkins and GitHub Actions as the CI/CD tools used, which is supported by the skills list and experience section in the context."
+      }
+    },
+    {
+      "id": "q039",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "Which college did he graduate from?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He graduated from NIT Kurukshetra.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies NIT Kurukshetra as the college, which is supported by the education section in the context."
+      }
+    },
+    {
+      "id": "q040",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has he built machine learning models?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about machine learning models, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q041",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "What is her CGPA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Her CGPA is 9.1.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the CGPA as 9.1, which is explicitly stated in the provided context."
+      }
+    },
+    {
+      "id": "q042",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she built anything in C++?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. She developed **TinyDB**, a key‑value store implemented in C++.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies TinyDB as a C++ project based on the provided context."
+      }
+    },
+    {
+      "id": "q043",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How good is she at competitive programming?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "She has a strong competitive‑programming background, evidenced by a LeetCode Knight rating of 1950 with over 600 problems solved and a Codeforces Specialist rank.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's competitive programming skills using the specific evidence provided in the context (LeetCode Knight rating and Codeforces rank)."
+      }
+    },
+    {
+      "id": "q044",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she done an internship?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she completed a Software Engineering internship at Freshworks in Summer 2024.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate completed an internship at Freshworks in Summer 2024, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q045",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Any projects involving payments?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. The **CampusCart** project is a MERN‑stack marketplace that includes Stripe integration for handling payments.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the CampusCart project and its use of Stripe for payments, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q046",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Does she understand database internals or storage engines?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. She built **TinyDB**, a C++ key‑value store that includes a write‑ahead log and LSM‑tree compaction, demonstrating knowledge of database internals and storage‑engine concepts.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the TinyDB project and its specific features (write-ahead log and LSM-tree compaction) from the context to support the conclusion that the candidate understands database internals."
+      }
+    },
+    {
+      "id": "q047",
+      "split": "dev",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "What courses has she taken?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "She has taken the following relevant courses: Operating Systems, Database Management Systems (DBMS), Computer Networks, and Compiler Design.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly lists the courses mentioned in the context, which includes the gold evidence items plus additional details present in the source text."
+      }
+    },
+    {
+      "id": "q048",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "How many years of full-time work experience does she have in banking?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain the requested information, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q049",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does he know Jetpack Compose?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, the resume indicates that he knows Jetpack Compose.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Jetpack Compose, which is supported by both the skills list and the experience description in the context."
+      }
+    },
+    {
+      "id": "q050",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he improved app startup performance?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At PhonePe he reduced the app’s cold‑start time from 2.8 seconds to 1.3 seconds using baseline profiles and lazy module loading, demonstrating a clear improvement in startup performance.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the improvement in app startup performance (cold start time reduction) and cites the specific metrics and techniques found in the provided context."
+      }
+    },
+    {
+      "id": "q051",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How has he improved app stability?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "He enhanced stability by implementing Firebase Crashlytics for crash monitoring at Dunzo, which raised the app’s crash‑free rate to 99.7 percent. Additionally, he built an offline‑first sync layer using Room and WorkManager at PhonePe, improving data reliability and reducing runtime failures.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the crash-free rate improvement supported by the context and adds a relevant, context-supported detail about the offline-first sync layer."
+      }
+    },
+    {
+      "id": "q052",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he used WorkManager?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, he has used WorkManager.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of WorkManager, which is explicitly supported by the context stating he owned the sync layer built on Room and WorkManager."
+      }
+    },
+    {
+      "id": "q053",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Any published apps?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The candidate published **BudgetBuddy**, an expense‑tracker app on the Google Play Store that has achieved ~100 k downloads.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies BudgetBuddy as a published app on the Play Store with 100k downloads, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q054",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he built features that work without internet?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At PhonePe he owned an offline‑first sync layer built with Room and WorkManager, enabling functionality when the device is not connected to the internet.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the offline-first sync layer mentioned in the context and accurately attributes it to the candidate's role at PhonePe."
+      }
+    },
+    {
+      "id": "q055",
+      "split": "test",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "Where did he study?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He earned his B.Tech in Computer Science from JNTU Hyderabad.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies JNTU Hyderabad as the place of study, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q056",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has he worked with Terraform?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Terraform, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q057",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she led or managed people?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. As Engineering Manager at Nykaa she managed a team of 8 engineers, hired five, conducted quarterly planning, coached engineers into senior roles, and created a career ladder. Earlier, as Tech Lead at MakeMyTrip she led the hotel‑search rewrite effort, which also involved leading technical contributors.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate managed a team of 8 engineers as supported by the context and gold evidence, and all additional details provided are found in the source text."
+      }
+    },
+    {
+      "id": "q058",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she been involved in recruiting?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, failing to utilize the gold evidence which indicates the candidate was involved in recruiting."
+      }
+    },
+    {
+      "id": "q059",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does she know Elasticsearch?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, the resume indicates she has experience with Elasticsearch.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has experience with Elasticsearch, which is supported by both the skills list and the experience description in the context."
+      }
+    },
+    {
+      "id": "q060",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she helped engineers grow in their careers?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At Nykaa, she coached two engineers into senior roles and introduced a career ladder for the team, demonstrating a focus on engineers’ professional growth.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate coached engineers into senior roles and introduced a career ladder, which directly supports the claim that she helped engineers grow, and all details are supported by the provided context."
+      }
+    },
+    {
+      "id": "q061",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Has she worked on legacy modernisation or rewrites?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. As a Tech Lead at MakeMyTrip (2017‑2021), she led the rewrite of the hotel‑search functionality, migrating it from a PHP monolith to Node.js services.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the legacy modernization work (PHP to Node.js rewrite) at MakeMyTrip, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q062",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any Angular experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. The candidate built Angular dashboards for an insurance client while at Capgemini (2015‑2017) and lists Angular among their technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's Angular experience by citing the specific project mentioned in the gold evidence and the skills list, both of which are supported by the provided context."
+      }
+    },
+    {
+      "id": "q063",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she improved how often the team ships?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at Nykaa, she “cut the release cycle from monthly to weekly,” thereby increasing how often the team ships.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate cut the release cycle from monthly to weekly, which directly supports the claim that she improved how often the team ships, and this fact is explicitly present in the provided context."
+      }
+    },
+    {
+      "id": "q064",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Does she have a PhD?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about a PhD, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q065",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he used Burp Suite?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he has used Burp Suite.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of Burp Suite, which is explicitly supported by the experience and skills sections in the provided context."
+      }
+    },
+    {
+      "id": "q066",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Is he OSCP certified?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, he is OSCP certified.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's OSCP certification based on the provided context."
+      }
+    },
+    {
+      "id": "q067",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he found real vulnerabilities in production?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at CRED, he discovered and remediated an IDOR vulnerability that exposed other users’ transaction history, demonstrating that he has identified real production vulnerabilities.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the IDOR vulnerability mentioned in the context as evidence of finding real vulnerabilities, and all claims are supported by the provided text."
+      }
+    },
+    {
+      "id": "q068",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How has he prevented credentials from leaking into code?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "He built a secrets‑detection pre‑commit hook that scans code before it’s committed, which blocked 1,400 leaked keys in its first year and thus prevents credentials from being introduced into the codebase.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the secrets-detection pre-commit hook mentioned in the context and accurately cites the statistic of blocking 1,400 leaked keys."
+      }
+    },
+    {
+      "id": "q069",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Has he done threat modelling?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. He conducted threat‑modelling sessions for the rewards platform at CRED, using the STRIDE methodology.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate performed threat modelling using STRIDE for the rewards platform at CRED, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q070",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any Splunk or SOC experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. While at Wipro (2019‑2022), the candidate triaged SOC alerts using Splunk and authored incident runbooks.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's Splunk and SOC experience at Wipro, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q071",
+      "split": "test",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "What is his degree?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He holds a B.Tech in Computer Science from Manipal Institute of Technology (graduated in 2019).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the degree and institution as stated in the context and gold evidence."
+      }
+    },
+    {
+      "id": "q072",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has he built Android apps?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Android app development, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q073",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does she know Playwright?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she has experience with Playwright, having built a Playwright framework in TypeScript and listing it among her skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Playwright based on the provided context, which lists it in skills and mentions building a framework with it."
+      }
+    },
+    {
+      "id": "q074",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she made test suites run faster?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She reduced the regression suite runtime from 6 hours to 40 minutes by implementing parallel sharding in a Playwright framework.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate reduced the regression suite runtime from 6 hours to 40 minutes, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q075",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she done performance or load testing?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She performed load testing with k6 (identifying a connection‑pool bottleneck at 4 k RPS) and lists load‑testing tools such as k6 and JMeter among her skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate performed load testing with k6, which is explicitly supported by the provided context."
+      }
+    },
+    {
+      "id": "q076",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she used Pact for contract testing?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She added contract tests between 14 microservices using Pact.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the use of Pact for contract testing based on the provided context."
+      }
+    },
+    {
+      "id": "q077",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Any Appium or mobile automation?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The candidate automated mobile regression tests using **Appium** for an airline‑booking app while working as a QA Engineer at Tata Consultancy Services (2017‑2020).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's Appium experience and accurately cites the specific project and role details found in the provided context."
+      }
+    },
+    {
+      "id": "q078",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Any testing certifications?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes. The resume lists the **ISTQB Certified Tester Foundation Level** certification.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the ISTQB Certified Tester Foundation Level certification listed in the context."
+      }
+    },
+    {
+      "id": "q079",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How much manual testing has she automated?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "She automated the replacement of 1,800 manual regression test cases with a Playwright framework, and also automated mobile regression tests for an airline‑booking app (the exact number of those tests isn’t specified).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the 1,800 manual regression cases mentioned in the gold evidence and context, and accurately notes that the number for mobile tests is unspecified."
+      }
+    },
+    {
+      "id": "q080",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has she designed database schemas for a bank?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain the requested information, aligning with the gold evidence that the résumé does not contain this detail."
+      }
+    },
+    {
+      "id": "q081",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has he worked with AUTOSAR?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, he has worked with AUTOSAR, developing basic software modules for a brake control ECU.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's experience with AUTOSAR and accurately cites the specific task (developing basic software modules for a brake control ECU) found in the context."
+      }
+    },
+    {
+      "id": "q082",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does he know the CAN protocol?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q083",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has he built firmware update mechanisms?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At Bosch, he implemented a CAN bootloader that supports secure over‑the‑air firmware updates.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built firmware update mechanisms by citing the specific evidence of implementing a secure over-the-air firmware update bootloader at Bosch, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q084",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "How does he ensure code quality and safety standards?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He ensures code quality and safety by enforcing MISRA‑C compliance and running static‑analysis checks with Polyspace. Additionally, he validates low‑level behavior through hardware debugging (oscilloscope and Lauterbach TRACE32).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the MISRA C compliance and Polyspace static analysis mentioned in the gold evidence and context, and the additional detail about hardware debugging is supported by the provided experience section."
+      }
+    },
+    {
+      "id": "q085",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "What hardware debugging tools has he used?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He has used an oscilloscope and a Lauterbach TRACE32 debugger for hardware debugging.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the oscilloscope and Lauterbach TRACE32 debugger as the hardware debugging tools mentioned in the context."
+      }
+    },
+    {
+      "id": "q086",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Any experience with batteries or electric vehicles?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. As a Firmware Intern at Ather Energy in 2019, the candidate wrote a battery‑management system driver for cell‑voltage monitoring over SPI, providing direct experience with battery hardware used in electric vehicles.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the battery management system driver experience from the context and accurately attributes it to the Ather Energy internship."
+      }
+    },
+    {
+      "id": "q087",
+      "split": "test",
+      "type": "section",
+      "retriever": "hybrid",
+      "question": "What are his qualifications?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "**Education**  \n- M.Tech in Embedded Systems, VIT Vellore (2020)  \n- B.E. in Electronics, PES University (2018)  \n\n**Technical Skills**  \n- Programming: C, C++17, Embedded C, Python, Git  \n- Embedded Frameworks & Standards: FreeRTOS, AUTOSAR, MISRA C  \n- Communication Protocols: CAN, LIN, SPI, I2C  \n- Hardware Platforms: ARM Cortex‑M, Oscilloscope, Lauterbach TRACE32, Polyspace, Static analysis tools  \n\n**Professional Experience**  \n- **Embedded Software Engineer, Bosch (2020 – present)** – Developed AUTOSAR basic software for brake‑control ECUs, implemented a secure CAN bootloader, ensured MISRA‑C compliance, and performed low‑level debugging.  \n- **Firmware Intern, Ather Energy (2019)** – Created a driver for a battery‑management system.  \n\nThese qualifications combine advanced academic training in embedded systems with hands‑on experience in automotive‑grade software development, compliance standards, and hardware debugging.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the M.Tech qualification from the gold evidence and provides additional accurate details from the context without introducing unsupported claims."
+      }
+    },
+    {
+      "id": "q088",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has he built React web applications?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about React web applications, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q089",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does she know Tableau?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she knows Tableau. She has listed Tableau as a skill and built a Tableau dashboard for city‑level unit economics at Zepto.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Tableau based on the skills list and the specific dashboard experience mentioned in the context."
+      }
+    },
+    {
+      "id": "q090",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she run experiments?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At Zepto she designed and implemented the A/B‑testing framework used for all checkout experiments, including sequential testing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate designed the A/B testing framework for checkout experiments, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q091",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she found insights that changed business strategy?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. While at Zepto, she identified that delivery delays exceeding 12 minutes drove customer churn, which led the company to pursue a dark‑store expansion to address the issue. This insight directly influenced the business’s strategic direction.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific insight regarding delivery delays and churn from the context and accurately links it to the dark-store expansion strategy mentioned in the source."
+      }
+    },
+    {
+      "id": "q092",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "hybrid",
+      "question": "Has she automated any reporting work?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Policybazaar, she automated weekly marketing‑funnel reports using SQL and Python, saving about 10 hours per week.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate automated weekly marketing funnel reports, which is supported by the context provided."
+      }
+    },
+    {
+      "id": "q093",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "hybrid",
+      "question": "Any clustering or segmentation work?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. While at Policybazaar (2020‑2022), the candidate built customer segmentation using k‑means clustering to support targeted marketing campaigns.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the customer segmentation work using k-means clustering at Policybazaar, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q094",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Does she have an MBA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she holds an MBA in Business Analytics (Symbiosis Pune, 2020).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate has an MBA and accurately cites the specialization and institution from the provided context."
+      }
+    },
+    {
+      "id": "q095",
+      "split": "test",
+      "type": "exact",
+      "retriever": "hybrid",
+      "question": "Has she used Power BI?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, she has used Power BI.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of Power BI based on the skills listed in the context."
+      }
+    },
+    {
+      "id": "q096",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "hybrid",
+      "question": "Has she deployed Kubernetes clusters?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about Kubernetes deployment, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q001",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he used Kafka?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, he has used Kafka. He moved reconciliation to Kafka consumers to improve settlement latency.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of Kafka and accurately cites the specific context regarding moving reconciliation to Kafka consumers to improve latency."
+      }
+    },
+    {
+      "id": "q002",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any Terraform experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The resume lists Terraform under the candidate’s technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has Terraform experience based on the skills section provided in the context."
+      }
+    },
+    {
+      "id": "q003",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has the candidate mentored or guided other engineers?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 3,
+      "answer": "Yes. The resume lists “Mentoring” among the candidate’s skills, indicating experience guiding other engineers.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has mentoring experience based on the 'Mentoring' skill listed in the context, which aligns with the gold evidence."
+      }
+    },
+    {
+      "id": "q004",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he worked on large data migrations between databases?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At Infosys, he wrote a batch job that migrated 40 million customer records from Oracle to PostgreSQL.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific large data migration (40 million records from Oracle to PostgreSQL) mentioned in the context, supporting the affirmative response."
+      }
+    },
+    {
+      "id": "q005",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "What performance improvements has he delivered?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He reduced settlement latency — cut the p99 latency from 900 ms to 180 ms by moving reconciliation to Kafka consumers. He also designed an idempotent double‑entry ledger that handles ~3 million transactions per day, enabling high‑throughput processing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific performance improvement (latency reduction) supported by the gold evidence and context, and the additional detail about the ledger is also supported by the provided context."
+      }
+    },
+    {
+      "id": "q006",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Did he work at Infosys?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he worked at Infosys from 2020 to 2022.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate worked at Infosys and provides the accurate dates found in the context."
+      }
+    },
+    {
+      "id": "q007",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "Where did he study?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He earned his B.E. in Computer Engineering from the College of Engineering Pune.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the College of Engineering Pune as the place of study, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q008",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Does he have experience with Kubernetes?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 4,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about Kubernetes, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q009",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does she know Airflow?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. The resume indicates she has hands‑on experience with Apache Airflow, having orchestrated 140 Airflow DAGs.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's knowledge of Airflow based on the specific evidence provided in the context."
+      }
+    },
+    {
+      "id": "q010",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she used Snowflake?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she has used Snowflake—she modeled a star schema in Snowflake while working at Mu Sigma.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate used Snowflake and accurately cites the specific experience (modeling a star schema at Mu Sigma) found in the provided context."
+      }
+    },
+    {
+      "id": "q011",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she saved infrastructure costs anywhere?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Swiggy, she rebuilt the order‑events pipeline on Databricks with Delta Lake, which reduced daily compute costs by 38%.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific infrastructure cost saving (38% reduction in daily compute costs) mentioned in the context and supports it with accurate details from the Swiggy role."
+      }
+    },
+    {
+      "id": "q012",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How does she ensure data is correct in pipelines?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "She adds data‑quality checks to her pipelines using Great Expectations, embedding those validations in the Airflow‑orchestrated jobs to verify that the data meets expected standards before it’s consumed.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the use of Great Expectations for data quality checks as stated in the context, and the additional detail about embedding them in Airflow jobs is supported by the context mentioning she orchestrated Airflow DAGs and introduced these checks."
+      }
+    },
+    {
+      "id": "q013",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Any hackathon wins?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. Priya Nair won Swiggy’s internal hackathon in 2022 for a churn‑prediction dashboard.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the hackathon win mentioned in the context and includes the specific project details provided in the source."
+      }
+    },
+    {
+      "id": "q014",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "What is her educational background?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context but incorrect relative to the gold evidence which contains the educational background."
+      }
+    },
+    {
+      "id": "q015",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she built anything real-time or low latency?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At Swiggy she partnered with the pricing team to ship a **near‑real‑time surge‑pricing feature store**, and her experience summary notes that she has built and optimized **streaming pipelines**, which are designed for low‑latency, real‑time data processing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the near-real-time surge pricing feature store from the gold evidence and accurately cites the context's mention of streaming pipelines to support the low-latency aspect."
+      }
+    },
+    {
+      "id": "q016",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has she worked with iOS development?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 2,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about iOS development, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q017",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does he know Next.js?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he has experience with Next.js, having rebuilt a restaurant listing page using Next.js server components at Zomato.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's knowledge of Next.js and cites the specific evidence from the context regarding the restaurant listing page at Zomato."
+      }
+    },
+    {
+      "id": "q018",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he improved page load speed?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. At Zomato, he rebuilt the restaurant‑listing page with Next.js server components and reduced the Largest Contentful Paint from 4.1 seconds to 1.9 seconds, indicating a significant improvement in page load speed.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the improvement in page load speed (LCP from 4.1s to 1.9s) and accurately cites the context regarding the Zomato role and Next.js server components."
+      }
+    },
+    {
+      "id": "q019",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Does he care about users with disabilities?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context but incorrect relative to the gold evidence which indicates the candidate does care about users with disabilities."
+      }
+    },
+    {
+      "id": "q020",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any Playwright or end-to-end testing?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "Yes. The resume lists **Playwright** among Rohan Das’s skills, indicating experience with end‑to‑end testing.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that Playwright is listed in the skills section of the provided context, which supports the claim of experience with end-to-end testing."
+      }
+    },
+    {
+      "id": "q021",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he built reusable UI components for other teams?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at Zomato, he built a shared design system in Storybook that is used by eleven product teams, providing reusable UI components for other teams.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built a shared design system used by eleven product teams, which aligns with the gold evidence and context."
+      }
+    },
+    {
+      "id": "q022",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he done mobile work with React Native?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he built a mobile ordering flow using React Native at Kitchenly (2021‑2022).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built a React Native ordering flow at Kitchenly, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q023",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "Which university did he attend?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q024",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Does he have Kotlin experience?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about Kotlin experience, which aligns with the gold evidence."
+      }
+    },
+    {
+      "id": "q025",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she used PyTorch?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes, she has used PyTorch.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has used PyTorch, which is explicitly listed in the provided skills context."
+      }
+    },
+    {
+      "id": "q026",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she fine-tuned large language models with LoRA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she has fine‑tuned large language models using LoRA.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms that the candidate has fine-tuned large language models with LoRA, which is directly supported by the context stating she 'Fine-tuned a 7B parameter model with LoRA'."
+      }
+    },
+    {
+      "id": "q027",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she done any academic research or publications?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q028",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How does she monitor models in production?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume indicates that she includes **model monitoring** as part of her MLOps skill set, but it does not provide specific details about the tools or processes she uses for monitoring models in production.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer by stating the context lacks specific details, whereas the gold evidence explicitly mentions drift detection for feature distribution shifts."
+      }
+    },
+    {
+      "id": "q029",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "What ranking or search systems has she built?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "She has built:\n\n- A **learning‑to‑rank model** using **LightGBM** for Flipkart’s product search, handling about 50 k queries per second.  \n- A **semantic resume‑to‑job matching system (ResumeRanker)** that uses sentence embeddings and a **FAISS** vector index to perform similarity‑based search.  \n\nAdditionally, her BERT‑based query classifier (also at Flipkart) contributed to improving the search click‑through rate, but the primary ranking system mentioned is the LightGBM learning‑to‑rank model.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the learning-to-rank model with LightGBM as requested by the gold evidence and accurately describes the additional ResumeRanker project and BERT classifier based on the provided context."
+      }
+    },
+    {
+      "id": "q030",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any experience with FAISS?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, but the gold evidence indicates the candidate does have experience with FAISS, making the refusal incorrect relative to the ground truth."
+      }
+    },
+    {
+      "id": "q031",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "What degree does she hold?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "She holds an M.Tech in Artificial Intelligence from IIT Madras (2021).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the degree, institution, and year as stated in the provided context."
+      }
+    },
+    {
+      "id": "q032",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has she worked with Salesforce CRM?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Salesforce CRM, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q033",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does he know Kubernetes?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 2,
+      "answer": "Yes. The resume lists Kubernetes as a skill and includes a Certified Kubernetes Administrator (CKA) certification.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate knows Kubernetes based on the skills list and CKA certification provided in the context."
+      }
+    },
+    {
+      "id": "q034",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he written infrastructure as code?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "Yes. At Paytm he wrote Terraform modules (infrastructure‑as‑code) for VPCs, Cloud SQL, and IAM, and at HCL he created Ansible playbooks for server automation.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate wrote Terraform modules (IaC) as per the gold evidence and context, and the additional detail about Ansible playbooks is also supported by the provided experience section."
+      }
+    },
+    {
+      "id": "q035",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How has he improved reliability or reduced alerts?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about how he has improved reliability or reduced alerts.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer, claiming the information was not present, but the gold evidence explicitly states that paging volume dropped by 45%."
+      }
+    },
+    {
+      "id": "q036",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he handled production outages?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. He led the incident review for a 2023 DNS outage and drove the fix to a multi‑region failover, demonstrating hands‑on experience handling production outages.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate handled a production outage by citing the specific 2023 DNS outage incident review mentioned in the context."
+      }
+    },
+    {
+      "id": "q037",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Is he certified in Kubernetes administration?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "Yes, he holds the Certified Kubernetes Administrator (CKA) certification.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate holds the CKA certification, which is explicitly stated in the provided context."
+      }
+    },
+    {
+      "id": "q038",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "What CI/CD tools has he used?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He has used **Jenkins** and **GitHub Actions** for CI/CD.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies Jenkins and GitHub Actions as the CI/CD tools used, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q039",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "Which college did he graduate from?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q040",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has he built machine learning models?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about machine learning models, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q041",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "What is her CGPA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Her CGPA is 9.1.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the CGPA as 9.1, which is explicitly stated in the provided context."
+      }
+    },
+    {
+      "id": "q042",
+      "split": "dev",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she built anything in C++?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "Yes. She developed **TinyDB**, a key‑value store implemented in C++ with a write‑ahead log and LSM‑tree compaction.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies TinyDB as a C++ project based on the provided context and accurately describes its features."
+      }
+    },
+    {
+      "id": "q043",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How good is she at competitive programming?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "She has a strong competitive‑programming background, demonstrated by a LeetCode Knight rating of 1950 with 600+ problems solved and a Codeforces Specialist rating.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's competitive programming skills using the LeetCode Knight rating and additional context provided in the achievements section."
+      }
+    },
+    {
+      "id": "q044",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she done an internship?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, she completed a Software Engineering internship at Freshworks in Summer 2024.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate completed an internship at Freshworks in Summer 2024, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q045",
+      "split": "dev",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Any projects involving payments?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The **CampusCart** project is a MERN‑stack marketplace that includes Stripe payments integration.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the CampusCart project and its use of Stripe payments, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q046",
+      "split": "dev",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Does she understand database internals or storage engines?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The candidate built **TinyDB**, a C++ key‑value store that implements a write‑ahead log and LSM‑tree compaction—demonstrating hands‑on knowledge of storage‑engine internals. Additionally, their coursework includes **Database Management Systems**, further supporting their understanding of database internals.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the TinyDB project with write-ahead log and LSM-tree compaction as evidence of understanding storage engine internals, and accurately cites the DBMS coursework from the context."
+      }
+    },
+    {
+      "id": "q047",
+      "split": "dev",
+      "type": "section",
+      "retriever": "vector",
+      "question": "What courses has she taken?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "She has taken the following relevant courses: Operating Systems, DBMS, Computer Networks, and Compiler Design.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly lists the relevant coursework found in the context, which includes the items specified in the gold evidence plus additional courses listed in the source text."
+      }
+    },
+    {
+      "id": "q048",
+      "split": "dev",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "How many years of full-time work experience does she have in banking?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain the requested information, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q049",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does he know Jetpack Compose?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, the resume indicates that he knows Jetpack Compose.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Jetpack Compose, which is supported by both the skills list and the experience description in the context."
+      }
+    },
+    {
+      "id": "q050",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he improved app startup performance?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At PhonePe he reduced the app’s cold‑start time from 2.8 seconds to 1.3 seconds using baseline profiles and lazy module loading, demonstrating a clear improvement in startup performance.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the improvement in app startup performance (cold start time reduction) and cites the specific metrics and techniques found in the provided context."
+      }
+    },
+    {
+      "id": "q051",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How has he improved app stability?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "He introduced crash monitoring with Firebase Crashlytics at Dunzo, raising the app’s crash‑free rate to 99.7 %. Additionally, he built an offline‑first sync layer using Room and WorkManager at PhonePe, which enhances data reliability and overall app stability.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the crash-free rate improvement supported by the gold evidence and adds a relevant, context-supported detail about the offline-first sync layer."
+      }
+    },
+    {
+      "id": "q052",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he used WorkManager?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, he has used WorkManager.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of WorkManager, which is explicitly supported by the context stating they owned the sync layer built on Room and WorkManager."
+      }
+    },
+    {
+      "id": "q053",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Any published apps?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes. The candidate has published **BudgetBuddy**, an expense‑tracker app available on the Google Play Store (100 k downloads).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies BudgetBuddy as a published app on the Play Store, which is fully supported by Source 3 in the context."
+      }
+    },
+    {
+      "id": "q054",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he built features that work without internet?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At PhonePe he owned an offline‑first sync layer built with Room and WorkManager, enabling functionality when the device is not connected to the internet.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the offline-first sync layer mentioned in the context and accurately attributes it to the candidate's role at PhonePe."
+      }
+    },
+    {
+      "id": "q055",
+      "split": "test",
+      "type": "section",
+      "retriever": "vector",
+      "question": "Where did he study?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "He earned his B.Tech in Computer Science from JNTU Hyderabad.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies JNTU Hyderabad as the place of study, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q056",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has he worked with Terraform?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about Terraform, aligning with the gold evidence that the résumé lacks this detail."
+      }
+    },
+    {
+      "id": "q057",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she led or managed people?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q058",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she been involved in recruiting?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. As Engineering Manager at Nykaa, she hired five engineers for her team.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate was involved in recruiting by citing the specific evidence that she hired five engineers at Nykaa, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q059",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does she know Elasticsearch?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, the resume indicates she has experience with Elasticsearch.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate has experience with Elasticsearch, which is supported by both the skills list and the experience description in the context."
+      }
+    },
+    {
+      "id": "q060",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she helped engineers grow in their careers?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes. While at Nykaa, she coached two engineers into senior roles and introduced a career ladder for the team, demonstrating active involvement in engineers’ career growth.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate coached engineers into senior roles and introduced a career ladder, which directly supports the claim that she helped engineers grow in their careers, and all details are supported by the provided context."
+      }
+    },
+    {
+      "id": "q061",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Has she worked on legacy modernisation or rewrites?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At MakeMyTrip she led the rewrite of the hotel‑search system, migrating it from a legacy PHP monolith to modern Node.js services.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the legacy modernization experience (PHP monolith to Node.js) at MakeMyTrip, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q062",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any Angular experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. The candidate built Angular dashboards for an insurance client at Capgemini and lists Angular among their technical skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's Angular experience by citing the specific project mentioned in the gold evidence and the skills list, both of which are supported by the provided context."
+      }
+    },
+    {
+      "id": "q063",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she improved how often the team ships?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at Nykaa, she “cut the release cycle from monthly to weekly,” thereby increasing how often the team ships.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate cut the release cycle from monthly to weekly, which directly supports the claim that she improved how often the team ships, and this fact is explicitly present in the provided context."
+      }
+    },
+    {
+      "id": "q064",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Does she have a PhD?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context did not contain information about a PhD, aligning with the gold evidence that the information is absent."
+      }
+    },
+    {
+      "id": "q065",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he used Burp Suite?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes, he has used Burp Suite.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's use of Burp Suite, which is explicitly supported by the experience and skills sections in the provided context."
+      }
+    },
+    {
+      "id": "q066",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Is he OSCP certified?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, he holds the OSCP (Offensive Security Certified Professional) certification.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate holds the OSCP certification, which is explicitly listed in the provided context under certifications."
+      }
+    },
+    {
+      "id": "q067",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he found real vulnerabilities in production?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at CRED, he discovered and remediated an IDOR vulnerability that exposed other users’ transaction history, demonstrating that he has identified real production vulnerabilities.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the IDOR vulnerability mentioned in the context as evidence of finding real vulnerabilities, and all claims are supported by the provided text."
+      }
+    },
+    {
+      "id": "q068",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How has he prevented credentials from leaking into code?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He built a secrets‑detection pre‑commit hook that scans code before it’s committed, which blocked 1,400 leaked keys in its first year. This tooling, combined with his rollout of SAST (Semgrep) and dependency scanning (Snyk) across 200 repositories, helps prevent credentials from being introduced into the codebase.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the secrets-detection pre-commit hook as the primary method for preventing credential leaks, supported by the context, and accurately cites the statistic of 1,400 blocked keys."
+      }
+    },
+    {
+      "id": "q069",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Has he done threat modelling?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, he has performed threat‑modelling sessions (using STRIDE) for the rewards platform.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate performed threat modelling using STRIDE for the rewards platform, which is directly supported by the provided context."
+      }
+    },
+    {
+      "id": "q070",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any Splunk or SOC experience?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. While at Wipro (2019‑2022), the candidate triaged SOC alerts in Splunk and authored incident runbooks.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's Splunk and SOC experience based on the provided context and accurately cites the specific role and timeframe."
+      }
+    },
+    {
+      "id": "q071",
+      "split": "test",
+      "type": "section",
+      "retriever": "vector",
+      "question": "What is his degree?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "His degree is a B.Tech in Computer Science from Manipal Institute of Technology (2019).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the degree, institution, and year as stated in the provided context."
+      }
+    },
+    {
+      "id": "q072",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has he built Android apps?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about Android app development, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q073",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does she know Playwright?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. She built a Playwright framework in TypeScript and lists Playwright among her skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Playwright based on the provided context which mentions building a Playwright framework and listing it in skills."
+      }
+    },
+    {
+      "id": "q074",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she made test suites run faster?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She reduced the regression suite runtime from 6 hours to 40 minutes by implementing parallel sharding in a Playwright framework.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate reduced the regression suite runtime from 6 hours to 40 minutes, which is supported by the provided context."
+      }
+    },
+    {
+      "id": "q075",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she done performance or load testing?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She performed load testing with k6 (identifying a connection‑pool bottleneck at 4 k RPS) and lists load‑testing tools such as k6 and JMeter among her skills.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate performed load testing with k6, which is explicitly supported by the provided context."
+      }
+    },
+    {
+      "id": "q076",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she used Pact for contract testing?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. She added contract tests between 14 microservices using Pact.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the use of Pact for contract testing based on the provided context."
+      }
+    },
+    {
+      "id": "q077",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Any Appium or mobile automation?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. While at Tata Consultancy Services (2017 – 2020), the candidate automated mobile regression tests using Appium for an airline booking application.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the candidate's experience with Appium for mobile regression tests at Tata Consultancy Services, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q078",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Any testing certifications?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 5,
+      "answer": "The resume lists one testing certification:\n\n- **ISTQB Certified Tester Foundation Level**.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the ISTQB Certified Tester Foundation Level certification listed in the context."
+      }
+    },
+    {
+      "id": "q079",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How much manual testing has she automated?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "She automated a regression suite of **1,800 manual test cases** by building a Playwright framework in TypeScript, and also automated mobile regression tests for an airline‑booking app (the exact number of those tests isn’t specified in the resume).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the 1,800 manual regression cases mentioned in the gold evidence and context, and accurately notes that the count for mobile tests is not specified."
+      }
+    },
+    {
+      "id": "q080",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has she designed database schemas for a bank?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 3,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about the candidate designing database schemas for a bank."
+      }
+    },
+    {
+      "id": "q081",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has he worked with AUTOSAR?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, he has worked with AUTOSAR, developing basic software modules for a brake control ECU.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate's experience with AUTOSAR and accurately cites the specific task (developing basic software modules for a brake control ECU) found in the context."
+      }
+    },
+    {
+      "id": "q082",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does he know the CAN protocol?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q083",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has he built firmware update mechanisms?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes. At Bosch, he implemented a CAN bootloader that supports secure over‑the‑air firmware updates.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate built firmware update mechanisms by citing the specific evidence of implementing a secure over-the-air firmware update bootloader at Bosch, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q084",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "How does he ensure code quality and safety standards?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "He ensures code quality and safety by applying static‑analysis tools (Polyspace) to bring the codebase into MISRA‑C compliance, and by performing low‑level debugging with hardware instruments such as an oscilloscope and a Lauterbach TRACE32 debugger.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the MISRA C compliance and static analysis with Polyspace as the primary method for ensuring code quality, which matches the gold evidence, and the additional details about debugging are supported by the context."
+      }
+    },
+    {
+      "id": "q085",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "What hardware debugging tools has he used?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "He has used an oscilloscope and a Lauterbach TRACE32 debugger for hardware debugging.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the oscilloscope and Lauterbach TRACE32 debugger as the hardware debugging tools mentioned in the context."
+      }
+    },
+    {
+      "id": "q086",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Any experience with batteries or electric vehicles?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. As a Firmware Intern at Ather Energy in 2019, the candidate wrote a battery‑management system driver for cell‑voltage monitoring over SPI, providing direct experience with battery hardware used in electric vehicles.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the battery management system driver experience from the context and accurately attributes it to the Ather Energy internship."
+      }
+    },
+    {
+      "id": "q087",
+      "split": "test",
+      "type": "section",
+      "retriever": "vector",
+      "question": "What are his qualifications?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 2,
+      "answer": "**Qualifications Summary**\n\n- **Professional Experience**\n  - *Embedded Software Engineer, Bosch (2020 – present)*  \n    - Developed AUTOSAR basic software for brake‑control ECUs.  \n    - Implemented a secure CAN bootloader.  \n    - Achieved MISRA‑C compliance and performed low‑level debugging.\n  - *Firmware Intern, Ather Energy (2019)*  \n    - Created a driver for a battery‑management system.\n\n- **Technical Skills**\n  - Programming: C, C++17, Embedded C, Python.  \n  - Real‑time OS & Frameworks: FreeRTOS, AUTOSAR.  \n  - Microcontroller & Communication: ARM Cortex‑M, CAN, LIN, SPI, I²C.  \n  - Standards & Quality: MISRA C, static analysis (Polyspace).  \n  - Tools: Git, Oscilloscope, Lauterbach TRACE32.\n\nThese experiences and skills qualify him for roles involving embedded software development, automotive ECU programming, and safety‑critical firmware engineering.",
+      "verdict": {
+        "refused": false,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer fails to mention the specific gold evidence (M.Tech Embedded Systems, VIT Vellore) which is the primary qualification listed in the evidence, instead focusing on experience and skills."
+      }
+    },
+    {
+      "id": "q088",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has he built React web applications?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 3,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about React web applications, aligning with the gold evidence."
+      }
+    },
+    {
+      "id": "q089",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does she know Tableau?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 3,
+      "answer": "Yes, she knows Tableau.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate knows Tableau, which is supported by both the skills list and the experience description in the context."
+      }
+    },
+    {
+      "id": "q090",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she run experiments?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. She designed and implemented an A/B testing framework for checkout experiments at Zepto, indicating she has run experiments.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate designed an A/B testing framework for checkout experiments, which supports the conclusion that she has run experiments, and all details are supported by the provided context."
+      }
+    },
+    {
+      "id": "q091",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she found insights that changed business strategy?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes. While at Zepto, she identified that delivery delays exceeding 12 minutes drove customer churn, which led the company to pursue a dark‑store expansion to address the issue.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the specific insight regarding delivery delays and churn from the context and accurately notes that it informed the dark-store expansion strategy."
+      }
+    },
+    {
+      "id": "q092",
+      "split": "test",
+      "type": "semantic",
+      "retriever": "vector",
+      "question": "Has she automated any reporting work?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 2,
+      "answer": "Yes. At Policybazaar (2020 – 2022), she automated weekly marketing‑funnel reports using SQL and Python, saving about 10 hours per week.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies that the candidate automated weekly marketing funnel reports, which is supported by the context provided."
+      }
+    },
+    {
+      "id": "q093",
+      "split": "test",
+      "type": "mixed",
+      "retriever": "vector",
+      "question": "Any clustering or segmentation work?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 1,
+      "answer": "Yes. While at Policybazaar (2020‑2022), the candidate built customer segmentation using k‑means clustering to support targeted marketing campaigns.",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly identifies the customer segmentation work using k-means clustering at Policybazaar, which is fully supported by the provided context."
+      }
+    },
+    {
+      "id": "q094",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Does she have an MBA?",
+      "answerable": true,
+      "retrievalHit": true,
+      "chunks": 4,
+      "answer": "Yes, she holds an MBA in Business Analytics (Symbiosis Pune, 2020).",
+      "verdict": {
+        "refused": false,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The answer correctly confirms the candidate has an MBA and accurately cites the specialization and institution from the provided context."
+      }
+    },
+    {
+      "id": "q095",
+      "split": "test",
+      "type": "exact",
+      "retriever": "vector",
+      "question": "Has she used Power BI?",
+      "answerable": true,
+      "retrievalHit": false,
+      "chunks": 0,
+      "answer": "No relevant information found in this candidate's resume.",
+      "verdict": {
+        "refused": true,
+        "correct": false,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant refused to answer because the provided context was empty, which is faithful to the context, but it failed to provide the correct answer supported by the gold evidence."
+      }
+    },
+    {
+      "id": "q096",
+      "split": "test",
+      "type": "unanswerable",
+      "retriever": "vector",
+      "question": "Has she deployed Kubernetes clusters?",
+      "answerable": false,
+      "retrievalHit": false,
+      "chunks": 1,
+      "answer": "The resume does not contain specific information about this.",
+      "verdict": {
+        "refused": true,
+        "correct": true,
+        "faithful": true,
+        "unsupported_claims": [],
+        "reason": "The assistant correctly identified that the provided context does not contain information about Kubernetes deployment, aligning with the gold evidence."
+      }
+    }
+  ]
+}
