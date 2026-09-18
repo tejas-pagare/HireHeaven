@@ -15,22 +15,38 @@ interface AiInterviewProps {
 export default function AiInterview({ applicationId }: AiInterviewProps) {
   const router = useRouter();
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [status, setStatus] = useState<"connecting" | "ready" | "listening" | "ai-speaking" | "processing" | "completed" | "error">("connecting");
+  const [status, setStatus] = useState<"connecting" | "ready" | "listening" | "ai-speaking" | "processing" | "completed" | "error" | "blocked">("connecting");
+  const [blockedMessage, setBlockedMessage] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<{ role: string; text: string }[]>([]);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const isMicEnabledRef = useRef(isMicEnabled);
-  
+
+  // Wall-clock interview deadline (ms epoch) — drives the visible countdown.
+  const [deadline, setDeadline] = useState<number | null>(null);
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
+
   // Single input state for both typing and dictation
   const [inputText, setInputText] = useState("");
   const [interimText, setInterimText] = useState("");
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
-  
+
   const [streamingMessage, setStreamingMessage] = useState("");
-  const recognitionRef = useRef<unknown>(null);
+  // The Web Speech API (SpeechRecognition) has no standard TS lib
+  // definition across environments — kept as `any` deliberately rather
+  // than fighting incomplete/inconsistent DOM typings for it.
+  const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const statusRef = useRef(status);
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (deadline === null) return;
+    const tick = () => setRemainingSeconds(Math.max(0, Math.round((deadline - Date.now()) / 1000)));
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [deadline]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -52,7 +68,7 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
     // Check Speech APIs
     if (typeof window !== "undefined") {
       synthRef.current = window.speechSynthesis;
-      const SpeechRecognition = (window as unknown as { SpeechRecognition: typeof window.SpeechRecognition }).SpeechRecognition || (window as unknown as { webkitSpeechRecognition: typeof window.SpeechRecognition }).webkitSpeechRecognition;
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
         (recognitionRef.current as any).continuous = true;
@@ -141,9 +157,38 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
       setStatus("processing");
     });
 
+    newSocket.on("interview-blocked", (data: { message: string }) => {
+      setBlockedMessage(data.message);
+      setStatus("blocked");
+    });
+
+    newSocket.on("interview-started", (data: { startedAt: number; hardLimitMs: number }) => {
+      setDeadline(data.startedAt + data.hardLimitMs);
+    });
+
+    newSocket.on("interview-resumed", (data: { text: string; startedAt: number; hardLimitMs: number }) => {
+      setDeadline(data.startedAt + data.hardLimitMs);
+      setTranscript((prev) => [...prev, { role: "assistant", text: data.text }]);
+      toast.success("Reconnected — continuing your interview.");
+      speakMessage(data.text, false);
+    });
+
+    newSocket.on("time-up", (data: { message: string }) => {
+      toast(data.message, { icon: "⏰" });
+      setStatus("processing");
+    });
+
     newSocket.on("ai-message-chunk", (data: { text: string }) => {
       setStatus("processing");
       setStreamingMessage((prev) => prev + data.text);
+    });
+
+    // Non-streamed assistant messages — e.g. the polite redirect sent when
+    // the guardrails catch a jailbreak attempt without generating a fresh
+    // LLM turn for it.
+    newSocket.on("ai-message", (data: { text: string; isConcluding: boolean }) => {
+      setTranscript((prev) => [...prev, { role: "assistant", text: data.text }]);
+      speakMessage(data.text, data.isConcluding);
     });
 
     newSocket.on("ai-message-complete", (data: { text: string; isConcluding: boolean }) => {
@@ -275,6 +320,34 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
     endCall();
   };
 
+  const formatTime = (totalSeconds: number) => {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  if (status === "blocked") {
+    return (
+      <div className="h-[calc(100dvh-65px)] flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
+          <div className="w-14 h-14 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-4">
+            <AlertTriangle className="text-amber-600 dark:text-amber-500" size={28} />
+          </div>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Interview unavailable</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            {blockedMessage || "This interview cannot be started."}
+          </p>
+          <button
+            onClick={() => router.push("/account")}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+          >
+            Back to account
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[calc(100dvh-65px)] bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
@@ -299,13 +372,32 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
             {status === "error" && "Error occurred."}
           </p>
         </div>
-        <button 
-          onClick={() => setShowConfirmSubmit(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
-        >
-          <CheckCircle2 size={16} />
-          Submit Interview
-        </button>
+        <div className="flex items-center gap-3">
+          {remainingSeconds !== null && status !== "completed" && (
+            <div
+              role="timer"
+              aria-label={`${formatTime(remainingSeconds)} remaining`}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium tabular-nums border ${
+                remainingSeconds <= 30
+                  ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50"
+                  : remainingSeconds <= 120
+                  ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-900/50"
+                  : "bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-700/50 dark:text-gray-300 dark:border-gray-600"
+              }`}
+            >
+              {formatTime(remainingSeconds)}
+            </div>
+          )}
+          <button
+            onClick={() => setShowConfirmSubmit(true)}
+            disabled={status === "connecting" || status === "completed"}
+            aria-label="Submit interview"
+            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+          >
+            <CheckCircle2 size={16} />
+            Submit Interview
+          </button>
+        </div>
       </header>
 
       {/* Chat History */}
@@ -362,12 +454,13 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
 
           <div className="flex items-center gap-3">
             {/* Mic Button */}
-            <button 
+            <button
               onClick={toggleMic}
-              disabled={status === "connecting" || status === "processing" || status === "completed"}
+              disabled={status === "connecting" || status === "processing" || status === "completed" || remainingSeconds === 0}
+              aria-label={isMicEnabled ? "Stop listening" : "Start listening"}
               className={`flex-shrink-0 p-3 rounded-full transition-all border ${
-                isMicEnabled 
-                  ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-900/50" 
+                isMicEnabled
+                  ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-900/50"
                   : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
               } disabled:opacity-50 disabled:cursor-not-allowed shadow-sm`}
               title={isMicEnabled ? "Stop listening" : "Start listening"}
@@ -389,14 +482,16 @@ export default function AiInterview({ applicationId }: AiInterviewProps) {
                     handleManualSubmit();
                   }
                 }}
-                disabled={status === "connecting" || status === "processing" || status === "completed"}
+                disabled={status === "connecting" || status === "processing" || status === "completed" || remainingSeconds === 0}
+                aria-label="Type your answer"
               />
             </div>
 
             {/* Send Button */}
-            <button 
+            <button
               onClick={handleManualSubmit}
-              disabled={!inputText.trim() || status === "connecting" || status === "processing" || status === "completed"}
+              disabled={!inputText.trim() || status === "connecting" || status === "processing" || status === "completed" || remainingSeconds === 0}
+              aria-label="Send answer"
               className="flex-shrink-0 p-3 bg-blue-600 hover:bg-blue-700 border border-blue-700 text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-sm"
             >
               <Send size={24} />
