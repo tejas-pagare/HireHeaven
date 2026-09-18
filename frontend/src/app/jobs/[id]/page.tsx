@@ -306,9 +306,16 @@ const JobPage = () => {
         <div className="w-[98%] max-w-[1400px] mx-auto mt-8 mb-8">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
             <h2 className="text-2xl font-bold">Pipeline Dashboard</h2>
-            <Button onClick={() => setIsQuizManagerOpen(true)} className="bg-blue-600 hover:bg-blue-700">
-              Manage Quiz
-            </Button>
+            <div className="flex gap-2">
+              <Link href={`/jobs/${job.job_id}/applicants`}>
+                <Button variant="outline">
+                  <Users size={16} className="mr-2" /> View Candidates
+                </Button>
+              </Link>
+              <Button onClick={() => setIsQuizManagerOpen(true)} className="bg-blue-600 hover:bg-blue-700">
+                Manage Quiz
+              </Button>
+            </div>
           </div>
 
           <RecruiterPipeline
