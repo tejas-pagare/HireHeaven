@@ -1,0 +1,1959 @@
+{
+  "config": {
+    "split": "dev",
+    "k": 3,
+    "candidates": 20,
+    "rrfK": 60,
+    "threshold": 0.25,
+    "save": "final",
+    "verbose": false,
+    "noSection": false
+  },
+  "chunkTotal": 67,
+  "results": {
+    "keyword-and": {
+      "overall": {
+        "n": 42,
+        "recall": 0.07142857142857142,
+        "hit1": 0.07142857142857142,
+        "mrr": 0.07142857142857142,
+        "unanswerableEmpty": 1,
+        "nUnanswerable": 6
+      },
+      "byType": {
+        "exact": {
+          "n": 16,
+          "recall": 0.1875,
+          "hit1": 0.1875,
+          "mrr": 0.1875,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "semantic": {
+          "n": 16,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "section": {
+          "n": 6,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "unanswerable": {
+          "n": 0,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 1,
+          "nUnanswerable": 6
+        },
+        "mixed": {
+          "n": 4,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q001",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q002",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q003",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q004",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q005",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q006",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q007",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q008",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q009",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q010",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q011",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q012",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q013",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q014",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q015",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q016",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q017",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q018",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q019",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q020",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q021",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q022",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q023",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q024",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q025",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q026",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q027",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q028",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q029",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q030",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q031",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q032",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q033",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q034",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q035",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q036",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q037",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q038",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q039",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q040",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q041",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q042",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q043",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q044",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q045",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q046",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q047",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q048",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        }
+      ]
+    },
+    "keyword-or": {
+      "overall": {
+        "n": 42,
+        "recall": 0.7857142857142857,
+        "hit1": 0.5714285714285714,
+        "mrr": 0.6785714285714286,
+        "unanswerableEmpty": 1,
+        "nUnanswerable": 6
+      },
+      "byType": {
+        "exact": {
+          "n": 16,
+          "recall": 1,
+          "hit1": 0.625,
+          "mrr": 0.8125,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "semantic": {
+          "n": 16,
+          "recall": 0.6875,
+          "hit1": 0.5,
+          "mrr": 0.59375,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "section": {
+          "n": 6,
+          "recall": 0.3333333333333333,
+          "hit1": 0.3333333333333333,
+          "mrr": 0.3333333333333333,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "unanswerable": {
+          "n": 0,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 1,
+          "nUnanswerable": 6
+        },
+        "mixed": {
+          "n": 4,
+          "recall": 1,
+          "hit1": 1,
+          "mrr": 1,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q001",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q002",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q003",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q004",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q005",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q006",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q007",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q008",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q009",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q010",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q011",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q012",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q013",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q014",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q015",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q016",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q017",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q018",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q019",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q020",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q021",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q022",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q023",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q024",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q025",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q026",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q027",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q028",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q029",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q030",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q031",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q032",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q033",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q034",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q035",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q036",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q037",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q038",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q039",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q040",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q041",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q042",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q043",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q044",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q045",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q046",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q047",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q048",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        }
+      ]
+    },
+    "vector": {
+      "overall": {
+        "n": 42,
+        "recall": 0.7023809523809523,
+        "hit1": 0.47619047619047616,
+        "mrr": 0.5912698412698413,
+        "unanswerableEmpty": 0.5,
+        "nUnanswerable": 6
+      },
+      "byType": {
+        "exact": {
+          "n": 16,
+          "recall": 0.78125,
+          "hit1": 0.5625,
+          "mrr": 0.6770833333333334,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "semantic": {
+          "n": 16,
+          "recall": 0.625,
+          "hit1": 0.375,
+          "mrr": 0.5,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "section": {
+          "n": 6,
+          "recall": 0.5,
+          "hit1": 0.5,
+          "mrr": 0.5,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "unanswerable": {
+          "n": 0,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 0.5,
+          "nUnanswerable": 6
+        },
+        "mixed": {
+          "n": 4,
+          "recall": 1,
+          "hit1": 0.5,
+          "mrr": 0.75,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q001",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q002",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q003",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q004",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q005",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q006",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q007",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q008",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q009",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q010",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q011",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q012",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q013",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q014",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q015",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q016",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q017",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q018",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q019",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q020",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q021",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q022",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q023",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q024",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q025",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q026",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q027",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q028",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q029",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q030",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q031",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q032",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q033",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0.5,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q034",
+          "type": "exact",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q035",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q036",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q037",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q038",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q039",
+          "type": "section",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q040",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q041",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q042",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.3333333333333333,
+          "empty": false
+        },
+        {
+          "id": "q043",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q044",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q045",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q046",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q047",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q048",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        }
+      ]
+    },
+    "hybrid": {
+      "overall": {
+        "n": 42,
+        "recall": 0.9761904761904762,
+        "hit1": 0.6904761904761905,
+        "mrr": 0.8253968253968254,
+        "unanswerableEmpty": 1,
+        "nUnanswerable": 6
+      },
+      "byType": {
+        "exact": {
+          "n": 16,
+          "recall": 1,
+          "hit1": 0.6875,
+          "mrr": 0.8333333333333334,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "semantic": {
+          "n": 16,
+          "recall": 0.9375,
+          "hit1": 0.5625,
+          "mrr": 0.7395833333333334,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "section": {
+          "n": 6,
+          "recall": 1,
+          "hit1": 1,
+          "mrr": 1,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        },
+        "unanswerable": {
+          "n": 0,
+          "recall": 0,
+          "hit1": 0,
+          "mrr": 0,
+          "unanswerableEmpty": 1,
+          "nUnanswerable": 6
+        },
+        "mixed": {
+          "n": 4,
+          "recall": 1,
+          "hit1": 0.75,
+          "mrr": 0.875,
+          "unanswerableEmpty": 0,
+          "nUnanswerable": 0
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q001",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q002",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q003",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q004",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q005",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q006",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q007",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q008",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q009",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q010",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q011",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q012",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q013",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q014",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q015",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q016",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q017",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q018",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q019",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q020",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q021",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q022",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q023",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q024",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q025",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q026",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q027",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q028",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q029",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q030",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q031",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q032",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q033",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q034",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.3333333333333333,
+          "empty": false
+        },
+        {
+          "id": "q035",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": false
+        },
+        {
+          "id": "q036",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q037",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q038",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q039",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q040",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        },
+        {
+          "id": "q041",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q042",
+          "type": "exact",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q043",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q044",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.5,
+          "empty": false
+        },
+        {
+          "id": "q045",
+          "type": "mixed",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q046",
+          "type": "semantic",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 0,
+          "rr": 0.3333333333333333,
+          "empty": false
+        },
+        {
+          "id": "q047",
+          "type": "section",
+          "answerable": true,
+          "recall": 1,
+          "hit1": 1,
+          "rr": 1,
+          "empty": false
+        },
+        {
+          "id": "q048",
+          "type": "unanswerable",
+          "answerable": false,
+          "recall": 0,
+          "hit1": 0,
+          "rr": 0,
+          "empty": true
+        }
+      ]
+    }
+  }
+}
