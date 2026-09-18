@@ -95,7 +95,7 @@ export default function InterviewModal({
                     <Star
                         key={star}
                         size={20}
-                        className={`cursor-pointer ${star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                        className={`cursor-pointer ${star <= rating ? "fill-yellow-400 text-warning" : "text-muted-foreground"}`}
                         onClick={() => setRating(star)}
                     />
                 ))}
@@ -112,13 +112,13 @@ export default function InterviewModal({
 
                 <div className="flex border-b mb-4">
                     <button
-                        className={`flex-1 pb-2 font-medium ${tab === "schedule" ? "border-b-2 border-blue-600 text-blue-600" : "opacity-60"}`}
+                        className={`flex-1 pb-2 font-medium ${tab === "schedule" ? "border-b-2 border-primary text-primary" : "opacity-60"}`}
                         onClick={() => setTab("schedule")}
                     >
                         Schedule
                     </button>
                     <button
-                        className={`flex-1 pb-2 font-medium ${tab === "evaluate" ? "border-b-2 border-blue-600 text-blue-600" : "opacity-60"}`}
+                        className={`flex-1 pb-2 font-medium ${tab === "evaluate" ? "border-b-2 border-primary text-primary" : "opacity-60"}`}
                         onClick={() => setTab("evaluate")}
                     >
                         Evaluate
@@ -144,7 +144,7 @@ export default function InterviewModal({
                                 onChange={(e) => setMeetLink(e.target.value)}
                             />
                         </div>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={handleSchedule} disabled={scheduleLoading}>
+                        <Button className="w-full bg-primary hover:bg-[var(--primary-hover)]" onClick={handleSchedule} disabled={scheduleLoading}>
                             {scheduleLoading ? "Scheduling..." : "Schedule Interview"}
                         </Button>
                     </div>
@@ -177,7 +177,7 @@ export default function InterviewModal({
                                 rows={4}
                             />
                         </div>
-                        <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={handleEvaluate} disabled={evaluateLoading}>
+                        <Button className="w-full bg-success hover:bg-success text-success-foreground" onClick={handleEvaluate} disabled={evaluateLoading}>
                             {evaluateLoading ? "Submitting..." : "Submit Evaluation"}
                         </Button>
                     </div>

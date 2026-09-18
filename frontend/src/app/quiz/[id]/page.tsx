@@ -112,8 +112,8 @@ export default function QuizPage() {
             <div className="min-h-[calc(100vh-64px)] bg-secondary/30 flex items-center justify-center p-4">
                 <Card className="max-w-md w-full p-8 text-center space-y-6">
                     <div className="flex justify-center">
-                        <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center">
-                            <CheckCircle2 size={40} className="text-green-600" />
+                        <div className="h-20 w-20 bg-success-subtle rounded-full flex items-center justify-center">
+                            <CheckCircle2 size={40} className="text-success-subtle-foreground" />
                         </div>
                     </div>
                     <div>
@@ -122,9 +122,9 @@ export default function QuizPage() {
                     </div>
                     <div className="bg-background border rounded-xl p-6">
                         <p className="text-sm font-medium mb-1 opacity-70">Your Score</p>
-                        <p className="text-4xl font-bold text-blue-600">{submittedScore}%</p>
+                        <p className="text-4xl font-bold text-primary">{submittedScore}%</p>
                     </div>
-                    <Button onClick={() => router.push("/account")} className="w-full bg-blue-600 hover:bg-blue-700">
+                    <Button onClick={() => router.push("/account")} className="w-full bg-primary hover:bg-[var(--primary-hover)]">
                         Return to Dashboard
                     </Button>
                 </Card>
@@ -167,8 +167,8 @@ export default function QuizPage() {
                                     <label
                                         key={optIndex}
                                         className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${answers[q.question_id] === optIndex
-                                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-900/10"
-                                            : "border-transparent bg-secondary hover:border-gray-300 dark:hover:border-gray-700"
+                                            ? "border-primary/25 bg-brand-subtle/50"
+                                            : "border-transparent bg-secondary hover:border-border"
                                             }`}
                                     >
                                         <input
@@ -177,7 +177,7 @@ export default function QuizPage() {
                                             value={optIndex}
                                             checked={answers[q.question_id] === optIndex}
                                             onChange={() => handleOptionSelect(q.question_id, optIndex)}
-                                            className="w-4 h-4 text-blue-600"
+                                            className="w-4 h-4 text-primary"
                                         />
                                         <span>{opt}</span>
                                     </label>
@@ -191,7 +191,7 @@ export default function QuizPage() {
                     <Button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg"
+                        className="bg-primary hover:bg-[var(--primary-hover)] text-primary-foreground px-8 py-6 text-lg"
                     >
                         {submitting ? "Submitting..." : "Submit Assignment"}
                     </Button>

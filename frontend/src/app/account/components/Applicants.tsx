@@ -7,6 +7,7 @@ import { job_service } from "@/context/AppContext";
 import { Company as CompanyType, Job } from "@/type";
 import Loading from "@/components/loading";
 import { Card } from "@/components/ui/card";
+import SectionHeader from "./section-header";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "@/lib/config";
 
 interface ApplicationItem {
     application_id: number;
@@ -61,8 +63,7 @@ interface CompanySection {
     expanded: boolean;
 }
 
-const chat_service =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const chat_service = BACKEND_URL;
 
 export default function Applicants() {
     const [companies, setCompanies] = useState<CompanySection[]>([]);
@@ -271,15 +272,33 @@ export default function Applicants() {
         }
     };
 
-    const STATUS_CONFIG: Record<string, { icon: typeof Clock; color: string; bg: string; border: string; label: string }> = {
-        Submitted: { icon: Clock, color: "text-gray-600", bg: "bg-gray-50 dark:bg-gray-800/40", border: "border-gray-200 dark:border-gray-700", label: "Submitted" },
-        Screening: { icon: Clock, color: "text-blue-600", bg: "bg-blue-50 dark:bg-blue-900/20", border: "border-blue-200 dark:border-blue-800", label: "Screening" },
-        Interview: { icon: Clock, color: "text-purple-600", bg: "bg-purple-50 dark:bg-purple-900/20", border: "border-purple-200 dark:border-purple-800", label: "Interview" },
-        Assignment: { icon: Clock, color: "text-amber-600", bg: "bg-amber-50 dark:bg-amber-900/20", border: "border-amber-200 dark:border-amber-800", label: "Assignment" },
-        "Final Review": { icon: Clock, color: "text-indigo-600", bg: "bg-indigo-50 dark:bg-indigo-900/20", border: "border-indigo-200 dark:border-indigo-800", label: "Final Review" },
-        Offer: { icon: Clock, color: "text-teal-600", bg: "bg-teal-50 dark:bg-teal-900/20", border: "border-teal-200 dark:border-teal-800", label: "Offer" },
-        Hired: { icon: CheckCircle2, color: "text-green-600", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-200 dark:border-green-800", label: "Hired" },
-        Rejected: { icon: XCircle, color: "text-red-600", bg: "bg-red-50 dark:bg-red-900/20", border: "border-red-200 dark:border-red-800", label: "Rejected" },
+    const getStatusConfig = (status: string) => {
+        switch (status) {
+            case "Hired":
+                return {
+                    icon: CheckCircle2,
+                    color: "text-success-subtle-foreground",
+                    bg: "bg-success-subtle",
+                    border: "border-success/25",
+                    label: "Hired",
+                };
+            case "Rejected":
+                return {
+                    icon: XCircle,
+                    color: "text-destructive-subtle-foreground",
+                    bg: "bg-destructive-subtle",
+                    border: "border-destructive/25",
+                    label: "Rejected",
+                };
+            default:
+                return {
+                    icon: Clock,
+                    color: "text-warning-subtle-foreground",
+                    bg: "bg-warning-subtle",
+                    border: "border-warning/25",
+                    label: "Submitted",
+                };
+        }
     };
 
     const getStatusConfig = (status: string) => STATUS_CONFIG[status] || STATUS_CONFIG.Submitted;
@@ -289,7 +308,11 @@ export default function Applicants() {
         Object.keys(STATUS_CONFIG).forEach((s) => { groups[s] = []; });
 
         apps.forEach((app) => {
-            (groups[app.status] || groups["Submitted"]).push(app);
+            if (groups[app.status]) {
+                groups[app.status].push(app);
+            } else {
+ groups["Submitted"].push(app);
+            }
         });
 
         return groups;
@@ -298,29 +321,35 @@ export default function Applicants() {
     if (loading) return <Loading />;
 
     return (
-        <div className="w-full mx-auto px-4 py-6 space-y-4">
+        <div className="mx-auto w-full max-w-6xl">
+            <SectionHeader
+                title="Applicants"
+                description="Expand a company, then a role, to review who applied."
+            />
+            <div className="space-y-4">
             {companies.length === 0 ? (
-                <Card className="p-12 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-                        <Building2 size={32} className="opacity-40" />
+                <div className="rounded-2xl border border-dashed py-14 text-center">
+                    <div className="mb-4 inline-flex size-16 items-center justify-center rounded-full bg-muted">
+                        <Building2 size={28} className="text-muted-foreground" />
                     </div>
-                    <p className="text-muted-foreground">
-                        No companies registered yet. Add a company to start receiving
-                        applicants.
+                    <p className="mb-1.5 font-semibold">No companies registered yet</p>
+                    <p className="text-sm text-muted-foreground">
+                        Add a company to start receiving applicants.
                     </p>
-                </Card>
+                </div>
             ) : (
                 companies.map((companySection, companyIdx) => (
                     <Card
                         key={companySection.company.company_id}
-                        className="overflow-hidden border-2"
+                        variant="elevated"
+                        className="gap-0 overflow-hidden p-0"
                     >
                         {/* Company Header */}
                         <button
                             onClick={() => toggleCompany(companyIdx)}
                             className="w-full flex items-center gap-4 p-5 hover:bg-muted/50 transition-colors text-left"
                         >
-                            <div className="h-12 w-12 rounded-full border-2 overflow-hidden shrink-0 bg-background">
+                            <div className="size-12 shrink-0 overflow-hidden rounded-xl border bg-card">
                                 <img
                                     src={companySection.company.logo}
                                     alt={companySection.company.name}
@@ -426,18 +455,28 @@ export default function Applicants() {
                                                                         </div>
 
                                                                         {/* Table */}
-                                                                        <div className="rounded-lg border overflow-hidden overflow-x-auto">
-                                                                            <Table>
-                                                                                <TableHeader>
-                                                                                    <TableRow>
-                                                                                        <TableHead>#</TableHead>
-                                                                                        <TableHead>Email</TableHead>
-                                                                                        <TableHead>Applied</TableHead>
-                                                                                        <TableHead>Premium</TableHead>
-                                                                                        <TableHead className="text-right">Actions</TableHead>
-                                                                                    </TableRow>
-                                                                                </TableHeader>
-                                                                                <TableBody>
+                                                                        <div className="overflow-hidden rounded-xl border bg-card">
+                                                                            <table className="w-full text-sm">
+                                                                                <thead>
+                                                                                    <tr className="bg-muted/50 border-b">
+                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
+                                                                                            #
+                                                                                        </th>
+                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
+                                                                                            Email
+                                                                                        </th>
+                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
+                                                                                            Applied
+                                                                                        </th>
+                                                                                        <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">
+                                                                                            Premium
+                                                                                        </th>
+                                                                                        <th className="text-right px-4 py-2.5 font-medium text-muted-foreground">
+                                                                                            Actions
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
                                                                                     {apps.map((app, idx) => (
                                                                                         <TableRow key={app.application_id}>
                                                                                             <TableCell className="text-muted-foreground">
@@ -446,7 +485,7 @@ export default function Applicants() {
                                                                                             <TableCell>
                                                                                                 <Link
                                                                                                     href={`/account/${app.applicant_id}`}
-                                                                                                    className="text-blue-600 hover:underline font-medium"
+                                                                                                    className="text-primary hover:underline font-medium"
                                                                                                 >
                                                                                                     {app.applicant_email}
                                                                                                 </Link>
@@ -458,7 +497,7 @@ export default function Applicants() {
                                                                                             </TableCell>
                                                                                             <TableCell>
                                                                                                 {app.subscribed ? (
-                                                                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30">
+                                                                                                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-brand-subtle text-brand-subtle-foreground">
                                                                                                         ⭐ Premium
                                                                                                     </span>
                                                                                                 ) : (
@@ -493,7 +532,7 @@ export default function Applicants() {
                                                                                                         <Button
                                                                                                             variant="ghost"
                                                                                                             size="icon"
-                                                                                                            className="h-8 w-8 text-purple-500 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                                                                                                            className="h-8 w-8 text-brand-subtle-foreground hover:text-brand-subtle-foreground hover:bg-brand-subtle"
                                                                                                             title="AI Resume Intelligence"
                                                                                                         >
                                                                                                             <Brain size={14} />
@@ -509,7 +548,7 @@ export default function Applicants() {
                                                                                                             <Button
                                                                                                                 variant="ghost"
                                                                                                                 size="icon"
-                                                                                                                className="h-8 w-8 text-emerald-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                                                                                                                className="h-8 w-8 text-success hover:text-success-subtle-foreground hover:bg-success-subtle"
                                                                                                                 title="AI Interview Result"
                                                                                                             >
                                                                                                                 <Mic size={14} />
@@ -545,7 +584,7 @@ export default function Applicants() {
                                                                                                         <Button
                                                                                                             variant="ghost"
                                                                                                             size="icon"
-                                                                                                            className="h-8 w-8 text-blue-600"
+                                                                                                            className="h-8 w-8 text-primary"
                                                                                                             title="Chat"
                                                                                                             onClick={() =>
                                                                                                                 startChat(
@@ -583,7 +622,7 @@ export default function Applicants() {
                                                                                                             <>
                                                                                                                 <Button
                                                                                                                     size="sm"
-                                                                                                                    className="h-7 text-xs gap-1 bg-green-600 hover:bg-green-700"
+                                                                                                                    className="h-7 text-xs gap-1 bg-success hover:bg-success"
                                                                                                                     onClick={() =>
                                                                                                                         updateStatus(
                                                                                                                             app.application_id,
@@ -646,6 +685,7 @@ export default function Applicants() {
                     </Card>
                 ))
             )}
+            </div>
         </div>
     );
 }

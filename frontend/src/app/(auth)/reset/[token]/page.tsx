@@ -8,6 +8,8 @@ import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { ArrowLeft, Lock } from "lucide-react";
+import AuthShell from "@/components/auth-shell";
 
 const ResetPage = () => {
   const { token } = useParams();
@@ -23,9 +25,7 @@ const ResetPage = () => {
     try {
       const { data } = await axios.post(
         `${auth_service}/api/auth/reset-password/${token}`,
-        {
-          password,
-        }
+        { password }
       );
 
       toast.success((data as any).message);
@@ -36,43 +36,43 @@ const ResetPage = () => {
       setbtnLoading(false);
     }
   };
+
   return (
-    <div className="mt-20 md:mt-5 z-0">
-      <div className="md:w-1/3 border border-gray-400 rounded-lg p-8 flex flex-col w-full relative shadow-md m-auto">
-        <h2 className="mb-1">
-          <span className="text-3xl">Reset Password</span>
-        </h2>
-        <form
-          onSubmit={submitHandler}
-          className="flex flex-col justify-between mt-3"
+    <AuthShell
+      title="Set a new password"
+      subtitle="Choose a strong password you haven't used before"
+      footer={
+        <Link
+          href="/login"
+          className="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline"
         >
-          <div className="grid w-full max-w-sm items-center gap-1.5 ml-1">
-            <Label>Password</Label>
+          <ArrowLeft size={15} /> Back to sign in
+        </Link>
+      }
+    >
+      <form onSubmit={submitHandler} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="password">New password</Label>
+          <div className="relative">
+            <Lock className="icon-style" />
             <Input
+              id="password"
               type="password"
-              placeholder="Password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
+              className="h-11 pl-10"
             />
-
-            <Button
-              disabled={btnLoading}
-              className="flex justify-center items-center gap-2"
-            >
-              Submit
-            </Button>
           </div>
-        </form>
+        </div>
 
-        <Link
-          className="mt-2 text-blue-500 underline text-sm ml-2"
-          href={"/login"}
-        >
-          Go to login page
-        </Link>
-      </div>
-    </div>
+        <Button disabled={btnLoading} size="lg" className="w-full">
+          {btnLoading ? "Updating…" : "Reset password"}
+        </Button>
+      </form>
+    </AuthShell>
   );
 };
 

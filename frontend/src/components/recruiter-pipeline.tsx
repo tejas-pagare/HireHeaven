@@ -86,9 +86,9 @@ export default function RecruiterPipeline({
     };
 
     const getScoreBadgeColor = (score = 0) => {
-        if (score >= 80) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
-        if (score >= 60) return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400";
-        return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400";
+        if (score >= 80) return "bg-success-subtle text-success-subtle-foreground";
+        if (score >= 60) return "bg-warning-subtle text-warning-subtle-foreground";
+        return "bg-muted text-foreground";
     };
 
     return (
@@ -122,13 +122,13 @@ export default function RecruiterPipeline({
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                    className={`p-4 cursor-grab shadow-sm border-2 ${snapshot.isDragging ? "shadow-lg border-blue-400" : "hover:border-blue-200"
+                                                    className={`p-4 cursor-grab shadow-sm border-2 ${snapshot.isDragging ? "shadow-lg border-primary/25" : "hover:border-primary/25"
                                                         }`}
                                                 >
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div className="flex items-center gap-2 max-w-[80%]">
-                                                            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0">
-                                                                <User size={14} className="text-blue-600" />
+                                                            <div className="h-8 w-8 rounded-full bg-brand-subtle flex items-center justify-center shrink-0">
+                                                                <User size={14} className="text-primary" />
                                                             </div>
                                                             <div className="truncate">
                                                                 <p className="font-medium text-sm truncate">{app.applicant_email}</p>
@@ -150,14 +150,14 @@ export default function RecruiterPipeline({
                                                         <Link
                                                             href={`/account/${app.applicant_id}`}
                                                             target="_blank"
-                                                            className="text-blue-500 hover:underline text-xs flex-1 text-center py-1 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded"
+                                                            className="text-brand-subtle-foreground hover:underline text-xs flex-1 text-center py-1 hover:bg-brand-subtle rounded"
                                                         >
                                                             Profile & Resume
                                                         </Link>
 
                                                         <button
                                                             onClick={() => setInterviewAppId(app.application_id)}
-                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400 font-medium"
+                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-brand-subtle text-brand-subtle-foreground hover:bg-primary/20 font-medium"
                                                         >
                                                             <Calendar size={12} />
                                                             Interview
@@ -166,7 +166,7 @@ export default function RecruiterPipeline({
                                                         <button
                                                             onClick={() => onOpenChat(app.application_id)}
                                                             disabled={chatOpenLoadingId === app.application_id}
-                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
+                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-[var(--primary-hover)] disabled:opacity-50"
                                                         >
                                                             <MessageSquare size={12} />
                                                             Chat
@@ -175,7 +175,7 @@ export default function RecruiterPipeline({
                                                         <Link
                                                             href={`/resume-intelligence/${app.applicant_id}`}
                                                             target="_blank"
-                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-gradient-to-r from-violet-500/20 to-purple-500/20 text-violet-600 dark:text-violet-400 hover:from-violet-500/30 hover:to-purple-500/30 font-medium border border-violet-500/20"
+                                                            className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-gradient-to-r from-primary to-[var(--chart-4)] text-brand-subtle-foreground hover:from-primary hover:to-[var(--chart-4)] font-medium border border-primary/25"
                                                         >
                                                             <Brain size={12} />
                                                             AI

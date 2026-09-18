@@ -5,7 +5,8 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "@/components/loading";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import SectionHeader from "./section-header";
 import {
   Briefcase,
   Building2,
@@ -135,28 +136,20 @@ const Company = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="w-full mx-auto px-4 py-6">
-      <Card className="shadow-lg border-2 overflow-hidden">
-        <div className="bg-blue-500 p-6 border-b">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                <Building2 size={20} className="text-blue-600" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl text-white">My Companies</CardTitle>
-            <CardDescription className="text-sm mt-1 text-white">
-              Manage your registered companies ({companies.length}/3)
-            </CardDescription>
-
-            {companies.length < 3 && (
-              <Button onClick={openDialog} className="gap-2">
-                <Plus size={18} />
-                Add Company
-              </Button>
-            )}
-          </div>
-        </div>
+    <div className="mx-auto w-full max-w-5xl">
+      <SectionHeader
+        title="My companies"
+        description={`Manage your registered companies (${companies.length}/3)`}
+        action={
+          companies.length < 3 ? (
+            <Button onClick={openDialog} className="gap-2">
+              <Plus size={17} />
+              Add company
+            </Button>
+          ) : null
+        }
+      />
+      <Card variant="elevated" className="gap-0 overflow-hidden p-0">
 
         {companyLoading ? (
           <Loading />
@@ -167,7 +160,7 @@ const Company = () => {
                 {companies.map((c) => (
                   <div
                     key={c.company_id}
-                    className="flex items-center gap-4 p-4 rounded-lg border-2 hover:border-blue-500 transition-all bg-background"
+                    className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-soft-md"
                   >
                     <div className="h-16 w-16 rounded-full border-2 overflow-hidden shrink-0 bg-background">
                       <img
@@ -188,7 +181,7 @@ const Company = () => {
                       <a
                         href={c.website}
                         target="_blank"
-                        className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                        className="text-xs text-primary hover:underline flex items-center gap-1"
                       >
                         <Globe size={12} />
                         {c.website}
@@ -221,15 +214,15 @@ const Company = () => {
               </div>
             ) : (
               <>
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-                    <Building2 size={32} className="opacity-40" />
+                <div className="py-14 text-center">
+                  <div className="mb-4 inline-flex size-16 items-center justify-center rounded-full bg-muted">
+                    <Building2 size={28} className="text-muted-foreground" />
                   </div>
-                  <CardDescription className="text-base mb-4">
-                    No Companies registered yet
-                  </CardDescription>
-                  <p className="text-sm opacity-60">
-                    Add your first company to start posting jobs
+                  <p className="mb-1.5 font-semibold">
+                    No companies registered yet
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Add your first company to start posting jobs.
                   </p>
                 </div>
               </>
@@ -246,7 +239,7 @@ const Company = () => {
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-2">
-              <Building2 className="text-blue-600" />
+              <Building2 className="text-primary" />
               Add New Company
             </DialogTitle>
           </DialogHeader>

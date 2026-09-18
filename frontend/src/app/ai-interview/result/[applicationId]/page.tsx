@@ -19,8 +19,10 @@ import {
 } from "lucide-react";
 import Loading from "@/components/loading";
 import Link from "next/link";
+import { BACKEND_URL } from "@/lib/config";
+import MarkdownText from "@/components/markdown-text";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+
 
 type Recommendation = "Strong Yes" | "Yes" | "Borderline" | "No";
 
@@ -116,8 +118,10 @@ export default function AiInterviewResultPage() {
       }
       try {
         const { data } = await axios.get<InterviewResult>(
-          `${BACKEND_URL}/api/utils/interview/result/${applicationId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${BACKEND_URL}/api/ai/interview/result/${applicationId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
         );
         setResult(data);
       } catch (error: any) {
@@ -152,19 +156,19 @@ export default function AiInterviewResultPage() {
     );
   }
 
-  const { evaluation, transcript, score, recommendation, manual_review_required, duration_seconds } = result;
-  const scoreColor =
-    score === null ? "text-muted-foreground" : score >= 80 ? "text-green-600" : score >= 60 ? "text-yellow-600" : "text-red-600";
-  const durationLabel = formatDuration(duration_seconds);
+  const { evaluation, transcript } = result;
+  
+  // Score color logic
+  const scoreColor = evaluation.score >= 80 ? "text-success-subtle-foreground" : evaluation.score >= 60 ? "text-warning-subtle-foreground" : "text-destructive-subtle-foreground";
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-6xl">
       <Link href="/account" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors">
         <ArrowLeft size={16} /> Back to Account
       </Link>
-
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-xl flex items-center justify-center">
+      
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 bg-success-subtle text-success-subtle-foreground rounded-xl flex items-center justify-center">
           <Mic size={24} />
         </div>
         <div>
@@ -217,85 +221,31 @@ export default function AiInterviewResultPage() {
             <p className="text-sm text-muted-foreground mt-4 leading-relaxed">{evaluation.feedback}</p>
           </Card>
 
-          {evaluation.strengths && evaluation.strengths.length > 0 && (
-            <Card className="p-6">
-              <h3 className="font-semibold text-green-600 flex items-center gap-2 mb-4">
-                <CheckCircle size={16} /> Strengths
-              </h3>
-              <ul className="space-y-3">
-                {evaluation.strengths.map((str, i) => (
-                  <li
-                    key={i}
-                    className="text-sm bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-lg border border-green-100 dark:border-green-900/50 text-green-800 dark:text-green-300"
-                  >
-                    {str}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          )}
+          <Card className="p-6">
+            <h3 className="font-semibold text-success-subtle-foreground flex items-center gap-2 mb-4">
+              <CheckCircle size={16} /> Strengths
+            </h3>
+            <ul className="space-y-3">
+              {evaluation.strengths.map((str, i) => (
+                <li key={i} className="text-sm bg-success-subtle px-3 py-2 rounded-lg border border-success/25 text-success-subtle-foreground">
+                  {str}
+                </li>
+              ))}
+            </ul>
+          </Card>
 
-          {evaluation.weaknesses && evaluation.weaknesses.length > 0 && (
-            <Card className="p-6">
-              <h3 className="font-semibold text-red-600 flex items-center gap-2 mb-4">
-                <XCircle size={16} /> Weaknesses
-              </h3>
-              <ul className="space-y-3">
-                {evaluation.weaknesses.map((wk, i) => (
-                  <li
-                    key={i}
-                    className="text-sm bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg border border-red-100 dark:border-red-900/50 text-red-800 dark:text-red-300"
-                  >
-                    {wk}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          )}
-
-          {evaluation.competencies && evaluation.competencies.length > 0 && (
-            <Card className="p-6">
-              <h3 className="font-semibold flex items-center gap-2 mb-4">
-                <ShieldCheck size={16} className="text-primary" /> Competency coverage
-              </h3>
-              <ul className="space-y-3">
-                {evaluation.competencies.map((c, i) => (
-                  <li key={i} className="flex items-start justify-between gap-3 text-sm">
-                    <div>
-                      <p className="font-medium">{c.name}</p>
-                      <p className="text-muted-foreground text-xs mt-0.5">{c.note}</p>
-                    </div>
-                    <span className={`shrink-0 text-xs font-medium px-2 py-1 rounded-full border ${COMPETENCY_STYLES[c.status].className}`}>
-                      {COMPETENCY_STYLES[c.status].label}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          )}
-
-          {evaluation.resume_consistency && evaluation.resume_consistency.length > 0 && (
-            <Card className="p-6">
-              <h3 className="font-semibold flex items-center gap-2 mb-4">
-                <ShieldQuestion size={16} className="text-primary" /> Resume consistency
-              </h3>
-              <ul className="space-y-3">
-                {evaluation.resume_consistency.map((r, i) => (
-                  <li key={i} className="text-sm flex items-start gap-2">
-                    {r.verified ? (
-                      <ShieldCheck size={14} className="text-green-600 shrink-0 mt-0.5" />
-                    ) : (
-                      <ShieldAlert size={14} className="text-amber-600 shrink-0 mt-0.5" />
-                    )}
-                    <div>
-                      <p>{r.claim}</p>
-                      <p className="text-muted-foreground text-xs mt-0.5">{r.note}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          )}
+          <Card className="p-6">
+            <h3 className="font-semibold text-destructive-subtle-foreground flex items-center gap-2 mb-4">
+              <XCircle size={16} /> Weaknesses
+            </h3>
+            <ul className="space-y-3">
+              {evaluation.weaknesses.map((wk, i) => (
+                <li key={i} className="text-sm bg-destructive-subtle px-3 py-2 rounded-lg border border-destructive/25 text-destructive-subtle-foreground">
+                  {wk}
+                </li>
+              ))}
+            </ul>
+          </Card>
         </div>
 
         {/* Per-question breakdown + Full Transcript */}
@@ -329,20 +279,20 @@ export default function AiInterviewResultPage() {
               <Mic size={18} className="text-muted-foreground" /> Full Transcript
             </h2>
             <div className="flex-1 space-y-6 overflow-y-auto pr-2 pb-4">
-              {transcript.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "assistant" ? "justify-start" : "justify-end"}`}>
-                  <div
-                    className={`max-w-[85%] p-4 rounded-2xl ${
-                      msg.role === "assistant" ? "bg-muted rounded-tl-sm text-foreground" : "bg-primary text-primary-foreground rounded-tr-sm"
-                    }`}
-                  >
-                    <p className="text-sm font-semibold mb-1 opacity-70 uppercase tracking-wider text-[10px]">
-                      {msg.role === "assistant" ? "AI Interviewer" : "Candidate"}
-                    </p>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                  </div>
-                </div>
-              ))}
+               {transcript.map((msg, i) => (
+                 <div key={i} className={`flex ${msg.role === 'assistant' ? 'justify-start' : 'justify-end'}`}>
+                   <div className={`max-w-[85%] p-4 rounded-2xl ${msg.role === 'assistant' ? 'bg-muted rounded-tl-sm text-foreground' : 'bg-primary text-primary-foreground rounded-tr-sm'}`}>
+                     <p className="text-sm font-semibold mb-1 opacity-70 uppercase tracking-wider text-[10px]">
+                       {msg.role === 'assistant' ? 'AI Interviewer' : 'Candidate'}
+                     </p>
+                     {msg.role === 'assistant' ? (
+                       <MarkdownText content={msg.text} className="text-sm" />
+                     ) : (
+                       <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                     )}
+                   </div>
+                 </div>
+               ))}
             </div>
           </Card>
         </div>

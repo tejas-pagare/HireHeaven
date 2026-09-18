@@ -63,8 +63,8 @@ export default function ResumeIntelligencePage() {
     if (error) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
-                <div className="h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center">
-                    <Shield className="h-8 w-8 text-red-400" />
+                <div className="h-16 w-16 rounded-2xl bg-destructive/10 flex items-center justify-center">
+                    <Shield className="h-8 w-8 text-destructive" />
                 </div>
                 <h2 className="text-xl font-bold">Access Denied</h2>
                 <p className="text-sm text-muted-foreground text-center max-w-md">

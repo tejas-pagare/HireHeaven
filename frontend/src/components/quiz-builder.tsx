@@ -8,8 +8,9 @@ import axios from "axios";
 import { job_service } from "@/context/AppContext";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { BACKEND_URL } from "@/lib/config";
 
-const utils_service = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const utils_service = BACKEND_URL;
 
 interface QuizQuestion {
     text: string;
@@ -124,7 +125,7 @@ export default function QuizBuilder({ jobId, jobDescription, isOpen, onClose }: 
                         <div key={qIndex} className="p-4 border rounded-xl bg-background/50 relative">
                             <button
                                 onClick={() => removeQuestion(qIndex)}
-                                className="absolute top-4 right-4 text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-md"
+                                className="absolute top-4 right-4 text-destructive hover:text-destructive-subtle-foreground hover:bg-destructive-subtle p-1.5 rounded-md"
                             >
                                 <Trash size={16} />
                             </button>
@@ -176,7 +177,7 @@ export default function QuizBuilder({ jobId, jobDescription, isOpen, onClose }: 
 
                 <div className="flex justify-end gap-3 mt-6">
                     <Button variant="ghost" onClick={onClose}>Cancel</Button>
-                    <Button onClick={saveQuiz} disabled={loading || questions.length === 0} className="bg-blue-600 hover:bg-blue-700 text-white min-w-24">
+                    <Button onClick={saveQuiz} disabled={loading || questions.length === 0} className="bg-primary hover:bg-[var(--primary-hover)] text-primary-foreground min-w-24">
                         {loading ? "Saving..." : "Save Quiz"}
                     </Button>
                 </div>

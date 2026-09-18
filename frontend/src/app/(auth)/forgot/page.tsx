@@ -8,6 +8,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { ArrowLeft, Mail } from "lucide-react";
+import AuthShell from "@/components/auth-shell";
 
 const ForgotPage = () => {
   const [email, setemail] = useState("");
@@ -20,9 +22,10 @@ const ForgotPage = () => {
     e.preventDefault();
     setbtnLoading(true);
     try {
-      const { data } = await axios.post(`${auth_service}/api/auth/forgot-password`, {
-        email,
-      });
+      const { data } = await axios.post(
+        `${auth_service}/api/auth/forgot-password`,
+        { email }
+      );
 
       toast.success((data as any).message);
       setemail("");
@@ -32,43 +35,43 @@ const ForgotPage = () => {
       setbtnLoading(false);
     }
   };
+
   return (
-    <div className="mt-20 md:mt-5 z-0">
-      <div className="md:w-1/3 border border-gray-400 rounded-lg p-8 flex flex-col w-full relative shadow-md m-auto">
-        <h2 className="mb-1">
-          <span className="text-3xl">Forgot Password</span>
-        </h2>
-        <form
-          onSubmit={submitHandler}
-          className="flex flex-col justify-between mt-3"
+    <AuthShell
+      title="Forgot your password?"
+      subtitle="Enter your email and we'll send you a reset link"
+      footer={
+        <Link
+          href="/login"
+          className="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline"
         >
-          <div className="grid w-full max-w-sm items-center gap-1.5 ml-1">
-            <Label>Email</Label>
+          <ArrowLeft size={15} /> Back to sign in
+        </Link>
+      }
+    >
+      <form onSubmit={submitHandler} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email address</Label>
+          <div className="relative">
+            <Mail className="icon-style" />
             <Input
+              id="email"
               type="email"
-              placeholder="Email"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setemail(e.target.value)}
               required
+              autoComplete="email"
+              className="h-11 pl-10"
             />
-
-            <Button
-              disabled={btnLoading}
-              className="flex justify-center items-center gap-2"
-            >
-              Submit
-            </Button>
           </div>
-        </form>
+        </div>
 
-        <Link
-          className="mt-2 text-blue-500 underline text-sm ml-2"
-          href={"/login"}
-        >
-          Go to login page
-        </Link>
-      </div>
-    </div>
+        <Button disabled={btnLoading} size="lg" className="w-full">
+          {btnLoading ? "Sending…" : "Send reset link"}
+        </Button>
+      </form>
+    </AuthShell>
   );
 };
 

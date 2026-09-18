@@ -6,6 +6,7 @@ import { job_service, useAppData } from "@/context/AppContext";
 import { Company, Job } from "@/type";
 import axios from "axios";
 import Loading from "@/components/loading";
+import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,6 @@ import {
   Globe,
   Laptop,
   MapPin,
-  ListOrdered,
   Pencil,
   Plus,
   Trash2,
@@ -45,140 +45,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-/** Dynamic round-name inputs for the Add Job dialog — collected client-side
- *  and submitted together with the rest of the job at creation time. */
-function CreateRoundsEditor({
-  rounds,
-  setRounds,
-}: {
-  rounds: string[];
-  setRounds: (rounds: string[]) => void;
-}) {
-  return (
-    <div className="space-y-2">
-      <Label className="text-sm font-medium flex items-center gap-2">
-        <ListOrdered size={16} /> Interview Rounds
-      </Label>
-      <div className="space-y-2">
-        {rounds.map((name, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <Input
-              className="h-10"
-              placeholder={`Round ${i + 1} name (e.g. Technical Screen)`}
-              value={name}
-              onChange={(e) => {
-                const next = [...rounds];
-                next[i] = e.target.value;
-                setRounds(next);
-              }}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => setRounds(rounds.filter((_, idx) => idx !== i))}
-            >
-              <Trash2 size={16} className="text-red-500" />
-            </Button>
-          </div>
-        ))}
-      </div>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="gap-2"
-        onClick={() => setRounds([...rounds, ""])}
-      >
-        <Plus size={14} /> Add Round
-      </Button>
-      <p className="text-xs opacity-60">
-        Optional — define the interview stages for this job (e.g. Technical Round, HR Round). Rounds can be added or removed later too.
-      </p>
-    </div>
-  );
-}
-
-/** Round editor for the Edit Job dialog — an existing job may already have
- *  applicants, so changes here are applied immediately via their own API
- *  calls rather than bundled into the "Update Job" submit. */
-function EditRoundsEditor({ jobId, token }: { jobId: number; token?: string }) {
-  const [rounds, setRounds] = useState<{ round_id: number; round_number: number; name: string }[]>([]);
-  const [newName, setNewName] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get(`${job_service}/api/job/${jobId}/rounds`)
-      .then(({ data }) => setRounds(data))
-      .catch(() => {});
-  }, [jobId]);
-
-  const handleAdd = async () => {
-    if (!newName.trim()) return;
-    setBusy(true);
-    try {
-      const { data } = await axios.post(
-        `${job_service}/api/job/${jobId}/rounds`,
-        { name: newName.trim() },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setRounds((prev) => [...prev, data.round]);
-      setNewName("");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to add round");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleRemove = async (roundId: number) => {
-    setBusy(true);
-    try {
-      await axios.delete(`${job_service}/api/job/${jobId}/rounds/${roundId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setRounds((prev) => prev.filter((r) => r.round_id !== roundId));
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to remove round");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="space-y-2">
-      <Label className="text-sm font-medium flex items-center gap-2">
-        <ListOrdered size={16} /> Interview Rounds
-      </Label>
-      <div className="space-y-2">
-        {rounds.map((r) => (
-          <div key={r.round_id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg border bg-background">
-            <span className="text-sm">
-              Round {r.round_number}: {r.name}
-            </span>
-            <Button type="button" variant="ghost" size="icon" disabled={busy} onClick={() => handleRemove(r.round_id)}>
-              <Trash2 size={16} className="text-red-500" />
-            </Button>
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center gap-2">
-        <Input
-          className="h-10"
-          placeholder="New round name"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-        />
-        <Button type="button" variant="outline" size="sm" disabled={busy} onClick={handleAdd} className="gap-2 shrink-0">
-          <Plus size={14} /> Add
-        </Button>
-      </div>
-      <p className="text-xs opacity-60">Changes here take effect immediately. Rounds with scheduled interviews can't be removed.</p>
-    </div>
-  );
-}
 
 const CompanyPage = () => {
   const { id } = useParams();
@@ -223,7 +89,6 @@ const CompanyPage = () => {
   const [job_type, setjob_type] = useState("");
   const [work_location, setwork_location] = useState("");
   const [is_active, setis_active] = useState(true);
-  const [rounds, setRounds] = useState<string[]>([]);
 
   const clearInput = () => {
     settitle("");
@@ -235,7 +100,6 @@ const CompanyPage = () => {
     setjob_type("");
     setwork_location("");
     setis_active(true);
-    setRounds([]);
   };
 
   const addJobHandler = async () => {
@@ -251,7 +115,6 @@ const CompanyPage = () => {
         job_type,
         work_location,
         company_id: id,
-        rounds: rounds.map((r) => r.trim()).filter(Boolean),
       };
 
       await axios.post(`${job_service}/api/job`, jobData, {
@@ -351,53 +214,70 @@ const CompanyPage = () => {
 
   if (loading) return <Loading />;
   return (
-    <div className="min-h-screen bg-secondary/30">
+    <div className="hh-page">
       {company && (
-        <div className="max-w-6xl mx-auto px-4 py-8 space-y-10">
-          {/* Hero — a single rounded banner shape, not a box wrapping the page */}
-          <div>
-            <div className="h-36 md:h-44 rounded-3xl bg-gradient-to-r from-blue-700 to-blue-800" />
-            <div className="px-2 md:px-6">
-              <div className="flex flex-col md:flex-row gap-6 items-start md:items-end -mt-14 md:-mt-16">
-                <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl border-4 border-background overflow-hidden shadow-xl bg-background shrink-0">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <Card variant="elevated" className="mb-8 gap-0 overflow-hidden p-0">
+            <div className="h-28 bg-gradient-to-r from-primary via-primary to-[var(--chart-4)]/70" />
+            <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+              <div className="-mt-14 mb-5 flex items-end justify-between gap-4">
+                <div className="size-28 shrink-0 overflow-hidden rounded-2xl border-4 border-card bg-card shadow-soft-lg">
                   <img
                     src={company.logo}
-                    alt=""
-                    className="w-full h-full object-cover"
+                    alt={company.name}
+                    className="size-full object-cover"
                   />
                 </div>
 
-                <div className="flex-1 md:mb-4">
-                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">{company.name}</h1>
-                  <p className="text-base leading-relaxed text-muted-foreground max-w-3xl">
-                    {company.description}
-                  </p>
-                </div>
-                <Link
-                  href={company.website}
-                  target="_blank"
-                  className="md:mb-4"
-                >
-                  <Button className="gap-2 rounded-xl shadow-sm">
-                    <Globe size={18} />
-                    Visit Website
-                  </Button>
-                </Link>
+                {company.website && (
+                  <Link
+                    href={company.website}
+                    target="_blank"
+                    className="hidden shrink-0 sm:block"
+                  >
+                    <Button variant="outline" className="gap-2">
+                      <Globe size={17} />
+                      Visit website
+                    </Button>
+                  </Link>
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h1 className="mb-2 text-3xl font-bold tracking-tight">
+                  {company.name}
+                </h1>
+                <p className="max-w-3xl leading-relaxed text-muted-foreground">
+                  {company.description}
+                </p>
+
+                {company.website && (
+                  <Link
+                    href={company.website}
+                    target="_blank"
+                    className="mt-4 inline-block sm:hidden"
+                  >
+                    <Button variant="outline" className="gap-2">
+                      <Globe size={17} />
+                      Visit website
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
-          </div>
+          </Card>
 
           <Dialog>
-            {/* Job section — flat, no outer card chrome */}
-            <div>
-              <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
+            {/* Job section */}
+            <Card variant="elevated" className="gap-0 overflow-hidden p-0">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b p-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center shrink-0">
-                    <Briefcase size={22} />
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-brand-subtle text-brand-subtle-foreground">
+                    <Briefcase size={20} />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold tracking-tight">
-                      Open Positions
+                      Open positions
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       {company.jobs?.length || 0} active job
@@ -408,15 +288,17 @@ const CompanyPage = () => {
 
                 {isRecruiterOwner && (
                   <DialogTrigger asChild>
-                    <Button className="gap-2 rounded-xl shadow-sm">
-                      <Plus size={18} />
-                      Post New Job
+                    <Button className="gap-2">
+                      <Plus size={17} />
+                      Post new job
                     </Button>
                   </DialogTrigger>
                 )}
               </div>
 
               {isRecruiterOwner && (
+                <>
+
                   <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle className="text-2xl flex items-center gap-2">
@@ -576,8 +458,6 @@ const CompanyPage = () => {
                           </Select>
                         </div>
                       </div>
-
-                      <CreateRoundsEditor rounds={rounds} setRounds={setRounds} />
                     </div>
 
                     <DialogFooter>
@@ -595,31 +475,28 @@ const CompanyPage = () => {
                       </Button>
                     </DialogFooter>
                   </DialogContent>
+                </>
               )}
 
-              <div>
+              <div className="p-6">
                 {company.jobs && company.jobs.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {company.jobs.map((j) => (
                       <div
                         key={j.job_id}
-                        className="group p-5 rounded-xl border border-border/60 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition-all duration-200 bg-background"
+                        className="rounded-xl border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md"
                       >
-                        <div className="flex items-start gap-4 flex-wrap">
-                          <div className="h-11 w-11 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center shrink-0">
-                            <Briefcase size={20} />
-                          </div>
-
+                        <div className="flex items-start justify-between gap-4 flex-wrap">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3 mb-3 flex-wrap">
-                              <h3 className="text-lg font-semibold tracking-tight">
+                              <h3 className="text-xl font-semibold">
                                 {j.title}
                               </h3>
 
                               <span
-                                className={`text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1 ${j.is_active
-                                    ? "bg-green-100 dark:bg-green-900/30 text-green-600"
-                                    : "bg-gray-100 dark:bg-gray-800 text-gray-600"
+                                className={`text-xs px-3 py-1 rounded-full flex items-center gap-1 ${j.is_active
+                                    ? "bg-success-subtle text-success-subtle-foreground"
+                                    : "bg-muted text-muted-foreground"
                                   }`}
                               >
                                 {j.is_active ? (
@@ -631,13 +508,13 @@ const CompanyPage = () => {
                               </span>
                             </div>
 
-                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                              <div className="flex items-center gap-1.5">
-                                <Building2 size={15} />
+                            <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Building2 size={16} />
                                 <span>{j.role}</span>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <DollarSign size={15} />
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <DollarSign size={16} />
                                 <span>
                                   {j.salary
                                     ? `₹ ${j.salary.toLocaleString()}`
@@ -645,19 +522,22 @@ const CompanyPage = () => {
                                 </span>
                               </div>
 
-                              <div className="flex items-center gap-1.5">
-                                <MapPin size={15} />
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <MapPin size={16} />
                                 <span>{j.location}</span>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <Laptop size={15} />
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Laptop size={16} />
                                 <span>
                                   {j.work_location} ({j.job_type})
                                 </span>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <Users size={15} />
-                                <span>{j.openings} openings</span>
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Users size={16} />
+                                <span>
+                                  {j.openings}{" "}
+                                  {Number(j.openings) === 1 ? "opening" : "openings"}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -667,22 +547,24 @@ const CompanyPage = () => {
                               <Button
                                 variant={"outline"}
                                 size={"sm"}
-                                className="gap-2 rounded-lg"
+                                className="gap-2"
                               >
                                 <Eye size={16} /> View
                               </Button>
                             </Link>
 
                             {isRecruiterOwner && (
-                              <Button
-                                onClick={() => handleOpenUpdateModal(j)}
-                                variant={"outline"}
-                                size={"sm"}
-                                className="gap-2 rounded-lg"
-                              >
-                                <Pencil size={16} />
-                                Edit
-                              </Button>
+                              <>
+                                <Button
+                                  onClick={() => handleOpenUpdateModal(j)}
+                                  variant={"outline"}
+                                  size={"sm"}
+                                  className="gap-2"
+                                >
+                                  <Pencil size={16} />
+                                  Edit
+                                </Button>
+                              </>
                             )}
                           </div>
                         </div>
@@ -691,18 +573,18 @@ const CompanyPage = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="text-center py-14 border-2 border-dashed border-border/50 rounded-xl bg-muted/30">
+                    <div className="text-center py-12">
                       <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-                        <Briefcase size={32} className="text-muted-foreground opacity-60" />
+                        <Briefcase size={32} className="opacity-40" />
                       </div>
-                      <p className="text-base text-muted-foreground mb-2">
-                        No jobs posted yet
+                      <p className="text-base opacity-70 mb-2">
+                        No jobs postet yet
                       </p>
                     </div>
                   </>
                 )}
               </div>
-            </div>
+            </Card>
           </Dialog>
 
           <Dialog
@@ -868,9 +750,9 @@ const CompanyPage = () => {
                       className="text-sm font-medium flex items-center gap-2"
                     >
                       {is_active ? (
-                        <CheckCircle size={16} className="text-green-600" />
+                        <CheckCircle size={16} className="text-success-subtle-foreground" />
                       ) : (
-                        <XCircle size={16} className="text-gray-50" />
+                        <XCircle size={16} className="text-foreground" />
                       )}
                     </Label>
 
@@ -888,8 +770,6 @@ const CompanyPage = () => {
                     </Select>
                   </div>
                 </div>
-
-                {selectedJob && <EditRoundsEditor jobId={selectedJob.job_id} token={token} />}
               </div>
 
               <DialogFooter>

@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { BACKEND_URL } from "@/lib/config";
 
-const API_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000") + "/api/blog";
+const API_URL = BACKEND_URL + "/api/blog";
 
 const getAuthHeaders = () => {
     const token = Cookies.get("token");

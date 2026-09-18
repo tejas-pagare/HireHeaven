@@ -6,18 +6,18 @@ export const metadata = {
 };
 
 export default function GDPRPage() {
-    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "#0F172A", marginTop: 32, marginBottom: 12 };
-    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "#4B5563", marginBottom: 16 };
+    const headingStyle: React.CSSProperties = { fontSize: 20, fontWeight: 600, color: "var(--foreground)", marginTop: 32, marginBottom: 12 };
+    const paraStyle: React.CSSProperties = { fontSize: 15, lineHeight: "26px", color: "var(--muted-foreground)", marginBottom: 16 };
 
     return (
         <>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#3B82F6", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>
                 Legal
             </p>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: "#0F172A", marginBottom: 8 }}>GDPR Compliance</h1>
-            <p style={{ fontSize: 14, color: "#9CA3AF", marginBottom: 32 }}>Last updated: February 22, 2025</p>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: "var(--foreground)", marginBottom: 8 }}>GDPR Compliance</h1>
+            <p style={{ fontSize: 14, color: "var(--muted-foreground)", marginBottom: 32 }}>Last updated: February 22, 2025</p>
 
-            <hr style={{ border: "none", borderTop: "1px solid #E5E7EB", marginBottom: 32 }} />
+            <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 32 }} />
 
             <p style={paraStyle}>
                 HireHeaven is committed to complying with the General Data Protection Regulation (GDPR) and ensuring that
@@ -57,12 +57,12 @@ export default function GDPRPage() {
                         style={{
                             padding: 16,
                             borderRadius: 8,
-                            border: "1px solid #E5E7EB",
-                            background: "#F9FAFB",
+                            border: "1px solid var(--border)",
+                            background: "var(--muted)",
                         }}
                     >
-                        <p style={{ fontWeight: 600, fontSize: 14, color: "#0F172A", marginBottom: 4 }}>{right.title}</p>
-                        <p style={{ fontSize: 13, color: "#6B7280", lineHeight: "20px" }}>{right.desc}</p>
+                        <p style={{ fontWeight: 600, fontSize: 14, color: "var(--foreground)", marginBottom: 4 }}>{right.title}</p>
+                        <p style={{ fontSize: 13, color: "var(--muted-foreground)", lineHeight: "20px" }}>{right.desc}</p>
                     </div>
                 ))}
             </div>
@@ -104,7 +104,7 @@ export default function GDPRPage() {
             <p style={paraStyle}>
                 For any GDPR-related inquiries, data access requests, or to exercise your rights, please contact our
                 Data Protection Officer at{" "}
-                <a href="mailto:dpo@hireheaven.com" style={{ color: "#3B82F6" }}>dpo@hireheaven.com</a>.
+                <a href="mailto:dpo@hireheaven.com" style={{ color: "var(--primary)" }}>dpo@hireheaven.com</a>.
             </p>
 
             <h2 style={headingStyle}>9. Supervisory Authority</h2>

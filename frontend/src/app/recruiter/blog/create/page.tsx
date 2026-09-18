@@ -132,7 +132,7 @@ export default function CreateBlogPage() {
                                 <button
                                     type="button"
                                     onClick={() => setCoverImage("")}
-                                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full text-xs"
+                                    className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-1 rounded-full text-xs"
                                 >
                                     Remove
                                 </button>

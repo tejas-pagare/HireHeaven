@@ -14,7 +14,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import SectionHeader from "./section-header";
 
 export default function MyBlogs() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -68,27 +68,27 @@ export default function MyBlogs() {
     };
 
     return (
-        <Card className="shadow-lg border-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                    <CardTitle className="text-2xl">My Blogs</CardTitle>
-                    <CardDescription>Manage your blog posts</CardDescription>
-                </div>
-                <Link href="/recruiter/blog/create">
-                    <Button className="gap-2">
-                        <Plus size={18} />
-                        Create New Post
-                    </Button>
-                </Link>
-            </CardHeader>
-            <CardContent>
+        <div className="mx-auto w-full max-w-5xl">
+            <SectionHeader
+                title="My blogs"
+                description="Manage your blog posts"
+                action={
+                    <Link href="/recruiter/blog/create">
+                        <Button className="gap-2">
+                            <Plus size={17} />
+                            Create new post
+                        </Button>
+                    </Link>
+                }
+            />
+            <div>
                 {loading ? (
                     <div className="flex justify-center py-20">
                         <Loader2 className="animate-spin text-primary" />
                     </div>
                 ) : posts.length > 0 ? (
                     <div className="space-y-4">
-                        <div className="rounded-md border">
+                        <div className="overflow-hidden rounded-xl border bg-card">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -115,7 +115,7 @@ export default function MyBlogs() {
                                                 )}
                                             </TableCell>
                                             <TableCell className="font-medium">
-                                                <Link href={`/blog/${post.slug || post.id}`} className="hover:underline text-blue-600">
+                                                <Link href={`/blog/${post.slug || post.id}`} className="hover:underline text-primary">
                                                     {post.title}
                                                 </Link>
                                             </TableCell>
@@ -125,14 +125,14 @@ export default function MyBlogs() {
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
                                                     <Link href={`/recruiter/blog/edit/${post.id}`}>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500">
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
                                                             <Edit size={16} />
                                                         </Button>
                                                     </Link>
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        className="h-8 w-8 text-red-500"
+                                                        className="h-8 w-8 text-destructive"
                                                         onClick={() => handleDelete(post.id)}
                                                     >
                                                         <Trash2 size={16} />
@@ -179,7 +179,7 @@ export default function MyBlogs() {
                         You haven't posted any blogs yet.
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }

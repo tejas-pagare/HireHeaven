@@ -1,14 +1,15 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useAppData } from "@/context/AppContext";
 import { AccontProps } from "@/type";
@@ -30,21 +31,59 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useRef, useState } from "react";
 
+/** Section wrapper — keeps the profile page a flow of sections, not a stack of boxes. */
+const Section = ({
+  icon,
+  title,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <section>
+    <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+      <span className="text-primary">{icon}</span>
+      {title}
+    </h2>
+    {children}
+  </section>
+);
+
+const ContactRow = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) => (
+  <div className="flex items-center gap-4">
+    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-subtle text-brand-subtle-foreground">
+      {icon}
+    </div>
+    <div className="min-w-0 flex-1">
+      <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </p>
+      <p className="truncate text-sm font-medium">{value}</p>
+    </div>
+  </div>
+);
+
 const Info: React.FC<AccontProps> = ({ user, isYourAccount }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const editRef = useRef<HTMLButtonElement | null>(null);
   const resumeRef = useRef<HTMLInputElement | null>(null);
 
+  const [editOpen, setEditOpen] = useState(false);
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [bio, setBio] = useState("");
 
   const { updateProfilePic, updateResume, btnLoading, updateUser } =
     useAppData();
-
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
+  const router = useRouter();
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,19 +94,16 @@ const Info: React.FC<AccontProps> = ({ user, isYourAccount }) => {
     }
   };
 
-  const handleEditClick = () => {
-    editRef.current?.click();
+  const openEdit = () => {
     setName(user.name);
     setPhoneNumber(user.phone_number);
     setBio(user.bio || "");
+    setEditOpen(true);
   };
 
-  const updateProfileHandler = () => {
-    updateUser(name, phoneNumber, bio);
-  };
-
-  const handleResumeClick = () => {
-    resumeRef.current?.click();
+  const updateProfileHandler = async () => {
+    await updateUser(name, phoneNumber, bio);
+    setEditOpen(false);
   };
 
   const changeResume = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,290 +113,271 @@ const Info: React.FC<AccontProps> = ({ user, isYourAccount }) => {
         alert("Please upload a pdf file");
         return;
       }
-
       const formData = new FormData();
       formData.append("file", file);
       updateResume(formData);
     }
   };
 
-  const router = useRouter();
+  const subscriptionActive =
+    user.subscription && new Date(user.subscription).getTime() > Date.now();
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8">
-      
-      {/* Banner & Profile Header */}
-      <div className="mb-14 relative">
-        <div className="h-32 sm:h-40 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 shadow-sm relative overflow-hidden">
-           <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
-        </div>
-        
-        <div className="absolute -bottom-12 sm:-bottom-16 left-6 sm:left-10 flex items-end gap-5">
-           <div className="relative group">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-background shadow-md overflow-hidden bg-muted">
-                <img src={user.profile_pic || "/user.png"} alt={user.name} className="w-full h-full object-cover" />
-              </div>
+    <div className="mx-auto w-full max-w-4xl">
+      {/* Banner + avatar */}
+      <div className="relative mb-4">
+        <div className="h-32 w-full overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary to-[var(--chart-4)]/70 sm:h-40" />
+
+        <div className="absolute -bottom-12 left-6 flex items-end gap-5 sm:-bottom-14 sm:left-10">
+          <div className="relative">
+            <div className="size-28 overflow-hidden rounded-full border-4 border-background bg-muted shadow-soft-md sm:size-32">
+              <img
+                src={user.profile_pic || "/user.png"}
+                alt={user.name}
+                className="size-full object-cover"
+              />
+            </div>
+            {isYourAccount && (
+              <>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => inputRef.current?.click()}
+                  className="absolute bottom-1 right-1 size-9 rounded-full border shadow-soft-md"
+                  aria-label="Change profile photo"
+                >
+                  <Camera className="size-4" />
+                </Button>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  ref={inputRef}
+                  onChange={changeHandler}
+                />
+              </>
+            )}
+          </div>
+
+          <div className="hidden pb-3 sm:block">
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-bold tracking-tight">{user.name}</h1>
               {isYourAccount && (
-                 <>
-                  <Button 
-                    variant="secondary" 
-                    size="icon" 
-                    onClick={handleClick} 
-                    className="absolute bottom-1 right-1 rounded-full h-8 w-8 sm:h-10 sm:w-10 shadow-md border border-border"
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={openEdit}
+                  className="rounded-full text-muted-foreground"
+                  aria-label="Edit profile"
+                >
+                  <Edit size={16} />
+                </Button>
+              )}
+            </div>
+            <Badge variant="brand" shape="pill" className="mt-1.5 gap-1.5 capitalize">
+              <Briefcase size={12} />
+              {user.role}
+            </Badge>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile name/role */}
+      <div className="mb-8 mt-16 sm:hidden">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold tracking-tight">{user.name}</h1>
+          {isYourAccount && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={openEdit}
+              className="rounded-full text-muted-foreground"
+              aria-label="Edit profile"
+            >
+              <Edit size={16} />
+            </Button>
+          )}
+        </div>
+        <Badge variant="brand" shape="pill" className="mt-2 gap-1.5 capitalize">
+          <Briefcase size={12} />
+          {user.role}
+        </Badge>
+      </div>
+
+      <div className="space-y-10 sm:mt-24">
+        {user.role === "jobseeker" && user.bio && (
+          <Section icon={<UserIcon size={18} />} title="About">
+            <p className="leading-relaxed text-muted-foreground">{user.bio}</p>
+          </Section>
+        )}
+
+        <Section icon={<Mail size={18} />} title="Contact information">
+          <div className="grid gap-6 sm:grid-cols-2">
+            <ContactRow icon={<Mail size={18} />} label="Email" value={user.email} />
+            <ContactRow
+              icon={<Phone size={18} />}
+              label="Phone"
+              value={user.phone_number || "—"}
+            />
+          </div>
+        </Section>
+
+        {user.role === "jobseeker" && user.resume && (
+          <Section icon={<NotepadText size={18} />} title="Resume">
+            <div className="flex flex-col justify-between gap-4 rounded-xl border bg-card p-4 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-4">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-subtle text-brand-subtle-foreground">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">Resume document</p>
+                  <Link
+                    href={user.resume}
+                    target="_blank"
+                    className="text-xs font-medium text-primary hover:underline"
                   >
-                    <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
+                    View PDF
+                  </Link>
+                </div>
+              </div>
+
+              {isYourAccount && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => resumeRef.current?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    Update resume
                   </Button>
                   <input
                     type="file"
+                    ref={resumeRef}
                     className="hidden"
-                    accept="image/*"
-                    ref={inputRef}
-                    onChange={changeHandler}
+                    accept="application/pdf"
+                    onChange={changeResume}
                   />
-                 </>
+                </>
               )}
-           </div>
-           
-           {/* Name and Role inside banner overlay on desktop, drops below on mobile */}
-           <div className="pb-2 sm:pb-4 hidden sm:block">
-              <div className="flex items-center gap-3">
-                 <h1 className="text-3xl font-bold text-foreground">{user.name}</h1>
-                 {isYourAccount && (
-                    <Button variant="ghost" size="icon" onClick={handleEditClick} className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground">
-                       <Edit size={16} />
-                    </Button>
-                 )}
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground font-medium mt-1">
-                 <Briefcase size={16} />
-                 <span className="capitalize">{user.role}</span>
-              </div>
-           </div>
-        </div>
-      </div>
-
-      {/* Mobile Name & Role (visible only on small screens) */}
-      <div className="sm:hidden px-2 mb-10 pt-2">
-          <div className="flex items-center justify-between">
-             <h1 className="text-2xl font-bold text-foreground">{user.name}</h1>
-             {isYourAccount && (
-                <Button variant="ghost" size="icon" onClick={handleEditClick} className="h-8 w-8 rounded-full text-muted-foreground">
-                   <Edit size={16} />
-                </Button>
-             )}
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground font-medium mt-1">
-             <Briefcase size={16} />
-             <span className="capitalize">{user.role}</span>
-          </div>
-      </div>
-
-      {/* Main Content Sections */}
-      <div className="mt-16 sm:mt-24 space-y-10 sm:space-y-12">
-        
-        {/* Bio section */}
-        {user.role === "jobseeker" && user.bio && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 text-foreground">
-              <UserIcon size={18} className="text-primary" />
-              About
-            </h2>
-            <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-               {user.bio}
-            </p>
-          </div>
-        )}
-
-        {/* Contact Info */}
-        <div>
-           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
-             <Mail size={18} className="text-blue-600" />
-             Contact Information
-           </h2>
-           <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
-             <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 shrink-0">
-                   <Mail size={18} />
-                </div>
-                <div className="flex-1 min-w-0">
-                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Email</p>
-                   <p className="text-sm font-medium text-foreground truncate">{user.email}</p>
-                </div>
-             </div>
-             
-             <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 shrink-0">
-                   <Phone size={18} />
-                </div>
-                <div className="flex-1 min-w-0">
-                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Phone</p>
-                   <p className="text-sm font-medium text-foreground truncate">{user.phone_number}</p>
-                </div>
-             </div>
-           </div>
-        </div>
-
-        {/* Resume section */}
-        {user.role === "jobseeker" && user.resume && (
-          <div>
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <NotepadText size={18} className="text-rose-600" />
-              Resume
-            </h2>
-            
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
-               <div className="flex items-center gap-4">
-                 <div className="h-10 w-10 rounded-full bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center text-rose-600 shrink-0">
-                    <FileText size={18} />
-                 </div>
-                 <div>
-                    <p className="font-semibold text-sm text-foreground">Resume Document</p>
-                    <Link href={user.resume} target="_blank" className="text-xs text-primary hover:underline font-medium">
-                       View PDF Document
-                    </Link>
-                 </div>
-               </div>
-               
-               <Button variant="outline" size="sm" onClick={handleResumeClick} className="w-full sm:w-auto rounded-lg">
-                  Update Resume
-               </Button>
-               <input
-                  type="file"
-                  ref={resumeRef}
-                  className="hidden"
-                  accept="application/pdf"
-                  onChange={changeResume}
-               />
             </div>
-          </div>
+          </Section>
         )}
 
-        {/* Subscription section */}
         {isYourAccount && user.role === "jobseeker" && (
-          <div className="pt-6 border-t border-border/40">
-            <h2 className="text-lg font-semibold mb-5 flex items-center gap-2 text-foreground">
-              <Crown size={18} className="text-indigo-600 dark:text-indigo-400" />
-              Subscription Status
-            </h2>
-
-            <div>
-              {!user.subscription ? (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                  <div>
-                    <p className="font-semibold text-foreground mb-1">
-                      No Active Subscription
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Subscribe to unlock premium features and benefits.
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    className="gap-2 shrink-0 rounded-lg shadow-sm w-full sm:w-auto"
-                    onClick={() => router.push("/subscribe")}
-                  >
-                    <Crown size={16} />
-                    Subscribe Now
-                  </Button>
+          <Section icon={<Crown size={18} />} title="Subscription">
+            {!user.subscription ? (
+              <div className="flex flex-col justify-between gap-5 rounded-xl border bg-card p-5 sm:flex-row sm:items-center">
+                <div>
+                  <p className="mb-1 font-semibold">No active subscription</p>
+                  <p className="text-sm text-muted-foreground">
+                    Subscribe to unlock premium features and benefits.
+                  </p>
                 </div>
-              ) : new Date(user.subscription).getTime() > Date.now() ? (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <CheckCircle2 size={18} className="text-emerald-600" />
-                      <p className="font-semibold text-emerald-600">
-                        Active Subscription
-                      </p>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Valid until:{" "}
-                      <span className="font-medium text-foreground">
-                        {new Date(user.subscription).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </span>
+                <Button
+                  className="w-full shrink-0 gap-2 sm:w-auto"
+                  onClick={() => router.push("/subscribe")}
+                >
+                  <Crown size={16} />
+                  Subscribe now
+                </Button>
+              </div>
+            ) : subscriptionActive ? (
+              <div className="flex flex-col justify-between gap-5 rounded-xl border border-success/25 bg-success-subtle/40 p-5 sm:flex-row sm:items-center">
+                <div>
+                  <div className="mb-1 flex items-center gap-2">
+                    <CheckCircle2
+                      size={18}
+                      className="text-success-subtle-foreground"
+                    />
+                    <p className="font-semibold text-success-subtle-foreground">
+                      Active subscription
                     </p>
                   </div>
-                  <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 text-sm font-semibold border border-emerald-200 dark:border-emerald-800/30">
-                    <CheckCircle2 size={16} />
-                    Subscribed
-                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Valid until{" "}
+                    <span className="font-medium text-foreground">
+                      {new Date(user.subscription).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </p>
                 </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <AlertTriangle size={18} className="text-red-600" />
-                      <p className="font-semibold text-red-600">
-                        Subscription Expired
-                      </p>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Expired On:{" "}
-                      <span className="font-medium text-foreground">
-                        {new Date(user.subscription).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </span>
+                <Badge variant="success" shape="pill" size="lg" className="gap-1.5">
+                  <CheckCircle2 size={14} />
+                  Subscribed
+                </Badge>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-between gap-5 rounded-xl border border-destructive/25 bg-destructive-subtle/40 p-5 sm:flex-row sm:items-center">
+                <div>
+                  <div className="mb-1 flex items-center gap-2">
+                    <AlertTriangle
+                      size={18}
+                      className="text-destructive-subtle-foreground"
+                    />
+                    <p className="font-semibold text-destructive-subtle-foreground">
+                      Subscription expired
                     </p>
                   </div>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="gap-2 shrink-0 rounded-lg w-full sm:w-auto"
-                    onClick={() => router.push("/subscribe")}
-                  >
-                    <RefreshCcw size={16} />
-                    Renew Subscription
-                  </Button>
+                  <p className="text-sm text-muted-foreground">
+                    Expired on{" "}
+                    <span className="font-medium text-foreground">
+                      {new Date(user.subscription).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </p>
                 </div>
-              )}
-            </div>
-          </div>
+                <Button
+                  className="w-full shrink-0 gap-2 sm:w-auto"
+                  onClick={() => router.push("/subscribe")}
+                >
+                  <RefreshCcw size={16} />
+                  Renew
+                </Button>
+              </div>
+            )}
+          </Section>
         )}
       </div>
 
-      {/* Dialog box for edit */}
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button ref={editRef} variant="outline" className="hidden">
-            Edit Profile
-          </Button>
-        </DialogTrigger>
-
-        <DialogContent className="sm:max-w-[425px] md:max-w-[500px]">
+      {/* Edit dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold">Edit Profile</DialogTitle>
+            <DialogTitle className="text-xl font-bold">Edit profile</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-5 py-4">
+          <div className="space-y-5 py-2">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
-                <UserIcon size={16} className="text-muted-foreground" /> Full Name
+              <Label htmlFor="name">
+                <UserIcon size={15} className="text-muted-foreground" /> Full name
               </Label>
               <Input
                 id="name"
                 type="text"
                 placeholder="Enter your name"
-                className="h-11 rounded-lg"
+                className="h-11"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium flex items-center gap-2">
-                <Phone size={16} className="text-muted-foreground" /> Phone
+              <Label htmlFor="phone">
+                <Phone size={15} className="text-muted-foreground" /> Phone
               </Label>
               <Input
                 id="phone"
-                type="number"
+                type="tel"
+                inputMode="tel"
                 placeholder="Enter your phone number"
-                className="h-11 rounded-lg"
+                className="h-11"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
@@ -368,14 +385,13 @@ const Info: React.FC<AccontProps> = ({ user, isYourAccount }) => {
 
             {user.role === "jobseeker" && (
               <div className="space-y-2">
-                <Label htmlFor="bio" className="text-sm font-medium flex items-center gap-2">
-                  <FileText size={16} className="text-muted-foreground" /> Bio
+                <Label htmlFor="bio">
+                  <FileText size={15} className="text-muted-foreground" /> Bio
                 </Label>
-                <Input
+                <Textarea
                   id="bio"
-                  type="text"
-                  placeholder="Enter a short bio about yourself"
-                  className="h-11 rounded-lg"
+                  placeholder="A short bio about yourself"
+                  rows={3}
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                 />
@@ -387,10 +403,10 @@ const Info: React.FC<AccontProps> = ({ user, isYourAccount }) => {
             <Button
               disabled={btnLoading}
               onClick={updateProfileHandler}
-              className="w-full h-11 rounded-lg font-medium"
-              type="submit"
+              size="lg"
+              className="w-full"
             >
-              {btnLoading ? "Saving Changes..." : "Save Changes"}
+              {btnLoading ? "Saving changes…" : "Save changes"}
             </Button>
           </DialogFooter>
         </DialogContent>

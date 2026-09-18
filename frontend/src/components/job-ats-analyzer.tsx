@@ -113,32 +113,32 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
     };
 
     const getScoreColor = (score: number) => {
-        if (score >= 80) return "text-green-600";
-        if (score >= 60) return "text-yellow-600";
-        return "text-red-600";
+        if (score >= 80) return "text-success-subtle-foreground";
+        if (score >= 60) return "text-warning-subtle-foreground";
+        return "text-destructive-subtle-foreground";
     };
 
     const getScoreBgColor = (score: number) => {
-        if (score >= 80) return "bg-green-100 dark:bg-green-900/30";
-        if (score >= 60) return "bg-yellow-100 dark:bg-yellow-900/30";
-        return "bg-red-100 dark:bg-red-900/30";
+        if (score >= 80) return "bg-success-subtle";
+        if (score >= 60) return "bg-warning-subtle";
+        return "bg-destructive-subtle";
     };
 
     const getPriorityColor = (priority: string) => {
         if (priority === "high")
-            return "bg-red-100 dark:bg-red-900/30 text-red-600 border-red-200 dark:border-red-800";
+            return "bg-destructive-subtle text-destructive-subtle-foreground border-destructive/25";
         if (priority === "medium")
-            return "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 border-yellow-200 dark:border-yellow-800";
-        return "bg-blue-100 dark:bg-blue-900/30 text-blue-600 border-blue-200 dark:border-blue-800";
+            return "bg-warning-subtle text-warning-subtle-foreground border-warning/25";
+        return "bg-brand-subtle text-brand-subtle-foreground border-primary/25";
     };
 
     return (
         <div className="mt-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border-2 border-blue-100 dark:border-blue-900/50">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-xl bg-brand-subtle/50 border-2 border-primary/25">
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                        <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                            <FileCheck size={20} className="text-blue-600" />
+                        <div className="p-2 rounded-lg bg-brand-subtle">
+                            <FileCheck size={20} className="text-primary" />
                         </div>
                         <h3 className="text-xl font-bold">ATS Resume Match Check</h3>
                     </div>
@@ -162,7 +162,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                         <>
                             <DialogHeader>
                                 <DialogTitle className="text-2xl flex items-center gap-2">
-                                    <FileText className="text-blue-600" />
+                                    <FileText className="text-primary" />
                                     Choose Resume Source
                                 </DialogTitle>
                                 <DialogDescription>
@@ -176,20 +176,20 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                         <div
                                             onClick={() => setResumeSource("existing")}
                                             className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${resumeSource === "existing"
-                                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                                                    : "border-gray-200 hover:border-blue-300"
+                                                    ? "border-primary/25 bg-brand-subtle"
+                                                    : "border-border hover:border-primary/25"
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center gap-3 text-center">
-                                                <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                    <UserCircle size={24} className="text-blue-600" />
+                                                <div className="h-12 w-12 rounded-full bg-brand-subtle flex items-center justify-center">
+                                                    <UserCircle size={24} className="text-primary" />
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold">Use Profile Resume</p>
                                                     <p className="text-sm opacity-70 mt-1">Analyze the resume currently saved to your profile</p>
                                                 </div>
                                                 {resumeSource === "existing" && (
-                                                    <div className="flex items-center gap-1.5 text-blue-600 mt-2">
+                                                    <div className="flex items-center gap-1.5 text-primary mt-2">
                                                         <CheckCircle2 size={16} />
                                                         <span className="text-sm font-medium">Selected</span>
                                                     </div>
@@ -200,20 +200,20 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                         <div
                                             onClick={() => setResumeSource("new")}
                                             className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${resumeSource === "new"
-                                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                                                    : "border-gray-200 hover:border-blue-300"
+                                                    ? "border-primary/25 bg-brand-subtle"
+                                                    : "border-border hover:border-primary/25"
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center gap-3 text-center">
-                                                <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                    <Upload size={24} className="text-blue-600" />
+                                                <div className="h-12 w-12 rounded-full bg-brand-subtle flex items-center justify-center">
+                                                    <Upload size={24} className="text-primary" />
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold">Upload New Resume</p>
                                                     <p className="text-sm opacity-70 mt-1">Select a different PDF file from your device</p>
                                                 </div>
                                                 {resumeSource === "new" && (
-                                                    <div className="flex items-center gap-1.5 text-blue-600 mt-2">
+                                                    <div className="flex items-center gap-1.5 text-primary mt-2">
                                                         <CheckCircle2 size={16} />
                                                         <span className="text-sm font-medium">Selected</span>
                                                     </div>
@@ -226,11 +226,11 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                 {resumeSource === "new" && (
                                     <div
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer hover:border-blue-500 transition-colors"
+                                        className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer hover:border-primary/25 transition-colors"
                                     >
                                         <div className="flex flex-col items-center gap-4">
-                                            <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                <Upload size={32} className="text-blue-600" />
+                                            <div className="h-16 w-16 rounded-full bg-brand-subtle flex items-center justify-center">
+                                                <Upload size={32} className="text-primary" />
                                             </div>
                                             <div>
                                                 <p className="font-medium mb-1">
@@ -241,7 +241,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                                 </p>
                                             </div>
                                             {file && (
-                                                <div className="flex items-center gap-2 text-green-600">
+                                                <div className="flex items-center gap-2 text-success-subtle-foreground">
                                                     <CheckCircle2 size={18} />
                                                     <span className="text-sm font-medium">
                                                         File uploaded successfully
@@ -280,10 +280,10 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
 
             {/* Render results underneath if response exists */}
             {response && (
-                <div className="mt-6 space-y-6 bg-background p-6 rounded-xl border border-blue-100 dark:border-blue-900/50">
+                <div className="mt-6 space-y-6 bg-background p-6 rounded-xl border border-primary/25">
                     <div className="flex items-center justify-between mb-2">
                         <h2 className="text-2xl font-bold flex items-center gap-2">
-                            <FileCheck className="text-blue-600" />
+                            <FileCheck className="text-primary" />
                             Job Match Results
                         </h2>
                         <Button
@@ -331,7 +331,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                         <div className="space-y-6">
                             <div>
                                 <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                    <TrendingUp size={20} className="text-blue-500" />
+                                    <TrendingUp size={20} className="text-primary" />
                                     Detailed Breakdown
                                 </h3>
                                 <div className="grid grid-cols-2 gap-3">
@@ -357,9 +357,9 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                 </div>
                             </div>
 
-                            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800">
+                            <div className="p-4 rounded-lg bg-success-subtle border border-success/25">
                                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                                    <CheckCircle2 size={20} className="text-green-600" />
+                                    <CheckCircle2 size={20} className="text-success-subtle-foreground" />
                                     Matching Strengths
                                 </h3>
                                 <ul className="space-y-2">
@@ -368,7 +368,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                                             key={index}
                                             className="text-sm flex items-start gap-2"
                                         >
-                                            <span className="text-green-600 mt-0.5">✓</span>
+                                            <span className="text-success-subtle-foreground mt-0.5">✓</span>
                                             <span>{strength}</span>
                                         </li>
                                     ))}
@@ -379,7 +379,7 @@ const JobAtsAnalyzer = ({ jobDescription }: JobAtsAnalyzerProps) => {
                         {/* Suggestions side */}
                         <div>
                             <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                <AlertTriangle size={20} className="text-orange-500" />
+                                <AlertTriangle size={20} className="text-warning" />
                                 Missing Keywords & Improvements
                             </h3>
                             <div className="space-y-3">

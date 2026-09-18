@@ -89,7 +89,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
                     type="button"
                     onClick={() => editor.chain().focus().toggleBold().run()}
                     disabled={!editor.can().chain().focus().toggleBold().run()}
-                    className={`p-1 rounded ${editor.isActive('bold') ? 'bg-gray-200' : ''}`}
+                    className={`p-1 rounded ${editor.isActive('bold') ? 'bg-muted' : ''}`}
                 >
                     <Bold size={18} />
                 </button>
@@ -97,25 +97,25 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
                     type="button"
                     onClick={() => editor.chain().focus().toggleItalic().run()}
                     disabled={!editor.can().chain().focus().toggleItalic().run()}
-                    className={`p-1 rounded ${editor.isActive('italic') ? 'bg-gray-200' : ''}`}
+                    className={`p-1 rounded ${editor.isActive('italic') ? 'bg-muted' : ''}`}
                 >
                     <Italic size={18} />
                 </button>
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
-                    className={`p-1 rounded ${editor.isActive('bulletList') ? 'bg-gray-200' : ''}`}
+                    className={`p-1 rounded ${editor.isActive('bulletList') ? 'bg-muted' : ''}`}
                 >
                     <List size={18} />
                 </button>
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                    className={`p-1 rounded ${editor.isActive('orderedList') ? 'bg-gray-200' : ''}`}
+                    className={`p-1 rounded ${editor.isActive('orderedList') ? 'bg-muted' : ''}`}
                 >
                     <ListOrdered size={18} />
                 </button>
-                <button type="button" onClick={setLink} className={`p-1 rounded ${editor.isActive('link') ? 'bg-gray-200' : ''}`}>
+                <button type="button" onClick={setLink} className={`p-1 rounded ${editor.isActive('link') ? 'bg-muted' : ''}`}>
                     <LinkIcon size={18} />
                 </button>
                 <button type="button" onClick={triggerImageUpload} className="p-1 rounded" disabled={uploading}>
@@ -124,7 +124,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                    className={`p-1 rounded ${editor.isActive('codeBlock') ? 'bg-gray-200' : ''}`}
+                    className={`p-1 rounded ${editor.isActive('codeBlock') ? 'bg-muted' : ''}`}
                 >
                     <Code size={18} />
                 </button>
